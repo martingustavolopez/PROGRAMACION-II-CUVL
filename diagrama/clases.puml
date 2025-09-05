@@ -1,0 +1,83 @@
+@startuml
+
+title Gimnasio "FitLife"
+
+class Gimnasio {
+  - socios: Array<Socio>
+  - entrenadores: Array<Entrenador>
+  - clasesGrupales: Array<ClaseGrupal>
+
+  + agregarSocio(socio: Socio): void
+  + eliminarSocio(socio: Socio): void
+  + agregarEntrenador(entrenador: Entrenador): void
+  + eliminarEntrenador(entrenador: Entrenador): void
+  + inscribirSocioEnClase(s: Socio, c: ClaseGrupal)
+  + asignarEntrenadorASocio(e: Entrenador, s: Socio, c: ClaseGrupal): void
+  + calcularIngresosMensualesTotales(): number
+}
+
+abstract class Persona {
+  - nombre: string
+
+  + getters()
+  + setters()
+}
+
+abstract class Socio {
+  - socioId: number
+  - planDeEntrenamiento: PlanDeEntrenamiento
+  - cuotaMensual: number
+
+  + getters()
+  + setters()
+  + abstract calcularMontoMensualTotal(): number
+}
+
+class Regular {
+  - adicionalPorClase: number
+  - cantidadDeClases: number
+
+  + getters()
+  + setters()
+  + calcularMontoMensualTotal()
+}
+class Vip {
+
+  + calcularMontoMensualTotal()
+}
+
+class Entrenador {
+  - especialidad
+
+  + getters()
+  + setters()
+  + asignarPlan(socio: Socio, plan: PlanDeEntrenamiento): void
+}
+
+class ClaseGrupal {
+  - nombre: string
+  - horario: string
+  - entrenador: Entrenador
+  - capacidadMax: number
+  - sociosInscriptos: Array<Socio>
+
+  + inscribirSocio(socio: Socio): void
+  + estaLlena(): boolean
+}
+
+class PlanDeEntrenamiento {
+  - descripcion: string
+}
+
+'Relaciones
+Gimnasio *-l- Socio
+Gimnasio *-r- Entrenador
+Gimnasio *-d- ClaseGrupal
+
+Persona <|-- Socio
+Persona <|-- Entrenador
+
+Socio <|-- Regular
+Socio <|-- Vip
+
+@enduml
