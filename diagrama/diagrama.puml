@@ -1,0 +1,52 @@
+@startuml
+
+title gestion gimnasio
+
+class Gimnasio{
+    -entrenador: Entrenadores
+    -socio: Socio
+    -clasesGrupales: ClasesGrupales
+}
+
+class Entrenadores{
+    -nombre: string
+    -especialidad: string
+    -planEntreno: string
+}
+
+abstract class Socio{
+    -socioId: number 
+    -nombre: string
+    #montoMensual: number
+    +{abstract} montoMensualTotal(): number
+}
+
+class SocioVip{
+    +montoMensualTotal(): number
+}
+    
+class SocioRegular{
+    -cantClases: number
+    -adicionalClase: number
+    +montoMensualTotal(): number
+}
+
+class ClasesGrupales{
+    -nombre: string
+    -horario: string
+    -entrenador: Entrenadores
+    -capacidadMax: number
+}
+
+'Relaciones
+Gimnasio *-- ClasesGrupales
+Gimnasio *-l- Entrenadores
+Gimnasio *-- Socio
+
+
+ClasesGrupales *-- Entrenadores
+
+Socio <|-- SocioVip
+Socio <|-- SocioRegular
+
+@enduml
