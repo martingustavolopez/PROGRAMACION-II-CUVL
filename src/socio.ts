@@ -1,14 +1,18 @@
+import PlanEntrenamiento from "./planEntrenamiento";
+
 export default abstract class Socio{
     private socioId:number;
     private nombre:string;
     protected montoMensual:number;
     private esVip: boolean;
+    private plan:PlanEntrenamiento;
 
     constructor() {
         this.socioId = 0;
         this.nombre = " ";
         this.montoMensual = 0;
         this.esVip = false;
+        this.plan = undefined as unknown as PlanEntrenamiento;
     }
 
     public setSocioId(value:number) :void{
@@ -36,4 +40,12 @@ export default abstract class Socio{
         return this.esVip;
     }
     public abstract MontoMensualTotal() :number;
+
+    public setPlan(value:PlanEntrenamiento) :void{
+        this.plan = value;
+    }
+    public getPlan() :PlanEntrenamiento{
+        return this.plan;
+    }
+    
 }
