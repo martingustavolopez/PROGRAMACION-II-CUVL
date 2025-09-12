@@ -1,0 +1,94 @@
+@startuml
+
+title DriveHub - Diagrama de clases
+
+' Enumeracion de estado vehiculo
+enum EstadoVehiculo {
+    DISPONIBLE
+    EN_ALQUILER
+    EN_MANTENIMIENTO
+    NECESITA_LIMPIEZA
+}
+
+abstract class Vehiculo {
+    # matricula: string
+    # estado: EstadoVehiculo
+    # kilometraje: number
+    tarifa: number
+    cargo: number
+
+
+    + getMatricula(): string
+    + setMatricula(matricula: string): void
+    + getEstado(): EstadoVehiculo
+    + setEstado(estado: EstadoVehiculo): void
+    + getKilometraje(): number
+    + setKilometraje(kilometraje: number): void
+    + abstract getTarifa(): number
+
+    
+}
+
+class Compacto {
+    // const tarifa_base = 30
+    // const cargo_fijo: number
+    // const min_kms = 100 
+
+    + getTarifa():
+
+
+
+             
+
+}
+
+class Sedan {
+    // const tarifa_base: 50
+    // const cargo_fijo: number
+
+}
+
+class SUV {
+    // const tarifa_base: 80
+    // const cargo_fijo: number
+
+
+}
+
+class Cliente {
+    - nombre: string
+    - email: string
+    - reservas: Reserva []
+
+
+}
+
+class Reserva {
+    - cliente: Cliente
+    - vehiculo: Vehiculo
+    - fechaDeInicio: Date
+    - fechaDeFin: Date
+    - kilometrajeInicial: number
+    - kilometrajeFinal: number
+    - costoTotal: number
+
+    
+}
+
+
+
+' Relaciones de herencia
+Vehiculo <|-- Compacto
+Vehiculo <|-- Sedan
+Vehiculo <|-- SUV
+
+
+
+
+
+
+' Notas
+
+
+
+@enduml
