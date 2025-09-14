@@ -24,17 +24,17 @@ abstract class Vehiculo {
     + setEstado(estado: EstadoVehiculo): void
     + getKilometraje(): number
     + setKilometraje(kilometraje: number): void
-    + abstract getTarifa(): number
+    + abstract calcularTarifa(): number
 
     
 }
 
 class Compacto {
-    // const tarifa_base = 30
-    // const cargo_fijo: number
-    // const min_kms = 100 
+    - {static} TARIFA_BASE_DIA: number = 30
+    - {static} CARGO_KM: number = 0.15
+    - {static} KM_LIMITE_DIARIO: number = 100 
 
-    + getTarifa():
+    + calcularTarifa(dias: number, kmRecorridos: number): number
 
 
 
@@ -43,17 +43,25 @@ class Compacto {
 }
 
 class Sedan {
-    // const tarifa_base: 50
-    // const cargo_fijo: number
+    - {static} TARIFA_BASE_DIA: number = 50
+    - {static} CARGO_KM: number = 0.20
+
+    + calcularTarifa(dias: number, kmRecorridos: number): number
 
 }
+
 
 class SUV {
-    // const tarifa_base: 80
-    // const cargo_fijo: number
+    - {static} TARIFA_BASE_DIA: number = 80
+    - {static} CARGO_SEGURO_DIA: number = 15
+    - {static} CARGO_KM: number = 0.25
+    - {static} KM_LIMITE_TOTAL: number = 500
+
+    + calcularTarifa(dias: number, kmRecorridos: number): number
 
 
 }
+
 
 class Cliente {
     - nombre: string
