@@ -1,6 +1,6 @@
 import { EstadoVehiculo } from "./estaddo_vehiculo";
 
-export default abstract class Vechiulo {
+export default abstract class Vehiculo {
     protected matricula: string;
     protected estado: EstadoVehiculo;
     protected kilometraje: number;
@@ -12,4 +12,7 @@ export default abstract class Vechiulo {
         this.kilometraje = kilometraje ?? 0;
         this.estado = EstadoVehiculo.DISPONIBLE
     }
+
+
+
 }
