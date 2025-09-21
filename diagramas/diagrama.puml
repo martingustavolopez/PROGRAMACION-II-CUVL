@@ -61,14 +61,11 @@ class SUV {
 
 
 class Cliente {
-    - nombre: string
-    - email: string
+    - idCliente: number
     - reservas: Reserva []
 
-    + getNombre(): string
-    + setNombre(nombre: string): void
-    + getEmail(): string
-    + setEmail(email: string): void
+    + getidcliente(): number
+    + setidcliente(idCliente: number): void
     + getReservas(): Reserva[]
     + agregarReserva(reserva: Reserva): void
 
@@ -116,6 +113,12 @@ class Mantenimiento {
     + setCosto(costo: number): void
 
 
+}
+
+class Plataforma {
+  - vehiculos: Vehiculo[]
+  - reservas: Reserva[]
+  - clientes: Cliente[]
 }
 
 
