@@ -3,7 +3,7 @@
 title DriveHub
 
 class Plataforma {
-  - vehiculos: Vehiculo[]
+  - vehiculos: Map<string, Vehiculo> // Donde el string sea la matricula
   - reservas: Reserva[]
 }
 
@@ -50,6 +50,7 @@ class Suv extends Vehiculo {
 }
 
 class Cliente {
+  - idCliente: number
 
   + crearReserva(v: Vehiculo, inicio: Date, fin: Date): Reserva
   -- getters y setters --    
