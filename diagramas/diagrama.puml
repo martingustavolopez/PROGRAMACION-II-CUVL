@@ -14,8 +14,7 @@ abstract class Vehiculo {
     # matricula: string
     # estado: EstadoVehiculo
     # kilometraje: number
-    tarifa: number
-    cargo: number
+    
 
 
     + getMatricula(): string
@@ -24,7 +23,10 @@ abstract class Vehiculo {
     + setEstado(estado: EstadoVehiculo): void
     + getKilometraje(): number
     + setKilometraje(kilometraje: number): void
-    + abstract calcularTarifa(): number
+    + getMantenimientos(): Mantenimiento[]
+    + agregarMantenimiento(mantenimiento: Mantenimiento): void
+    + estaDisponible(): boolean
+    + {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
 
     
 }
@@ -34,11 +36,7 @@ class Compacto {
     - {static} CARGO_KM: number = 0.15
     - {static} KM_LIMITE_DIARIO: number = 100 
 
-    + calcularTarifa(dias: number, kmRecorridos: number): number
-
-
-
-             
+    + calcularTarifa(dias: number, kmRecorridos: number): number             
 
 }
 
@@ -59,7 +57,6 @@ class SUV {
 
     + calcularTarifa(dias: number, kmRecorridos: number): number
 
-
 }
 
 
@@ -67,6 +64,14 @@ class Cliente {
     - nombre: string
     - email: string
     - reservas: Reserva []
+
+    + getNombre(): string
+    + setNombre(nombre: string): void
+    + getEmail(): string
+    + setEmail(email: string): void
+    + getReservas(): Reserva[]
+    + agregarReserva(reserva: Reserva): void
+
 
 
 }
@@ -80,7 +85,37 @@ class Reserva {
     - kilometrajeFinal: number
     - costoTotal: number
 
+    + getCliente(): Cliente
+    + setCliente(cliente: Cliente): void
+    + getVehiculo(): Vehiculo
+    + setVehiculo(vehiculo: Vehiculo): void
+    + getFechaInicio(): Date
+    + setFechaInicio(fecha: Date): void
+    + getFechaFin(): Date
+    + setFechaFin(fecha: Date): void
+    + getKilometrajeInicial(): number
+    + setKilometrajeInicial(km: number): void
+    + getKilometrajeFinal(): number
+    + setKilometrajeFinal(km: number): void
+    + getCostoTotal(): number
+    + calcularDias(): number
+    + calcularKilometrosRecorridos(): number
+    + calcularCostoTotal(): void
+
     
+}
+
+class Mantenimiento {
+    - fecha: Date
+    - costo: number
+    
+
+    + getFecha(): Date
+    + setFecha(fecha: Date): void
+    + getCosto(): number
+    + setCosto(costo: number): void
+
+
 }
 
 
