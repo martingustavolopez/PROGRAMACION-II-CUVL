@@ -49,15 +49,10 @@ class Suv extends Vehiculo {
   // Distinta implementación del método calcularTarifa
 }
 
-' Idea como el ejercicio de SUELDOS ... ???
-'class CalculadorTarifa {
-'  + calcularTarifa(v: Vehiculo): number
-'}
-
 class Cliente {
 
   + crearReserva(v: Vehiculo, inicio: Date, fin: Date): Reserva
-
+  -- getters y setters --    
 }
 
 class Reserva {
