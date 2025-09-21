@@ -2,6 +2,11 @@
 
 title DriveHub
 
+class Plataforma {
+  - vehiculos: Vehiculo[]
+  - reservas: Reserva[]
+}
+
 enum EstadoVehiculo {
   Disponible,
   En Alquiler,
@@ -12,14 +17,11 @@ enum EstadoVehiculo {
 abstract class Vehiculo {
   - matricula: string
   - estado: EstadoVehiculo
-  - kilometros: number // KM Total del Vehiculo
+  - kilometrajeTotal: number
 
   # tarifaBase: number
 
-  + getMatricula(): number
-  + setEstado(e: EstadoVehiculo): void 
-  + getEstado(): EstadoVehiculo
-    
+  -- getters y setters --    
   + calcularTarifa(r: Reserva): number
 }
 
@@ -28,18 +30,21 @@ class Compacto extends Vehiculo {
   - limiteKmPorDiaAlquiler: number = 100
   - costoExtraKm: number = 0.15
 
+  -- getters y setters --    
   + calcularTarifa(r: Reserva): number
   // Distinta implementación del método calcularTarifa
 }
 class Sedan extends Vehiculo {
     tarifaBase: number = 50
 
+  -- getters y setters --    
   + calcularTarifa(r: Reserva): number
   // Distinta implementación del método calcularTarifa
 }
 class Suv extends Vehiculo {
     tarifaBase: number = 80
 
+  -- getters y setters --    
   + calcularTarifa(r: Reserva): number
   // Distinta implementación del método calcularTarifa
 }
@@ -59,7 +64,7 @@ class Reserva {
   - fechaInicio: Date
   - fechaFin: Date
   
-
+  -- getters y setters --    
   + validarDisponibilidadVehiculo(): boolean
 }
 
