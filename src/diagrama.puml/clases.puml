@@ -1,0 +1,99 @@
+@startuml
+
+title DriveHub
+
+enum EstadoVehiculo {
+  Disponible,
+  En Alquiler,
+  En Mantenimiento,
+  Necesita Limpieza,
+}
+
+abstract class Vehiculo {
+  - matricula: string
+  - estado: EstadoVehiculo
+  - kilometros: number // KM Total del Vehiculo
+
+  # tarifaBase: number
+
+  + getMatricula(): number
+  + setEstado(e: EstadoVehiculo): void 
+  + getEstado(): EstadoVehiculo
+    
+  + calcularTarifa(r: Reserva): number
+}
+
+class Compacto extends Vehiculo {
+    tarifaBase: number = 30
+  - limiteKmPorDiaAlquiler: number = 100
+  - costoExtraKm: number = 0.15
+
+  + calcularTarifa(r: Reserva): number
+  // Distinta implementación del método calcularTarifa
+}
+class Sedan extends Vehiculo {
+    tarifaBase: number = 50
+
+  + calcularTarifa(r: Reserva): number
+  // Distinta implementación del método calcularTarifa
+}
+class Suv extends Vehiculo {
+    tarifaBase: number = 80
+
+  + calcularTarifa(r: Reserva): number
+  // Distinta implementación del método calcularTarifa
+}
+
+' Idea como el ejercicio de SUELDOS ... ???
+'class CalculadorTarifa {
+'  + calcularTarifa(v: Vehiculo): number
+'}
+
+class Cliente {
+
+  + crearReserva(v: Vehiculo, inicio: Date, fin: Date): Reserva
+
+}
+
+class Reserva {
+  - fechaInicio: Date
+  - fechaFin: Date
+  
+
+  + validarDisponibilidadVehiculo(): boolean
+}
+
+class GestionKilometraje {
+  - kilometrosRecorridos: number
+  - costoTotal: number
+  + calcularCosto(): number
+}
+
+'Relaciones
+' "Un Cliente puede tener cero, una o múltiples reservas"
+' Cliente 1 -- 0..* Reserva
+
+'// Un cliente puede crear una reserva para un vehículo específico, indicando fecha inicio y fin.
+
+note left of Compacto:calcularTarifa(r: Reserva): number
+
+  'Valores del Enunciado
+  const tarifaBase = 30
+  const limiteKmPorDiaAlquiler = 100;
+  const costoExtraKm = 0.15
+
+  'Valores para completar la lógica
+  de la reserva --> r.cantDias() = 7 
+  const kmRecorridosEnUnDia = 120
+
+  let cargoAdicional = 0;
+  if (kmRecorridosEnUnDia > limiteKmPorDiaAlquiler) {
+    cargoAdicional = costoExtraKm * (kmRecorridosEnUnDia - limiteKmPorDiaAlquiler);
+  }
+  return tarifaBase * r.cantDias() + cargoAdicional;
+  ' Con estos valores debería retornar --> 213
+  
+end note
+
+
+@enduml

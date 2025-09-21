@@ -1,0 +1,28 @@
+
+DRIVEHUB --> PLATAFORMA DE ALQUILER DE AUTOS
+Objetivo: Se necesita hacer un sistema para gestionar su flota de vehículos y las reservas de sus clientes.
+Además el sistema debe ser capaz de manejar diferentes tipos de vehículos y calcular los costos de alquiler de manera flexible.
+
+abstract (class) Vehiculo
+| 
+| Atributos
+|  - matricula: string
+|  - estado: EstadoVehiculo
+|
+|  # tarifaBase: number
+| 
+| Métodos
+|  + logicaTarifaria()
+|
+|--> (class) Compacto
+|--> (class) Sedan
+|--> (class) SUV
+|
+|
+
+(enum) EstadoVehiculo 
+|    Disponible
+|    En Alquiler
+|    En Mantenimiento
+|    Necesita Limpieza
+
