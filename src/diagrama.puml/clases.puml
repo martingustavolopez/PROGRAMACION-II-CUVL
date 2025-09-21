@@ -92,7 +92,7 @@ note left of Compacto:calcularTarifa(r: Reserva): number
   }
   return tarifaBase * r.cantDias() + cargoAdicional;
   ' Con estos valores debería retornar --> 213
-  
+
 end note
 
 

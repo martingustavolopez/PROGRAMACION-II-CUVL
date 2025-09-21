@@ -1,4 +1,4 @@
-export default enum ESTADO_VEHICULO {
+export enum ESTADO_VEHICULO {
   DISPONIBLE,
   EN_ALQUILER,
   EN_MANTENIMIENTO,
