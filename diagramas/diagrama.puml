@@ -1,0 +1,140 @@
+@startuml
+
+title DriveHub - Diagrama de clases
+
+' Enumeracion de estado vehiculo
+enum EstadoVehiculo {
+    DISPONIBLE
+    EN_ALQUILER
+    EN_MANTENIMIENTO
+    NECESITA_LIMPIEZA
+}
+
+abstract class Vehiculo {
+    # matricula: string
+    # estado: EstadoVehiculo
+    # kilometraje: number
+    
+
+
+    + getMatricula(): string
+    + setMatricula(matricula: string): void
+    + getEstado(): EstadoVehiculo
+    + setEstado(estado: EstadoVehiculo): void
+    + getKilometraje(): number
+    + setKilometraje(kilometraje: number): void
+    + getMantenimientos(): Mantenimiento[]
+    + agregarMantenimiento(mantenimiento: Mantenimiento): void
+    + estaDisponible(): boolean
+    + {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
+
+    
+}
+
+class Compacto {
+    - {static} TARIFA_BASE_DIA: number = 30
+    - {static} CARGO_KM: number = 0.15
+    - {static} KM_LIMITE_DIARIO: number = 100 
+
+    + calcularTarifa(dias: number, kmRecorridos: number): number             
+
+}
+
+class Sedan {
+    - {static} TARIFA_BASE_DIA: number = 50
+    - {static} CARGO_KM: number = 0.20
+
+    + calcularTarifa(dias: number, kmRecorridos: number): number
+
+}
+
+
+class SUV {
+    - {static} TARIFA_BASE_DIA: number = 80
+    - {static} CARGO_SEGURO_DIA: number = 15
+    - {static} CARGO_KM: number = 0.25
+    - {static} KM_LIMITE_TOTAL: number = 500
+
+    + calcularTarifa(dias: number, kmRecorridos: number): number
+
+}
+
+
+class Cliente {
+    - idCliente: number
+    - reservas: Reserva []
+
+    + getidcliente(): number
+    + setidcliente(idCliente: number): void
+    + getReservas(): Reserva[]
+    + agregarReserva(reserva: Reserva): void
+
+
+
+}
+
+class Reserva {
+    - cliente: Cliente
+    - vehiculo: Vehiculo
+    - fechaDeInicio: Date
+    - fechaDeFin: Date
+    - kilometrajeInicial: number
+    - kilometrajeFinal: number
+    - costoTotal: number
+
+    + getCliente(): Cliente
+    + setCliente(cliente: Cliente): void
+    + getVehiculo(): Vehiculo
+    + setVehiculo(vehiculo: Vehiculo): void
+    + getFechaInicio(): Date
+    + setFechaInicio(fecha: Date): void
+    + getFechaFin(): Date
+    + setFechaFin(fecha: Date): void
+    + getKilometrajeInicial(): number
+    + setKilometrajeInicial(km: number): void
+    + getKilometrajeFinal(): number
+    + setKilometrajeFinal(km: number): void
+    + getCostoTotal(): number
+    + calcularDias(): number
+    + calcularKilometrosRecorridos(): number
+    + calcularCostoTotal(): void
+
+    
+}
+
+class Mantenimiento {
+    - fecha: Date
+    - costo: number
+    
+
+    + getFecha(): Date
+    + setFecha(fecha: Date): void
+    + getCosto(): number
+    + setCosto(costo: number): void
+
+
+}
+
+class Plataforma {
+  - vehiculos: Vehiculo[]
+  - reservas: Reserva[]
+  - clientes: Cliente[]
+}
+
+
+
+' Relaciones de herencia
+Vehiculo <|-- Compacto
+Vehiculo <|-- Sedan
+Vehiculo <|-- SUV
+
+
+
+
+
+
+' Notas
+
+
+
+@enduml
