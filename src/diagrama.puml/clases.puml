@@ -1,0 +1,129 @@
+@startuml
+
+title DriveHub
+
+class Plataforma {
+  - vehiculos: Vehiculo[]
+  - clientes: Cliente[]
+  - reservas: Reserva[]
+
+  + agregarVehiculo(nuevoVehiculo: Vehiculo): void
+  + registrarCliente(nuevoCliente: Cliente): void
+
+  + buscarVehiculosDisponibles(fechaInicio: Date, fechaFin: Date): Vehiculo[]
+  + procesarDevolucion(reserva: Reserva, kilometrajeFinal: number): number
+  + programarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
+  + generarReporte(): void
+}
+' // Donde el string sea la matricula , flota de vehículos
+' // las reservas de sus clientes.
+
+enum ESTADO_VEHICULO {
+  DISPONIBLE,
+  EN_ALQUILER,
+  EN_MANTENIMIENTO,
+  NECESITA_LIMPIEZA,
+}
+
+class ESTADO_RESERVA {
+  PENDIENTE,
+  CONFIRMADA,
+  EN_CURSO,
+  FINALIZADA,
+  CANCELADA,
+}
+
+abstract class Vehiculo {
+  - matricula: string
+  - marca: string
+  - modelo: string
+  - anio: number
+  - estado: EstadoVehiculo
+  - kilometrajeActual: number
+
+  + {abstract} calcularTarifa(dias: number, kilometrosRecorridos: number): number
+
+  + getEstadoVehiculo(): ESTADO_VEHICULO
+  + cambiarEstado(nuevoEstado: EstadoVehiculo): void
+  + estaDisponible(fechaInicio: Date, fechaFin: Date): boolean
+
+  - historialMantenimiento: Mantenimiento[]
+  + registrarKilometraje(kilometraje: number): void
+  + agregarMantenimiento(mantenimiento: Mantenimiento): void
+}
+'Por ejemplo el estaDisponible(...): boolean ; es el quiereSubir de la clase Empleado
+
+class Compacto {
+  - TARIFA_BASE: number = 30
+  - CARGO_KM: number = 0.15
+  - KM_LIMITE_DIARIO: number = 100
+
+  --getters y setters--  
+  + calcularTarifa(dias: number, kilometrosRecorridos: number): number
+}
+
+class Sedan {
+  - TARIFA_BASE: number = 50
+  - CARGO_KM: number = 0.20
+
+  --getters y setters--    
+  + calcularTarifa(dias: number, kilometrosRecorridos: number): number
+}
+
+class Suv {
+  - TARIFA_BASE: number = 80
+  - CARGO_SEGURO_DIA: number = 15
+  - CARGO_KM: number = 0.25
+  - KM_LIMITE_TOTAL: number = 500
+
+  --getters y setters--  
+  + calcularTarifa(dias: number, kilometrosRecorridos: number): number
+}
+
+class Cliente {
+  - idCliente: number
+  - nombre: string
+  - apellido: string
+
+  + crearReserva(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): Reserva
+  
+  + getReservas(): Reserva[]
+}
+
+class Reserva {
+  - idReserva: number
+  - fechaInicio: Date
+  - fechaFin: Date
+
+  - kilometrajeInicial: number
+  - kilometrajeFinal: number
+  
+  --getters y setters--    
+  + validarDisponibilidadVehiculo(): boolean
+
+  + confirmarReserva(): void
+  + iniciarAlquiler(kilometrajeInicial: number): void
+  + finalizarAlquiler(kilometrajeFinal: number): void
+  + calcularCostoTotal(): number
+  + getDiasAlquiler(): number
+  + getKilometrosRecorridos(): number
+}
+' Y el validarDisponibilidadVehiculo() usa el vehiculo.estaDisponible(...) dadas las fechas que se pasan en la reserva.
+
+class Mantenimiento {
+  - fecha: Date
+  - costo: number
+  + registrarMantenimineto(): void
+}
+
+'Relaciones
+' "Un Cliente puede tener cero, una o múltiples reservas"
+' Cliente 1 -- 0..* Reserva
+
+Vehiculo <|-- Compacto
+Vehiculo <|-- Sedan
+Vehiculo <|-- Suv
+
+'// Un cliente puede crear una reserva para un vehículo específico, indicando fecha inicio y fin.
+
+@enduml
