@@ -9,7 +9,11 @@ class Plataforma {
 
   + agregarVehiculo(nuevoVehiculo: Vehiculo): void
   + registrarCliente(nuevoCliente: Cliente): void
-  + devolucionVehiculo(reserva: Reserva, kilometrajeFinal: number): number
+
+  + buscarVehiculosDisponibles(fechaInicio: Date, fechaFin: Date): Vehiculo[]
+  + procesarDevolucion(reserva: Reserva, kilometrajeFinal: number): number
+  + programarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
+  + generarReporte(): void
 }
 ' // Donde el string sea la matricula , flota de vehículos
 ' // las reservas de sus clientes.
@@ -21,10 +25,19 @@ enum ESTADO_VEHICULO {
   NECESITA_LIMPIEZA,
 }
 
+class ESTADO_RESERVA {
+  PENDIENTE,
+  CONFIRMADA,
+  EN_CURSO,
+  FINALIZADA,
+  CANCELADA,
+}
+
 abstract class Vehiculo {
   - matricula: string
   - marca: string
   - modelo: string
+  - anio: number
   - estado: EstadoVehiculo
   - kilometrajeActual: number
 
@@ -33,6 +46,10 @@ abstract class Vehiculo {
   + getEstadoVehiculo(): ESTADO_VEHICULO
   + cambiarEstado(nuevoEstado: EstadoVehiculo): void
   + estaDisponible(fechaInicio: Date, fechaFin: Date): boolean
+
+  - historialMantenimiento: Mantenimiento[]
+  + registrarKilometraje(kilometraje: number): void
+  + agregarMantenimiento(mantenimiento: Mantenimiento): void
 }
 'Por ejemplo el estaDisponible(...): boolean ; es el quiereSubir de la clase Empleado
 
@@ -69,7 +86,8 @@ class Cliente {
   - apellido: string
 
   + crearReserva(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): Reserva
-  --getters y setters--    
+  
+  + getReservas(): Reserva[]
 }
 
 class Reserva {
@@ -82,6 +100,13 @@ class Reserva {
   
   --getters y setters--    
   + validarDisponibilidadVehiculo(): boolean
+
+  + confirmarReserva(): void
+  + iniciarAlquiler(kilometrajeInicial: number): void
+  + finalizarAlquiler(kilometrajeFinal: number): void
+  + calcularCostoTotal(): number
+  + getDiasAlquiler(): number
+  + getKilometrosRecorridos(): number
 }
 ' Y el validarDisponibilidadVehiculo() usa el vehiculo.estaDisponible(...) dadas las fechas que se pasan en la reserva.
 
