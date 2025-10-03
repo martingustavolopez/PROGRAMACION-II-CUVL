@@ -1,0 +1,138 @@
+@startuml
+
+title DriveHub - Diagrama de clases
+
+' Enumeracion de estado vehiculo
+enum EstadoVehiculo {
+    DISPONIBLE
+    EN_ALQUILER
+    EN_MANTENIMIENTO
+    NECESITA_LIMPIEZA
+}
+
+abstract class Vehiculo {
+    - matricula: string
+    - estado: EstadoVehiculo
+    - kilometraje: number
+    
+    -- getters y setters --
+
+    + getMantenimientos(): Mantenimiento[]
+    + cambiarEstado(nuevoEstado: EstadoVehiculo): void
+    + agregarMantenimiento(mantenimiento: Mantenimiento): void
+    + estaDisponible(fechaInicio: Date, fechaFin: Date): boolean
+    # {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
+    
+}
+
+class Compacto extends Vehiculo {
+    - {static} TARIFA_BASE_DIA: number = 30
+    - {static} CARGO_KM: number = 0.15
+    - {static} KM_LIMITE_DIARIO: number = 100 
+
+    + calcularTarifa(dias: number, kmRecorridos: number): number        
+}
+
+class Sedan extends Vehiculo {
+    - {static} TARIFA_BASE_DIA: number = 50
+    - {static} CARGO_KM: number = 0.20
+
+    + calcularTarifa(dias: number, kmRecorridos: number): number
+}
+
+
+class SUV extends Vehiculo {
+    - {static} TARIFA_BASE_DIA: number = 80
+    - {static} CARGO_SEGURO_DIA: number = 15
+    - {static} CARGO_KM: number = 0.25
+    - {static} KM_LIMITE_TOTAL: number = 500
+
+    + calcularTarifa(dias: number, kmRecorridos: number): number
+}
+
+
+class Cliente {
+    - idCliente: number
+    - nombre: string
+    - apellido: string
+    - reservas: Reserva []
+
+    -- getters y setters --
+
+    + getReservas(): Reserva[]
+    + agregarReserva(reserva: Reserva): void
+
+
+
+}
+
+class Reserva {
+    - cliente: Cliente
+    - vehiculo: Vehiculo
+    - fechaDeInicio: Date
+    - fechaDeFin: Date
+    - kilometrajeFinal: number
+    - costoTotal: number
+
+    -- getters y setters --
+
+    + calcularDias(): number
+'    + calcularKilometrosRecorridos(): number
+    + calcularCostoTotal(): void
+
+
+
+}
+
+class Mantenimiento {
+    - fecha: Date
+    - costo: number
+    
+    -- getters y setters --
+
+
+}
+
+class Plataforma {
+    - vehiculos: Vehiculo[]
+    - reservas: Reserva[]
+    - clientes: Cliente[]
+
+    -- getters y setters --
+
+    + agregarVehiculo(nuevoVehiculo: Vehiculo): void
+    + registrarCliente(nuevoCliente: Cliente): void
+
+    + registrarCobro(): number
+    + registrarKmsRecorridos(): number
+    + entregarVehiculo (): // cambie el estado a disponible
+    + validarDisponibilidad(v: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean
+    + programarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
+    + procesarDevolucion(reserva: Reserva, kilometrajeFinal: number): number
+
+}
+
+
+
+' Relaciones de herencia
+Vehiculo <|-- Compacto
+Vehiculo <|-- Sedan
+Vehiculo <|-- SUV
+
+' Relaciones de composición
+Vehiculo *-- Mantenimiento
+Cliente *-- Reserva
+
+
+
+
+
+
+
+
+
+' Notas
+
+
+
+@enduml
