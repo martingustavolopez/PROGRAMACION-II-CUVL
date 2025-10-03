@@ -11,61 +11,54 @@ enum EstadoVehiculo {
 }
 
 abstract class Vehiculo {
-    # matricula: string
-    # estado: EstadoVehiculo
-    # kilometraje: number
+    - matricula: string
+    - estado: EstadoVehiculo
+    - kilometraje: number
     
+    -- getters y setters --
 
-
-    + getMatricula(): string
-    + setMatricula(matricula: string): void
-    + getEstado(): EstadoVehiculo
-    + setEstado(estado: EstadoVehiculo): void
-    + getKilometraje(): number
-    + setKilometraje(kilometraje: number): void
     + getMantenimientos(): Mantenimiento[]
+    + cambiarEstado(nuevoEstado: EstadoVehiculo): void
     + agregarMantenimiento(mantenimiento: Mantenimiento): void
-    + estaDisponible(): boolean
-    + {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
-
+    + estaDisponible(fechaInicio: Date, fechaFin: Date): boolean
+    # {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
     
 }
 
-class Compacto {
+class Compacto extends Vehiculo {
     - {static} TARIFA_BASE_DIA: number = 30
     - {static} CARGO_KM: number = 0.15
     - {static} KM_LIMITE_DIARIO: number = 100 
 
-    + calcularTarifa(dias: number, kmRecorridos: number): number             
-
+    + calcularTarifa(dias: number, kmRecorridos: number): number        
 }
 
-class Sedan {
+class Sedan extends Vehiculo {
     - {static} TARIFA_BASE_DIA: number = 50
     - {static} CARGO_KM: number = 0.20
 
     + calcularTarifa(dias: number, kmRecorridos: number): number
-
 }
 
 
-class SUV {
+class SUV extends Vehiculo {
     - {static} TARIFA_BASE_DIA: number = 80
     - {static} CARGO_SEGURO_DIA: number = 15
     - {static} CARGO_KM: number = 0.25
     - {static} KM_LIMITE_TOTAL: number = 500
 
     + calcularTarifa(dias: number, kmRecorridos: number): number
-
 }
 
 
 class Cliente {
     - idCliente: number
+    - nombre: string
+    - apellido: string
     - reservas: Reserva []
 
-    + getidcliente(): number
-    + setidcliente(idCliente: number): void
+    -- getters y setters --
+
     + getReservas(): Reserva[]
     + agregarReserva(reserva: Reserva): void
 
@@ -78,47 +71,45 @@ class Reserva {
     - vehiculo: Vehiculo
     - fechaDeInicio: Date
     - fechaDeFin: Date
-    - kilometrajeInicial: number
     - kilometrajeFinal: number
     - costoTotal: number
 
-    + getCliente(): Cliente
-    + setCliente(cliente: Cliente): void
-    + getVehiculo(): Vehiculo
-    + setVehiculo(vehiculo: Vehiculo): void
-    + getFechaInicio(): Date
-    + setFechaInicio(fecha: Date): void
-    + getFechaFin(): Date
-    + setFechaFin(fecha: Date): void
-    + getKilometrajeInicial(): number
-    + setKilometrajeInicial(km: number): void
-    + getKilometrajeFinal(): number
-    + setKilometrajeFinal(km: number): void
-    + getCostoTotal(): number
+    -- getters y setters --
+
     + calcularDias(): number
-    + calcularKilometrosRecorridos(): number
+'    + calcularKilometrosRecorridos(): number
     + calcularCostoTotal(): void
 
-    
+
+
 }
 
 class Mantenimiento {
     - fecha: Date
     - costo: number
     
-
-    + getFecha(): Date
-    + setFecha(fecha: Date): void
-    + getCosto(): number
-    + setCosto(costo: number): void
+    -- getters y setters --
 
 
 }
 
 class Plataforma {
-  - vehiculos: Vehiculo[]
-  - reservas: Reserva[]
-  - clientes: Cliente[]
+    - vehiculos: Vehiculo[]
+    - reservas: Reserva[]
+    - clientes: Cliente[]
+
+    -- getters y setters --
+
+    + agregarVehiculo(nuevoVehiculo: Vehiculo): void
+    + registrarCliente(nuevoCliente: Cliente): void
+
+    + registrarCobro(): number
+    + registrarKmsRecorridos(): number
+    + entregarVehiculo (): // cambie el estado a disponible
+    + validarDisponibilidad(v: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean
+    + programarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
+    + procesarDevolucion(reserva: Reserva, kilometrajeFinal: number): number
+
 }
 
 
@@ -127,6 +118,13 @@ class Plataforma {
 Vehiculo <|-- Compacto
 Vehiculo <|-- Sedan
 Vehiculo <|-- SUV
+
+' Relaciones de composición
+Vehiculo *-- Mantenimiento
+Cliente *-- Reserva
+
+
+
 
 
 
