@@ -9,11 +9,10 @@ class Plataforma {
 
   + agregarVehiculo(nuevoVehiculo: Vehiculo): void
   + registrarCliente(nuevoCliente: Cliente): void
-
+  + devolucionVehiculo(reserva: Reserva, kilometrajeFinal: number): number
 }
 ' // Donde el string sea la matricula , flota de vehículos
 ' // las reservas de sus clientes.
-
 
 enum ESTADO_VEHICULO {
   DISPONIBLE,
@@ -33,9 +32,9 @@ abstract class Vehiculo {
 
   + getEstadoVehiculo(): ESTADO_VEHICULO
   + cambiarEstado(nuevoEstado: EstadoVehiculo): void
-  + estaDisponible(): boolean
-
+  + estaDisponible(fechaInicio: Date, fechaFin: Date): boolean
 }
+'Por ejemplo el estaDisponible(...): boolean ; es el quiereSubir de la clase Empleado
 
 class Compacto {
   - TARIFA_BASE: number = 30
@@ -69,23 +68,27 @@ class Cliente {
   - nombre: string
   - apellido: string
 
-  + realizarReserva(r: Reserva): void
+  + crearReserva(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): Reserva
   --getters y setters--    
 }
 
 class Reserva {
+  - idReserva: number
   - fechaInicio: Date
   - fechaFin: Date
-  - vehiculoReservado: Vehiculo
+
+  - kilometrajeInicial: number
+  - kilometrajeFinal: number
   
   --getters y setters--    
   + validarDisponibilidadVehiculo(): boolean
 }
+' Y el validarDisponibilidadVehiculo() usa el vehiculo.estaDisponible(...) dadas las fechas que se pasan en la reserva.
 
-class GestionKilometraje {
-  - kilometrosRecorridos: number
-  - costoTotal: number
-  + calcularCosto(): number
+class Mantenimiento {
+  - fecha: Date
+  - costo: number
+  + registrarMantenimineto(): void
 }
 
 'Relaciones
