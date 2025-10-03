@@ -3,64 +3,82 @@
 title DriveHub
 
 class Plataforma {
-  - vehiculos: Map<string, Vehiculo> // Donde el string sea la matricula
+  - vehiculos: Vehiculo[]
+  - clientes: Cliente[]
   - reservas: Reserva[]
-}
 
-enum EstadoVehiculo {
-  Disponible,
-  En Alquiler,
-  En Mantenimiento,
-  Necesita Limpieza,
+  + agregarVehiculo(nuevoVehiculo: Vehiculo): void
+  + registrarCliente(nuevoCliente: Cliente): void
+
+}
+' // Donde el string sea la matricula , flota de vehículos
+' // las reservas de sus clientes.
+
+
+enum ESTADO_VEHICULO {
+  DISPONIBLE,
+  EN_ALQUILER,
+  EN_MANTENIMIENTO,
+  NECESITA_LIMPIEZA,
 }
 
 abstract class Vehiculo {
   - matricula: string
+  - marca: string
+  - modelo: string
   - estado: EstadoVehiculo
-  - kilometrajeTotal: number
+  - kilometrajeActual: number
 
-  # tarifaBase: number
+  + {abstract} calcularTarifa(dias: number, kilometrosRecorridos: number): number
 
-  -- getters y setters --    
-  + calcularTarifa(r: Reserva): number
+  + getEstadoVehiculo(): ESTADO_VEHICULO
+  + cambiarEstado(nuevoEstado: EstadoVehiculo): void
+  + estaDisponible(): boolean
+
 }
 
-class Compacto extends Vehiculo {
-    tarifaBase: number = 30
-  - limiteKmPorDiaAlquiler: number = 100
-  - costoExtraKm: number = 0.15
+class Compacto {
+  - TARIFA_BASE: number = 30
+  - CARGO_KM: number = 0.15
+  - KM_LIMITE_DIARIO: number = 100
 
-  -- getters y setters --    
-  + calcularTarifa(r: Reserva): number
-  // Distinta implementación del método calcularTarifa
+  --getters y setters--  
+  + calcularTarifa(dias: number, kilometrosRecorridos: number): number
 }
-class Sedan extends Vehiculo {
-    tarifaBase: number = 50
 
-  -- getters y setters --    
-  + calcularTarifa(r: Reserva): number
-  // Distinta implementación del método calcularTarifa
+class Sedan {
+  - TARIFA_BASE: number = 50
+  - CARGO_KM: number = 0.20
+
+  --getters y setters--    
+  + calcularTarifa(dias: number, kilometrosRecorridos: number): number
 }
-class Suv extends Vehiculo {
-    tarifaBase: number = 80
 
-  -- getters y setters --    
-  + calcularTarifa(r: Reserva): number
-  // Distinta implementación del método calcularTarifa
+class Suv {
+  - TARIFA_BASE: number = 80
+  - CARGO_SEGURO_DIA: number = 15
+  - CARGO_KM: number = 0.25
+  - KM_LIMITE_TOTAL: number = 500
+
+  --getters y setters--  
+  + calcularTarifa(dias: number, kilometrosRecorridos: number): number
 }
 
 class Cliente {
   - idCliente: number
+  - nombre: string
+  - apellido: string
 
-  + crearReserva(v: Vehiculo, inicio: Date, fin: Date): Reserva
-  -- getters y setters --    
+  + realizarReserva(r: Reserva): void
+  --getters y setters--    
 }
 
 class Reserva {
   - fechaInicio: Date
   - fechaFin: Date
+  - vehiculoReservado: Vehiculo
   
-  -- getters y setters --    
+  --getters y setters--    
   + validarDisponibilidadVehiculo(): boolean
 }
 
@@ -74,27 +92,10 @@ class GestionKilometraje {
 ' "Un Cliente puede tener cero, una o múltiples reservas"
 ' Cliente 1 -- 0..* Reserva
 
+Vehiculo <|-- Compacto
+Vehiculo <|-- Sedan
+Vehiculo <|-- Suv
+
 '// Un cliente puede crear una reserva para un vehículo específico, indicando fecha inicio y fin.
-
-note left of Compacto:calcularTarifa(r: Reserva): number
-
-  'Valores del Enunciado
-  const tarifaBase = 30
-  const limiteKmPorDiaAlquiler = 100;
-  const costoExtraKm = 0.15
-
-  'Valores para completar la lógica
-  de la reserva --> r.cantDias() = 7 
-  const kmRecorridosEnUnDia = 120
-
-  let cargoAdicional = 0;
-  if (kmRecorridosEnUnDia > limiteKmPorDiaAlquiler) {
-    cargoAdicional = costoExtraKm * (kmRecorridosEnUnDia - limiteKmPorDiaAlquiler);
-  }
-  return tarifaBase * r.cantDias() + cargoAdicional;
-  ' Con estos valores debería retornar --> 213
-
-end note
-
 
 @enduml
