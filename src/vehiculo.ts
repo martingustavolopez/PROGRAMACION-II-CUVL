@@ -1,4 +1,5 @@
 import { EstadoVehiculo } from "./estado_vehiculo";
+import Mantenimiento from "./mantenimiento";
 
 export default abstract class Vehiculo {
 
@@ -31,11 +32,6 @@ export default abstract class Vehiculo {
         return this.kilometraje;
     }
 
-    // Cambiado por el registrarKilometraje(...) con una condición por el valor que se puede pasar por param.
-    // public setKilometraje (kilometraje: number): void {
-    //     this.kilometraje = kilometraje;
-    // }
-
     public getEstado(): EstadoVehiculo {
         return this.estado;
     }
@@ -46,8 +42,8 @@ export default abstract class Vehiculo {
 
     /**
      * Verifica si el vehículo está disponible para las fechas solicitadas
-     * @param fechaInicio - Fecha de inicio del período
-     * @param fechaFin - Fecha de fin del período
+     * @param fechaInicio
+     * @param fechaFin
      * @returns true si está disponible
      */
     public estaDisponible(fechaInicio: Date, fechaFin: Date): boolean {
