@@ -26,7 +26,7 @@ abstract class Vehiculo {
     
 }
 
-class Compacto extends Vehiculo {
+class Compacto Vehiculo {
     - {static} TARIFA_BASE_DIA: number = 30
     - {static} CARGO_KM: number = 0.15
     - {static} KM_LIMITE_DIARIO: number = 100 
@@ -34,7 +34,7 @@ class Compacto extends Vehiculo {
     + calcularTarifa(dias: number, kmRecorridos: number): number        
 }
 
-class Sedan extends Vehiculo {
+class Sedan Vehiculo {
     - {static} TARIFA_BASE_DIA: number = 50
     - {static} CARGO_KM: number = 0.20
 
@@ -42,7 +42,7 @@ class Sedan extends Vehiculo {
 }
 
 
-class SUV extends Vehiculo {
+class SUV Vehiculo {
     - {static} TARIFA_BASE_DIA: number = 80
     - {static} CARGO_SEGURO_DIA: number = 15
     - {static} CARGO_KM: number = 0.25
