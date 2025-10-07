@@ -76,7 +76,7 @@ export default abstract class Vehiculo {
     // Mantenimiento de Vehículos: El sistema debe poder registrar el costo y la fecha de los mantenimientos de cada vehículo.
 
     /**
-     * Agrega un mantenimiento al historial del vehículo.
+     * Agrega un mantenimiento al vehículo.
      * @param mantenimiento 
      */
     public agregarMantenimiento(mantenimiento: Mantenimiento): void {
@@ -84,10 +84,6 @@ export default abstract class Vehiculo {
         this.cambiarEstado(EstadoVehiculo.EN_MANTENIMIENTO);
     }
 
-    /**
-     * Obtiene el historial completo de mantenimientos.
-     * @returns 
-     */
     public getMantenimientos(): Mantenimiento[] {
         return [...this.mantenimientos];
     }
@@ -101,18 +97,4 @@ export default abstract class Vehiculo {
             (total, mantenimiento) => total + mantenimiento.getCosto(), 0
         );
     }
-    // Método .reduce() --> ejecuta una función reductora sobre c/u de los elem del array
-    // Devuelve como resultado un único valor.
-
-    /*
-    Uso del método .reduce()
-        const array1 = [1, 2, 3, 4];
-        // 0 + 1 + 2 + 3 + 4
-        const valorInicial = 0;
-        const sumatoria = array1.reduce(
-          (acumulador, valorActual) => acumulador + valorActual,
-          valorInicial,
-        );
-        return sumatoria; // => valor esperado = 10
-    */
 }
