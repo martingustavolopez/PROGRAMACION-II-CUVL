@@ -1,16 +1,20 @@
 import { EstadoVehiculo } from "./estado_vehiculo";
 
 export default abstract class Vehiculo {
+
     protected matricula: string;
     protected estado: EstadoVehiculo;
     protected kilometraje: number;
-    
+
+    private mantenimiento: Mantenimiento[] = []
+   
     constructor()
     constructor(matricula: string, kilometraje: number )
     constructor(matricula?: string, kilometraje?: number) {
         this.matricula = matricula ?? "";
         this.kilometraje = kilometraje ?? 0;
         this.estado = EstadoVehiculo.DISPONIBLE
+        this.mantenimiento = undefined as unknown as Mantenimiento;
     }
 
     public getMatricula(): string{
@@ -25,26 +29,86 @@ export default abstract class Vehiculo {
         return this.kilometraje;
     }
 
-    public setKilometraje (kilometraje: number): void {
-        this.kilometraje = kilometraje;
-    }
+    // Cambiado por el registrarKilometraje(...) con una condición por el valor que se puede pasar por param.
+    // public setKilometraje (kilometraje: number): void {
+    //     this.kilometraje = kilometraje;
+    // }
 
     public getEstado(): EstadoVehiculo {
         return this.estado;
     }
 
-    public setEstado (estado: EstadoVehiculo): void {
+    public cambiarEstado (estado: EstadoVehiculo): void {
         this.estado = estado;
     }
 
-    // Revisar si valida la disponibilidad del auto o la disponibilidad en las fechas (Reserva).
-    public estaDisponible(): boolean {
+    /**
+     * Verifica si el vehículo está disponible para las fechas solicitadas
+     * @param fechaInicio - Fecha de inicio del período
+     * @param fechaFin - Fecha de fin del período
+     * @returns true si está disponible
+     */
+    public estaDisponible(fechaInicio: Date, fechaFin: Date): boolean {
         return this.estado === EstadoVehiculo.DISPONIBLE;
     }
 
-
+    /**
+     * Método abstracto que devuelve un número, calculando la tarifa dependiendo los dias y los km recorridos.
+     * La implementación del mismo para cada subclase es distinta.
+     * @param dias 
+     * @param kmRecorridos 
+     */
     public abstract calcularTarifa(dias: number, kmRecorridos: number): number;
 
+    /**
+     * Método para actualizar el kilometraje del Vehiculo  
+     * @param km teniendo en cuenta que el parametro recibido (km) no puede ser menor al km actual.
+     */
+    public registrarKilometraje(km: number): void {
+        if (km < this.kilometraje) {
+            throw new Error("El kilometraje no puede retroceder.");
+        }
+        this.kilometraje = km;
+    }
 
+    /**
+     * Agrega un mantenimiento al historial del vehículo.
+     * @param mantenimiento 
+     */
+    public agregarMantenimiento(mantenimiento: Mantenimiento): void {
+        this.mantenimiento.push(mantenimiento)
+        this.cambiarEstado(EstadoVehiculo.EN_MANTENIMIENTO);
+    }
 
+    /**
+     * Obtiene el historial completo de mantenimientos.
+     * @returns 
+     */
+    public getMantenimientos(): Mantenimiento[] {
+        return [...this.mantenimiento];
+    }
+
+    /**
+     * Costo total de todos los mantenimientos realizados.
+     * @returns suma de los costos de mantenimiento.
+     */
+    public obtenerCostoTotalMantenimientos(): number {
+        return this.mantenimiento.reduce(
+            (total, mantenimiento) => total + mantenimiento.getCosto(), 0
+        );
+    }
+    // Método .reduce() --> ejecuta una función reductora sobre c/u de los elem del array
+    // Devuelve como resultado un único valor.
+
+    /*
+    Uso del método .reduce()
+        const array1 = [1, 2, 3, 4];
+        // 0 + 1 + 2 + 3 + 4
+        const valorInicial = 0;
+        const sumatoria = array1.reduce(
+          (acumulador, valorActual) => acumulador + valorActual,
+          valorInicial,
+        );
+        return sumatoria; // => valor esperado = 10
+    */
 }

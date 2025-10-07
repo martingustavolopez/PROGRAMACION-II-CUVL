@@ -13,7 +13,28 @@ export default class Suv extends Vehiculo {
         super(matricula as string, kilometraje as number);
     }
 
+    /**
+     * Getter de la Tarifa Base, por si se necesita mostrar fuera de esta clase.
+     * @returns 
+     */
+    public static getTarifaBase(): number {
+        return Suv.TARIFA_BASE_DIA;
+    }
+
+    /**
+     * Implementación del calculo de tarifa para SUV
+     * @param dias 
+     * @param kmRecorridos 
+     * @returns 
+     */
     public calcularTarifa(dias: number, kmRecorridos: number): number {
+        if (dias <= 0) {
+            throw new Error("Los días deben ser mayor a 0.");
+        }
+        if (kmRecorridos < 0) {
+            throw new Error("Los kilometros recorridos no pueden ser negativos.");
+        }
+
         let costo = Suv.TARIFA_BASE_DIA * dias;
         const seguro = Suv.CARGO_SEGURO_DIA * dias;
         costo += seguro;

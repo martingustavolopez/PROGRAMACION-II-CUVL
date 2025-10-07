@@ -3,20 +3,23 @@
 title DriveHub
 
 class Plataforma {
-  - vehiculos: Vehiculo[]
-  - clientes: Cliente[]
-  - reservas: Reserva[]
+    - vehiculos: Vehiculo[]
+    - reservas: Reserva[]
+    - clientes: Cliente[]
 
-  + agregarVehiculo(nuevoVehiculo: Vehiculo): void
-  + registrarCliente(nuevoCliente: Cliente): void
+    -- getters y setters --
 
-  + buscarVehiculosDisponibles(fechaInicio: Date, fechaFin: Date): Vehiculo[]
-  + procesarDevolucion(reserva: Reserva, kilometrajeFinal: number): number
-  + programarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
-  + generarReporte(): void
+    + agregarVehiculo(nuevoVehiculo: Vehiculo): void
+    + registrarCliente(nuevoCliente: Cliente): void
+
+    + registrarCobro(): number
+    + registrarKmsRecorridos(): number
+    + entregarVehiculo (): // cambie el estado a disponible
+    + validarDisponibilidad(v: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean
+    + programarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
+    + procesarDevolucion(reserva: Reserva, kilometrajeFinal: number): number
+
 }
-' // Donde el string sea la matricula , flota de vehículos
-' // las reservas de sus clientes.
 
 enum ESTADO_VEHICULO {
   DISPONIBLE,
@@ -25,13 +28,13 @@ enum ESTADO_VEHICULO {
   NECESITA_LIMPIEZA,
 }
 
-class ESTADO_RESERVA {
-  PENDIENTE,
-  CONFIRMADA,
-  EN_CURSO,
-  FINALIZADA,
-  CANCELADA,
-}
+'class ESTADO_RESERVA {
+'  PENDIENTE,
+'  CONFIRMADA,
+'  EN_CURSO,
+'  FINALIZADA,
+'  CANCELADA,
+'}
 
 abstract class Vehiculo {
   - matricula: string
@@ -116,14 +119,69 @@ class Mantenimiento {
   + registrarMantenimineto(): void
 }
 
-'Relaciones
-' "Un Cliente puede tener cero, una o múltiples reservas"
-' Cliente 1 -- 0..* Reserva
+' ============================================
+' RELACIONES DE HERENCIA (Generalización)
+' ============================================
+Vehiculo <|-- Compacto : hereda
+Vehiculo <|-- Sedan : hereda
+Vehiculo <|-- SUV : hereda
 
-Vehiculo <|-- Compacto
-Vehiculo <|-- Sedan
-Vehiculo <|-- Suv
+' ============================================
+' RELACIONES DE COMPOSICIÓN
+' ============================================
+' Cliente compone Reservas (si se elimina el cliente, se eliminan sus reservas)
+Cliente "1" *-- "0..*" Reserva : tiene >
 
-'// Un cliente puede crear una reserva para un vehículo específico, indicando fecha inicio y fin.
+' Vehiculo compone Mantenimientos (si se elimina el vehículo, se eliminan sus mantenimientos)
+Vehiculo "1" *-- "0..*" Mantenimiento : tiene >
+
+' ============================================
+' RELACIONES DE ASOCIACIÓN
+' ============================================
+' Reserva asocia con Vehiculo (la reserva necesita saber qué vehículo)
+Reserva "0..*" --> "1" Vehiculo : reserva >
+
+' Reserva asocia con Cliente (la reserva necesita saber quién la hizo)
+Reserva "0..*" --> "1" Cliente : realizada por >
+
+' ============================================
+' RELACIONES DE AGREGACIÓN
+' ============================================
+' Plataforma agrega Vehiculos (los vehículos pueden existir independientemente)
+Plataforma "1" o-- "0..*" Vehiculo : gestiona >
+
+' Plataforma agrega Clientes (los clientes pueden existir independientemente)
+Plataforma "1" o-- "0..*" Cliente : gestiona >
+
+' Plataforma agrega Reservas (las reservas pueden existir independientemente)
+Plataforma "1" o-- "0..*" Reserva : gestiona >
+
+' ============================================
+' RELACIONES DE DEPENDENCIA
+' ============================================
+' Vehiculo depende de EstadoVehiculo (usa el enum)
+Vehiculo ..> EstadoVehiculo : <<usa>>
+
+' Plataforma depende de Mantenimiento (método programarMantenimiento)
+Plataforma ..> Mantenimiento : <<usa>>
+
+note right of Vehiculo
+  **Clase abstracta**
+  Define el contrato para
+  calcularTarifa() que cada
+  tipo de vehículo implementa
+end note
+
+note bottom of Plataforma
+  **Fachada del Sistema**
+  Coordina todas las operaciones
+  y gestiona las entidades principales
+end note
+
+note left of Reserva
+  **Clase de asociación**
+  Conecta Cliente con Vehículo
+  y gestiona el alquiler
+end note
 
 @enduml
