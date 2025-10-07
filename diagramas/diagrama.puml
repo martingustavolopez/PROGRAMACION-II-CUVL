@@ -22,6 +22,7 @@ abstract class Vehiculo {
     + agregarMantenimiento(mantenimiento: Mantenimiento): void
     + estaDisponible(fechaInicio: Date, fechaFin: Date): boolean
     # {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
+    - historialMantenimiento: Mantenimiento[]
     
 }
 
@@ -60,13 +61,14 @@ class Cliente {
     -- getters y setters --
 
     + getReservas(): Reserva[]
-    + agregarReserva(reserva: Reserva): void
-
+    + agregarReserva(reserva: Reserva): void //opc.1
+    + crearReserva(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): Reserva //opc.2
 
 
 }
 
 class Reserva {
+    - idReserva: number
     - cliente: Cliente
     - vehiculo: Vehiculo
     - fechaDeInicio: Date
@@ -77,8 +79,10 @@ class Reserva {
     -- getters y setters --
 
     + calcularDias(): number
-'    + calcularKilometrosRecorridos(): number
+    + calcularKilometrosRecorridos(): number
     + calcularCostoTotal(): void
+    + iniciarAlquiler(kilometrajeInicial: number): void
+    + finalizarAlquiler(kilometrajeFinal: number): void
 
 
 
@@ -90,6 +94,7 @@ class Mantenimiento {
     
     -- getters y setters --
 
+    + registrarMantenimineto(): void
 
 }
 
@@ -105,8 +110,8 @@ class Plataforma {
 
     + registrarCobro(): number
     + registrarKmsRecorridos(): number
-    + entregarVehiculo (): // cambie el estado a disponible
-    + validarDisponibilidad(v: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean
+    + entregarVehiculo ():
+    + validarDisponibilidad(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean
     + programarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
     + procesarDevolucion(reserva: Reserva, kilometrajeFinal: number): number
 
@@ -122,6 +127,14 @@ Vehiculo <|-- SUV
 ' Relaciones de composición
 Vehiculo *-- Mantenimiento
 Cliente *-- Reserva
+Plataforma *-- Vehiculo
+Plataforma *-- Cliente
+Plataforma *-- Reserva
+
+' Relaciones de asociación
+
+' Relaciones de uso
+
 
 
 
