@@ -89,8 +89,6 @@ class Mantenimiento {
     - costo: number
     
     -- getters y setters --
-
-
 }
 
 class Plataforma {
@@ -112,16 +110,13 @@ class Plataforma {
 
 }
 
-
-
-' Relaciones de herencia
-Vehiculo <|-- Compacto
-Vehiculo <|-- Sedan
-Vehiculo <|-- SUV
-
 ' Relaciones de composición
-Vehiculo *-- Mantenimiento
-Cliente *-- Reserva
+Vehiculo *-r- Mantenimiento
+Cliente *-d- Reserva
+
+Plataforma *-- Vehiculo
+Plataforma *-- Reserva
+Plataforma *-l- Cliente
 
 
 

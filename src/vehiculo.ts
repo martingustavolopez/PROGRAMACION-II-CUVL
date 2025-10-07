@@ -2,11 +2,13 @@ import { EstadoVehiculo } from "./estado_vehiculo";
 
 export default abstract class Vehiculo {
 
-    protected matricula: string;
-    protected estado: EstadoVehiculo;
-    protected kilometraje: number;
-
-    private mantenimiento: Mantenimiento[] = []
+    // private marca: string;
+    // private modelo: string;
+    // private anio: number;
+    private matricula: string;
+    private estado: EstadoVehiculo;
+    private kilometraje: number;
+    private mantenimientos: Mantenimiento[];
    
     constructor()
     constructor(matricula: string, kilometraje: number )
@@ -14,7 +16,7 @@ export default abstract class Vehiculo {
         this.matricula = matricula ?? "";
         this.kilometraje = kilometraje ?? 0;
         this.estado = EstadoVehiculo.DISPONIBLE
-        this.mantenimiento = undefined as unknown as Mantenimiento;
+        this.mantenimientos = [];
     }
 
     public getMatricula(): string{
@@ -71,12 +73,18 @@ export default abstract class Vehiculo {
         this.kilometraje = km;
     }
 
+
+    // Dejarlo por ahora en Vehiculo... VER DESP.
+    // Es RESPONSABILIDAD del Vehículo manipular el Mantenimiento...???
+    // Enunciado:
+    // Mantenimiento de Vehículos: El sistema debe poder registrar el costo y la fecha de los mantenimientos de cada vehículo.
+
     /**
      * Agrega un mantenimiento al historial del vehículo.
      * @param mantenimiento 
      */
     public agregarMantenimiento(mantenimiento: Mantenimiento): void {
-        this.mantenimiento.push(mantenimiento)
+        this.mantenimientos.push(mantenimiento)
         this.cambiarEstado(EstadoVehiculo.EN_MANTENIMIENTO);
     }
 
@@ -85,7 +93,7 @@ export default abstract class Vehiculo {
      * @returns 
      */
     public getMantenimientos(): Mantenimiento[] {
-        return [...this.mantenimiento];
+        return [...this.mantenimientos];
     }
 
     /**
@@ -93,7 +101,7 @@ export default abstract class Vehiculo {
      * @returns suma de los costos de mantenimiento.
      */
     public obtenerCostoTotalMantenimientos(): number {
-        return this.mantenimiento.reduce(
+        return this.mantenimientos.reduce(
             (total, mantenimiento) => total + mantenimiento.getCosto(), 0
         );
     }
