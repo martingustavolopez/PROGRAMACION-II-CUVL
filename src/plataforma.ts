@@ -1,4 +1,5 @@
 import Cliente from "./cliente";
+import Mantenimiento from "./mantenimiento";
 import Reserva from "./reserva";
 import Vehiculo from "./vehiculo";
 
@@ -7,6 +8,7 @@ export default class Plataforma {
     private vehiculos: Vehiculo[];
     private reservas: Reserva[];
     private clientes: Cliente[];
+
 
 
     constructor(){
@@ -31,13 +33,25 @@ export default class Plataforma {
         this.vehiculos.push(vehiculo);
     }
 
-    public registrarCliente(cliente: Cliente): void {
+    public agregarCliente(cliente: Cliente): void {
         this.clientes.push(cliente);
+    }
+
+    public buscarVehiculo(matricula: string): Vehiculo | null {
+        return this.vehiculos.find((vehiculo => vehiculo.getMatricula() === matricula)) || null;
+        
+    }
+
+    public registrarMantenimiento (vehiculo: Vehiculo, mantenimiento: Mantenimiento): boolean {
+        return true;
     }
 
     private validarDisponibilidad(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean {
         return false;
     }
+
+
+
 
 
 

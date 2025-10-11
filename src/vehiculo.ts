@@ -1,23 +1,16 @@
 import { EstadoVehiculo } from "./estado_vehiculo";
-import Mantenimiento from "./mantenimiento";
 
 export default abstract class Vehiculo {
-
-    // private marca: string;
-    // private modelo: string;
-    // private anio: number;
-    private matricula: string;
-    private estado: EstadoVehiculo;
-    private kilometraje: number;
-    private mantenimientos: Mantenimiento[];
-   
+    protected matricula: string;
+    protected estado: EstadoVehiculo;
+    protected kilometraje: number;
+    
     constructor()
     constructor(matricula: string, kilometraje: number )
     constructor(matricula?: string, kilometraje?: number) {
         this.matricula = matricula ?? "";
         this.kilometraje = kilometraje ?? 0;
         this.estado = EstadoVehiculo.DISPONIBLE
-        this.mantenimientos = [];
     }
 
     public getMatricula(): string{
@@ -32,69 +25,24 @@ export default abstract class Vehiculo {
         return this.kilometraje;
     }
 
+    public setKilometraje (kilometraje: number): void {
+        this.kilometraje = kilometraje;
+    }
+
     public getEstado(): EstadoVehiculo {
         return this.estado;
     }
 
-    public cambiarEstado (estado: EstadoVehiculo): void {
+    public setEstado (estado: EstadoVehiculo): void {
         this.estado = estado;
     }
 
-    /**
-     * Verifica si el vehículo está disponible para las fechas solicitadas
-     * @param fechaInicio
-     * @param fechaFin
-     * @returns true si está disponible
-     */
-    public estaDisponible(fechaInicio: Date, fechaFin: Date): boolean {
+    // Revisar si valida la disponibilidad del auto o la disponibilidad en las fechas (Reserva).
+    public estaDisponible(): boolean {
         return this.estado === EstadoVehiculo.DISPONIBLE;
     }
 
-    /**
-     * Método abstracto que devuelve un número, calculando la tarifa dependiendo los dias y los km recorridos.
-     * La implementación del mismo para cada subclase es distinta.
-     * @param dias 
-     * @param kmRecorridos 
-     */
+
     public abstract calcularTarifa(dias: number, kmRecorridos: number): number;
 
-    /**
-     * Método para actualizar el kilometraje del Vehiculo  
-     * @param km teniendo en cuenta que el parametro recibido (km) no puede ser menor al km actual.
-     */
-    public registrarKilometraje(km: number): void {
-        if (km < this.kilometraje) {
-            throw new Error("El kilometraje no puede retroceder.");
-        }
-        this.kilometraje = km;
-    }
-
-
-    // Dejarlo por ahora en Vehiculo... VER DESP.
-    // Es RESPONSABILIDAD del Vehículo manipular el Mantenimiento...???
-    // Enunciado:
-    // Mantenimiento de Vehículos: El sistema debe poder registrar el costo y la fecha de los mantenimientos de cada vehículo.
-
-    /**
-     * Agrega un mantenimiento al vehículo.
-     * @param mantenimiento 
-     */
-    public agregarMantenimiento(mantenimiento: Mantenimiento): void {
-        this.mantenimientos.push(mantenimiento)
-        this.cambiarEstado(EstadoVehiculo.EN_MANTENIMIENTO);
-    }
-
-    public getMantenimientos(): Mantenimiento[] {
-        return [...this.mantenimientos];
-    }
-
-    /**
-     * Costo total de todos los mantenimientos realizados.
-     * @returns suma de los costos de mantenimiento.
-     */
-    public obtenerCostoTotalMantenimientos(): number {
-        return this.mantenimientos.reduce(
-            (total, mantenimiento) => total + mantenimiento.getCosto(), 0
-        );
-    }
 }
