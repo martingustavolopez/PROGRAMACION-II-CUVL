@@ -39,7 +39,10 @@ export default class Plataforma {
 
     public buscarVehiculo(matricula: string): Vehiculo | null {
         return this.vehiculos.find((vehiculo => vehiculo.getMatricula() === matricula)) || null;
-        
+    }
+
+    public getVehiculosDisponibles(): Vehiculo[] {
+        return this.vehiculos.filter((vehiculo => vehiculo.estaDisponible()))
     }
 
     public registrarMantenimiento (vehiculo: Vehiculo, mantenimiento: Mantenimiento): boolean {
@@ -47,7 +50,19 @@ export default class Plataforma {
     }
 
     private validarDisponibilidad(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean {
-        return false;
+        if(!vehiculo.estaDisponible()) {
+            return false;
+        }
+
+        // Me quedaria buscar un vehiculo por matricula, luego recorrer todas las reservas que ya tiene 
+        // ese Vehiculo, comparar si alguna de la nueva reserva esta dentro del rango de alguna reserva
+        // y si es asi, devoler false.
+        //
+        // en el caso de que nada de eso se cumpla, el vehiculo esta disponible.
+
+        return true;
+
+
     }
 
 
