@@ -72,7 +72,7 @@ export default class Reserva {
     }
 
     public calcularCostoTotal(): void{
-        this.costoTotal = this.calcularDias() * //precio 
+        this.costoTotal = this.calcularDias() * 2 //precio 
     }
 
 }
