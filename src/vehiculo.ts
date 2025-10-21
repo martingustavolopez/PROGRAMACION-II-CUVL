@@ -1,16 +1,23 @@
 import { EstadoVehiculo } from "./estado_vehiculo";
 
 export default abstract class Vehiculo {
-    protected matricula: string;
-    protected estado: EstadoVehiculo;
-    protected kilometraje: number;
-    
-    constructor()
-    constructor(matricula: string, kilometraje: number )
-    constructor(matricula?: string, kilometraje?: number) {
+
+    private matricula: string;
+    private estado: EstadoVehiculo;
+    private kilometrajeActual: number;
+    private mantenimientos: Mantenimiento[];
+    protected tarifaBase: number;
+   
+    //constructor()
+    //constructor(matricula: string, kilometrajeActual: number )
+    //constructor(matricula?: string, kilometrajeActual?: number) {
+    constructor(matricula: string, tarifaBase: number) {
         this.matricula = matricula ?? "";
-        this.kilometraje = kilometraje ?? 0;
+        this.kilometrajeActual = 0;
+        //this.kilometrajeActual = kilometrajeActual ?? 0;
         this.estado = EstadoVehiculo.DISPONIBLE
+        this.mantenimientos = [];
+        this.tarifaBase = tarifaBase;
     }
 
     public getMatricula(): string{
@@ -21,8 +28,8 @@ export default abstract class Vehiculo {
         this.matricula = matricula;
     }
 
-    public getKilometraje():number {
-        return this.kilometraje;
+    public getKilometrajeActual():number {
+        return this.kilometrajeActual;
     }
 
     public setKilometraje (kilometraje: number): void {
@@ -37,12 +44,32 @@ export default abstract class Vehiculo {
         this.estado = estado;
     }
 
-    // Revisar si valida la disponibilidad del auto o la disponibilidad en las fechas (Reserva).
+    public obtenerTarifaBase(): number {
+        return this.tarifaBase;
+    }
+
     public estaDisponible(): boolean {
         return this.estado === EstadoVehiculo.DISPONIBLE;
     }
 
-
+  
     public abstract calcularTarifa(dias: number, kmRecorridos: number): number;
+
+   
+    public registrarKilometraje(km: number): void {
+        if (km < this.kilometrajeActual) {
+            throw new Error("El kilometraje no puede ser menor al actual.");
+        }
+        this.kilometrajeActual = km;
+    }
+
+    public agregarMantenimiento(mantenimiento: Mantenimiento): void {
+        this.mantenimientos.push(mantenimiento)
+        this.cambiarEstado(EstadoVehiculo.EN_MANTENIMIENTO);
+    }
+
+    public getMantenimientos(): Mantenimiento[] {
+        return [...this.mantenimientos];
+    }
 
 }
