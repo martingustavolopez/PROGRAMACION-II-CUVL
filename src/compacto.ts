@@ -14,12 +14,6 @@ export default class Compacto extends Vehiculo {
         super(matricula, 30);
     }
 
-    /**
-     * Implementación del calculo de tarifa para Compacto
-     * @param dias 
-     * @param kmRecorridos 
-     * @returns 
-     */
     public calcularTarifa(dias: number, kmRecorridos: number): number {
         if (dias <= 0) {
             throw new Error("Los días deben ser mayor a 0.");
@@ -31,12 +25,12 @@ export default class Compacto extends Vehiculo {
         let costo = this.tarifaBase * dias;
 
         const kmsxDia = kmRecorridos / dias;
-        if (kmsxDia > Compacto.KM_LIM_DIARIO) {
+        if ( kmsxDia > Compacto.KM_LIM_DIARIO ) {
             const kmExcedidos = kmRecorridos - (Compacto.KM_LIM_DIARIO * dias);
             costo += kmExcedidos * Compacto.CARGO_KM;
         }
 
         return costo;
     }
-
+  
 }

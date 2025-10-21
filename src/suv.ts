@@ -14,12 +14,6 @@ export default class Suv extends Vehiculo {
         super(matricula, 80);
     }   
 
-    /**
-     * Implementación del calculo de tarifa para SUV
-     * @param dias 
-     * @param kmRecorridos 
-     * @returns 
-     */
     public calcularTarifa(dias: number, kmRecorridos: number): number {
         if (dias <= 0) {
             throw new Error("Los días deben ser mayor a 0.");
@@ -38,4 +32,4 @@ export default class Suv extends Vehiculo {
         return costo;
     }
 
-}   
+}

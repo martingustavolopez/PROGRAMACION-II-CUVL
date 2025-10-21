@@ -26,7 +26,7 @@ abstract class Vehiculo {
     
 }
 
-class Compacto Vehiculo {
+class Compacto {
     - {static} TARIFA_BASE_DIA: number = 30
     - {static} CARGO_KM: number = 0.15
     - {static} KM_LIMITE_DIARIO: number = 100 
@@ -34,7 +34,7 @@ class Compacto Vehiculo {
     + calcularTarifa(dias: number, kmRecorridos: number): number        
 }
 
-class Sedan Vehiculo {
+class Sedan {
     - {static} TARIFA_BASE_DIA: number = 50
     - {static} CARGO_KM: number = 0.20
 
@@ -42,7 +42,7 @@ class Sedan Vehiculo {
 }
 
 
-class SUV Vehiculo {
+class SUV {
     - {static} TARIFA_BASE_DIA: number = 80
     - {static} CARGO_SEGURO_DIA: number = 15
     - {static} CARGO_KM: number = 0.25
@@ -83,8 +83,7 @@ class Reserva {
     + calcularCostoTotal(): void
     + iniciarAlquiler(kilometrajeInicial: number): void
     + finalizarAlquiler(kilometrajeFinal: number): void
-
-
+    + registrarKmsRecorridos(): number
 
 }
 
@@ -105,15 +104,13 @@ class Plataforma {
 
     -- getters y setters --
 
-    + agregarVehiculo(nuevoVehiculo: Vehiculo): void
-    + registrarCliente(nuevoCliente: Cliente): void
-
-    + registrarCobro(): number
-    + registrarKmsRecorridos(): number
-    + entregarVehiculo ():
+    + agregarVehiculo(vehiculo: Vehiculo): void
+    + buscarVehiculo(matricula: string): Vehiculo
+    + agregarCliente(cliente: Cliente): void
+    + getVehiculosDisponibles(): Vehiculo[]
     + validarDisponibilidad(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean
-    + programarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
-    + procesarDevolucion(reserva: Reserva, kilometrajeFinal: number): number
+    + crearReserva(idCliente: number, matricula: string, fechaInicio: Date, fechaFin: Date): Reserva
+    + registrarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
 
 }
 
@@ -130,16 +127,6 @@ Cliente *-- Reserva
 Plataforma *-- Vehiculo
 Plataforma *-- Cliente
 Plataforma *-- Reserva
-
-' Relaciones de asociación
-
-' Relaciones de uso
-
-
-
-
-
-
 
 
 
