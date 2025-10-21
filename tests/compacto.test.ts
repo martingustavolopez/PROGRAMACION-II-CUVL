@@ -42,7 +42,6 @@ describe("Test de la clase Compacto", () => {
     expect(compacto.estaDisponible()).toBe(false);
   })
 
-  // Probando los lanzamientos de errores 
   it("Debe lanzar un error si la cantidad de dias es igual a 0", () => {
     expect(() => compacto.calcularTarifa(0, 100)).toThrow("Los días deben ser mayor a 0.");
   })
@@ -76,7 +75,6 @@ describe("Test de la clase Compacto", () => {
   })
 
   it("Debe agregar un mantenimiento al auto y cambiar el estado", () => {
-    // MOCK OBJECT
     const mantenimientoMock = {
       getIdMantenimiento: jest.fn(),
       getCosto: jest.fn().mockReturnValue(10000)

@@ -2,7 +2,6 @@ import Vehiculo from "./vehiculo";
 
 export default class Suv extends Vehiculo {
 
-    //private static readonly TARIFA_BASE_DIA: number = 80;
     private static readonly CARGO_SEGURO_DIA: number = 15;
     private static readonly CARGO_KM: number = 0.25;
     private static readonly KM_LIM_DIARIO: number = 500;

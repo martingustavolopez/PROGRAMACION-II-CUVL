@@ -41,7 +41,6 @@ describe("Test de la clase SUV", () => {
     expect(suv.estaDisponible()).toBe(false);
   })
 
-  // Probando los lanzamientos de errores 
   it("Debe lanzar un error si la cantidad de dias es igual a 0", () => {
     expect(() => suv.calcularTarifa(0, 100)).toThrow("Los días deben ser mayor a 0.");
   })

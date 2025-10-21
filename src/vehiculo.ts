@@ -3,14 +3,11 @@ import Mantenimiento from "./mantenimiento";
 
 export default abstract class Vehiculo {
 
-    // private marca: string;
-    // private modelo: string;
-    // private anio: number;
     private matricula: string;
     private estado: EstadoVehiculo;
     private kilometrajeActual: number;
     private mantenimientos: Mantenimiento[];
-    protected tarifaBase: number; // Porque no ponerlo acá si todas las clases hijas lo requieren...?
+    protected tarifaBase: number;
    
     //constructor()
     //constructor(matricula: string, kilometrajeActual: number )
