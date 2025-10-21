@@ -2,6 +2,7 @@ import Cliente from "./cliente";
 import Mantenimiento from "./mantenimiento";
 import Reserva from "./reserva";
 import Vehiculo from "./vehiculo";
+import { EstadoVehiculo } from "./estado_vehiculo";
 
 export default class Plataforma {
 
@@ -45,7 +46,14 @@ export default class Plataforma {
         return this.vehiculos.filter((vehiculo => vehiculo.estaDisponible()))
     }
 
-    public registrarMantenimiento (vehiculo: Vehiculo, mantenimiento: Mantenimiento): boolean {
+    public registrarMantenimiento (matricula: string, mantenimiento: Mantenimiento): boolean {
+        const vehiculo = this.buscarVehiculo(matricula);
+        if (!vehiculo) {
+            return false;
+        }
+
+        vehiculo.agregarMantenimiento(mantenimiento);
+        vehiculo.setEstado(EstadoVehiculo.EN_MANTENIMIENTO);
         return true;
     }
 
@@ -54,16 +62,25 @@ export default class Plataforma {
             return false;
         }
 
-        // Me quedaria buscar un vehiculo por matricula, luego recorrer todas las reservas que ya tiene 
-        // ese Vehiculo, comparar si alguna de la nueva reserva esta dentro del rango de alguna reserva
-        // y si es asi, devoler false.
-        //
-        // en el caso de que nada de eso se cumpla, el vehiculo esta disponible.
+        const reservasVehiculo = this.reservas.filter(r => 
+            r.getVehiculo().getMatricula() === vehiculo.getMatricula()
+        );
+
+        for (const reserva of reservasVehiculo) {
+            const inicioReserva = reserva.getFechaDeInicio();
+            const finReserva = reserva.getFechaDeFin();
+
+            if ((fechaInicio >= inicioReserva && fechaInicio <= finReserva) ||
+                (fechaFin >= inicioReserva && fechaFin <= finReserva) ||
+                (fechaInicio <= inicioReserva && fechaFin >= finReserva)) {
+                return false;
+            }
+        }
 
         return true;
-
-
     }
+
+}
 
 
 
