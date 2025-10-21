@@ -2,22 +2,16 @@ import Vehiculo from "./vehiculo";
 
 export default class Compacto extends Vehiculo {
 
-    private static readonly TARIFA_BASE_DIA: number = 30;
+    //private static readonly TARIFA_BASE_DIA: number = 30;
     private static readonly CARGO_KM: number = 0.15;
     private static readonly KM_LIM_DIARIO: number = 100;
 
-    constructor()
-    constructor(matricula: string, kilometraje: number)
-    constructor(matricula?: string, kilometraje?: number) {
-        super(matricula as string, kilometraje as number);
-    }
-
-    /**
-     * Getter de la Tarifa Base, por si se necesita mostrar fuera de esta clase.
-     * @returns 
-     */
-    public static getTarifaBase(): number {
-        return Compacto.TARIFA_BASE_DIA;
+    //constructor()
+    //constructor(matricula: string, kilometraje: number)
+    //constructor(matricula?: string, kilometraje?: number) {
+    //    super(matricula as string, kilometraje as number);
+    constructor(matricula: string) {
+        super(matricula, 30);
     }
 
     /**
@@ -34,7 +28,7 @@ export default class Compacto extends Vehiculo {
             throw new Error("Los kilometros recorridos no pueden ser negativos.");
         }
 
-        let costo = Compacto.TARIFA_BASE_DIA * dias;
+        let costo = this.tarifaBase * dias;
 
         const kmsxDia = kmRecorridos / dias;
         if (kmsxDia > Compacto.KM_LIM_DIARIO) {
@@ -45,5 +39,4 @@ export default class Compacto extends Vehiculo {
         return costo;
     }
 
-}   
-
+}

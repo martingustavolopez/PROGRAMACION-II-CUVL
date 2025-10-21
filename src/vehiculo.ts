@@ -8,16 +8,20 @@ export default abstract class Vehiculo {
     // private anio: number;
     private matricula: string;
     private estado: EstadoVehiculo;
-    private kilometraje: number;
+    private kilometrajeActual: number;
     private mantenimientos: Mantenimiento[];
+    protected tarifaBase: number; // Porque no ponerlo acá si todas las clases hijas lo requieren...?
    
-    constructor()
-    constructor(matricula: string, kilometraje: number )
-    constructor(matricula?: string, kilometraje?: number) {
+    //constructor()
+    //constructor(matricula: string, kilometrajeActual: number )
+    //constructor(matricula?: string, kilometrajeActual?: number) {
+    constructor(matricula: string, tarifaBase: number) {
         this.matricula = matricula ?? "";
-        this.kilometraje = kilometraje ?? 0;
+        this.kilometrajeActual = 0;
+        //this.kilometrajeActual = kilometrajeActual ?? 0;
         this.estado = EstadoVehiculo.DISPONIBLE
         this.mantenimientos = [];
+        this.tarifaBase = tarifaBase;
     }
 
     public getMatricula(): string{
@@ -28,8 +32,8 @@ export default abstract class Vehiculo {
         this.matricula = matricula;
     }
 
-    public getKilometraje():number {
-        return this.kilometraje;
+    public getKilometrajeActual():number {
+        return this.kilometrajeActual;
     }
 
     public getEstado(): EstadoVehiculo {
@@ -40,13 +44,15 @@ export default abstract class Vehiculo {
         this.estado = estado;
     }
 
+    public obtenerTarifaBase(): number {
+        return this.tarifaBase;
+    }
+
     /**
-     * Verifica si el vehículo está disponible para las fechas solicitadas
-     * @param fechaInicio
-     * @param fechaFin
-     * @returns true si está disponible
+     * 
+     * @returns EstadoVehiculo en DISPONIBLE
      */
-    public estaDisponible(fechaInicio: Date, fechaFin: Date): boolean {
+    public estaDisponible(): boolean {
         return this.estado === EstadoVehiculo.DISPONIBLE;
     }
 
@@ -63,17 +69,11 @@ export default abstract class Vehiculo {
      * @param km teniendo en cuenta que el parametro recibido (km) no puede ser menor al km actual.
      */
     public registrarKilometraje(km: number): void {
-        if (km < this.kilometraje) {
-            throw new Error("El kilometraje no puede retroceder.");
+        if (km < this.kilometrajeActual) {
+            throw new Error("El kilometraje no puede ser menor al actual.");
         }
-        this.kilometraje = km;
+        this.kilometrajeActual = km;
     }
-
-
-    // Dejarlo por ahora en Vehiculo... VER DESP.
-    // Es RESPONSABILIDAD del Vehículo manipular el Mantenimiento...???
-    // Enunciado:
-    // Mantenimiento de Vehículos: El sistema debe poder registrar el costo y la fecha de los mantenimientos de cada vehículo.
 
     /**
      * Agrega un mantenimiento al vehículo.
