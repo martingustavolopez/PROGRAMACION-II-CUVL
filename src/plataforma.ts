@@ -81,13 +81,3 @@ export default class Plataforma {
     }
 
 }
-
-
-
-
-
-
-
-
-
-}
