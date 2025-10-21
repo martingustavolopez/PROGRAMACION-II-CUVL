@@ -1,17 +1,5 @@
-//class Reserva {
-//    - cliente: Cliente
-//    - vehiculo: Vehiculo
-//    - fechaDeInicio: Date
-//    - fechaDeFin: Date
-//    - kilometrajeFinal: number
-//    - costoTotal: number
-//
-//    -- getters y setters --
-//
-//    + calcularDias(): number
-//'    + calcularKilometrosRecorridos(): number
-//    + calcularCostoTotal(): void
-//}
+import Cliente from "./cliente";
+import Vehiculo from "./vehiculo";
 
 export default class Reserva {
     private cliente: Cliente;
@@ -84,7 +72,7 @@ export default class Reserva {
     }
 
     public calcularCostoTotal(): void{
-        this.costoTotal = this.calcularDias() * //precio 
+        this.costoTotal = this.calcularDias() * 2 //precio 
     }
 
 }
