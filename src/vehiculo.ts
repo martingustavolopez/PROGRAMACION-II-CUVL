@@ -1,75 +1,58 @@
 import { EstadoVehiculo } from "./estado_vehiculo";
+import Mantenimiento from "./mantenimiento";
 
 export default abstract class Vehiculo {
 
-    private matricula: string;
-    private estado: EstadoVehiculo;
-    private kilometrajeActual: number;
-    private mantenimientos: Mantenimiento[];
-    protected tarifaBase: number;
-   
-    //constructor()
-    //constructor(matricula: string, kilometrajeActual: number )
-    //constructor(matricula?: string, kilometrajeActual?: number) {
-    constructor(matricula: string, tarifaBase: number) {
+    protected matricula: string;
+    protected estado: EstadoVehiculo;
+    protected kilometraje: number;
+    protected mantenimientos: Mantenimiento[];
+
+    constructor()
+    constructor(matricula: string, kilometraje: number)
+    constructor(matricula?: string, kilometraje?: number) {
         this.matricula = matricula ?? "";
-        this.kilometrajeActual = 0;
-        //this.kilometrajeActual = kilometrajeActual ?? 0;
-        this.estado = EstadoVehiculo.DISPONIBLE
+        this.estado = EstadoVehiculo.DISPONIBLE;
+        this.kilometraje = kilometraje ?? 0;
         this.mantenimientos = [];
-        this.tarifaBase = tarifaBase;
     }
 
-    public getMatricula(): string{
+    public getMatricula(): string {
         return this.matricula;
-    }
-
-    public setMatricula(matricula: string): void {
-        this.matricula = matricula;
-    }
-
-    public getKilometrajeActual():number {
-        return this.kilometrajeActual;
-    }
-
-    public setKilometraje (kilometraje: number): void {
-        this.kilometraje = kilometraje;
     }
 
     public getEstado(): EstadoVehiculo {
         return this.estado;
     }
 
-    public setEstado (estado: EstadoVehiculo): void {
+    public getKilometraje(): number {
+        return this.kilometraje;
+    }
+
+    public getMantenimientos(): Mantenimiento[] {
+        return [...this.mantenimientos];
+    }
+
+    public setMatricula(matricula: string): void {
+        this.matricula = matricula;
+    }
+
+    public setEstado(estado: EstadoVehiculo): void {
         this.estado = estado;
     }
 
-    public obtenerTarifaBase(): number {
-        return this.tarifaBase;
+    public setKilometraje(kilometraje: number): void {
+        this.kilometraje = kilometraje;
+    }
+
+    public agregarMantenimiento(mantenimiento: Mantenimiento): void {
+        this.mantenimientos.push(mantenimiento);
     }
 
     public estaDisponible(): boolean {
         return this.estado === EstadoVehiculo.DISPONIBLE;
     }
 
-  
-    public abstract calcularTarifa(dias: number, kmRecorridos: number): number;
-
-   
-    public registrarKilometraje(km: number): void {
-        if (km < this.kilometrajeActual) {
-            throw new Error("El kilometraje no puede ser menor al actual.");
-        }
-        this.kilometrajeActual = km;
-    }
-
-    public agregarMantenimiento(mantenimiento: Mantenimiento): void {
-        this.mantenimientos.push(mantenimiento)
-        this.cambiarEstado(EstadoVehiculo.EN_MANTENIMIENTO);
-    }
-
-    public getMantenimientos(): Mantenimiento[] {
-        return [...this.mantenimientos];
-    }
+    public abstract calcularTarifa(dias: number, kilometrosRecorridos: number): number;
 
 }

@@ -10,8 +10,6 @@ export default class Plataforma {
     private reservas: Reserva[];
     private clientes: Cliente[];
 
-
-
     constructor(){
         this.vehiculos = [];
         this.reservas = [];
@@ -19,15 +17,15 @@ export default class Plataforma {
     }
 
     public getVehiculos(): Vehiculo[] {
-        return this.vehiculos
+        return [...this.vehiculos];
     }
 
     public getReservas(): Reserva[] {
-        return this.reservas;
+        return [...this.reservas];
     }
 
     public getClientes(): Cliente[] {
-        return this.clientes;
+        return [...this.clientes];
     }
 
     public agregarVehiculo(vehiculo: Vehiculo): void {
@@ -42,8 +40,31 @@ export default class Plataforma {
         return this.vehiculos.find((vehiculo => vehiculo.getMatricula() === matricula)) || null;
     }
 
+     public buscarCliente(idCliente: number): Cliente | null {
+        return this.clientes.find(c => c.getid() === idCliente) || null;
+    }
+
     public getVehiculosDisponibles(): Vehiculo[] {
         return this.vehiculos.filter((vehiculo => vehiculo.estaDisponible()))
+    }
+
+    public crearReserva(idCliente: number, matriculaVehiculo: string, fechaInicio: Date, fechaFin: Date): Reserva | null {
+        const cliente = this.buscarCliente(idCliente);
+        const vehiculo = this.buscarVehiculo(matriculaVehiculo);
+
+        if (!cliente || !vehiculo) {
+            return null;
+        }
+
+        if (!this.validarDisponibilidad(vehiculo, fechaInicio, fechaFin)) {
+            return null;
+        }
+
+        const reserva = new Reserva(cliente, vehiculo, fechaInicio, fechaFin);
+        this.reservas.push(reserva);
+        cliente.agregarReserva(reserva);
+
+        return reserva;
     }
 
     public registrarMantenimiento (matricula: string, mantenimiento: Mantenimiento): boolean {
