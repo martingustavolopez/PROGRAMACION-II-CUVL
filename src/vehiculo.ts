@@ -6,14 +6,16 @@ export default abstract class Vehiculo {
     protected matricula: string;
     protected estado: EstadoVehiculo;
     protected kilometraje: number;
+    protected tarifaBase: number;
     protected mantenimientos: Mantenimiento[];
 
     constructor()
-    constructor(matricula: string, kilometraje: number)
-    constructor(matricula?: string, kilometraje?: number) {
+    constructor(matricula: string, kilometraje: number, tarifaBase: number)
+    constructor(matricula?: string, kilometraje?: number, tarifaBase?: number) {
         this.matricula = matricula ?? "";
         this.estado = EstadoVehiculo.DISPONIBLE;
         this.kilometraje = kilometraje ?? 0;
+        this.tarifaBase = tarifaBase ?? 0;
         this.mantenimientos = [];
     }
 
@@ -42,6 +44,9 @@ export default abstract class Vehiculo {
     }
 
     public setKilometraje(kilometraje: number): void {
+        if (kilometraje < this.kilometraje) {
+            throw new Error("El kilometraje no puede ser menor al actual.");
+        }
         this.kilometraje = kilometraje;
     }
 
