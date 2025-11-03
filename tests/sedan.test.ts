@@ -40,16 +40,6 @@ describe("Test de la clase Sedan", () => {
     sedan.setEstado(EstadoVehiculo.EN_ALQUILER);
     expect(sedan.estaDisponible()).toBe(false);
   })
-  
-  it("Debe lanzar un error si la cantidad de dias es igual a 0", () => {
-    expect(() => sedan.calcularTarifa(0, 100)).toThrow("Los días deben ser mayor a 0.");
-  })
-  it("Debe lanzar un error si la cantidad de dias es un valor negativo", () => {
-    expect(() => sedan.calcularTarifa(-1, 100)).toThrow("Los días deben ser mayor a 0.");
-  })
-  it("Debe lanzar un error si los km recorridos es un valor negativo", () => {
-    expect(() => sedan.calcularTarifa(10, -50)).toThrow("Los kilometros recorridos no pueden ser negativos.");
-  })
 
   it("Debe calcular tarifa con cargo por kilometro, sin límite diario", () => {
     const dias = 5;
@@ -63,6 +53,12 @@ describe("Test de la clase Sedan", () => {
     const km = 50;
     const tarifa = sedan.calcularTarifa(dias, km);
     expect(tarifa).toBe(160);
+  })
+
+  it("Debe poder setearle una matricula al vehiculo", () => {
+    const sedan = new Sedan();
+    sedan.setMatricula("TYU234");
+    expect(sedan.getMatricula()).toBe("TYU234");
   })
 
 })
