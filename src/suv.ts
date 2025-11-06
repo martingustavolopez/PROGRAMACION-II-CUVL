@@ -7,9 +7,9 @@ export default class Suv extends Vehiculo {
     private static readonly KM_LIMITE_TOTAL: number = 500;
 
     constructor()
-    constructor(matricula: string, kilometraje: number)
-    constructor(matricula?: string, kilometraje?: number) {
-        super(matricula as string, kilometraje as number, 80);
+    constructor(matricula: string, kilometraje: number, tarifaBase: number)
+    constructor(matricula?: string, kilometraje?: number, tarifaBase?: number) {
+        super(matricula as string, kilometraje as number, tarifaBase as 80);
     }
 
     public calcularTarifa(dias: number, kilometrosRecorridos: number): number {

@@ -60,4 +60,8 @@ export default abstract class Vehiculo {
 
     public abstract calcularTarifa(dias: number, kilometrosRecorridos: number): number;
 
+    public getTarifaBase(): number {
+        return this.tarifaBase;
+    }
+
 }
