@@ -1,4 +1,5 @@
 import Cliente from "./cliente";
+import { EstadoVehiculo } from "./estado_vehiculo";
 import Vehiculo from "./vehiculo";
 
 export default class Reserva {
@@ -6,6 +7,7 @@ export default class Reserva {
     private vehiculo: Vehiculo;
     private fechaDeInicio: Date
     private fechaDeFin: Date
+    private kilometrajeInicial: number
     private kilometrajeFinal: number
     private costoTotal: number
 
@@ -14,6 +16,7 @@ export default class Reserva {
         this.vehiculo = vehiculo;
         this.fechaDeInicio = fechaInicio;
         this.fechaDeFin = fechaFin;
+        this.kilometrajeInicial = 0;
         this.kilometrajeFinal = 0;
         this.costoTotal = 0;
     }
@@ -58,6 +61,14 @@ export default class Reserva {
         return this.kilometrajeFinal;
     }
 
+    public getKilometrajeInicial(){
+        return this.kilometrajeInicial;
+    }
+
+    public setKilometrajeInicial(value: number) {
+        this.kilometrajeInicial = value;
+    }
+
     public setCostoTotal(value: number){
         this.costoTotal = value;
     }
@@ -66,13 +77,22 @@ export default class Reserva {
         return this.costoTotal;
     }
 
+    public calcularKilometrosRecorridos(): number {
+        return this.kilometrajeFinal - this.kilometrajeInicial;
+    }
+
     public calcularDias(): number{
         const diferencia = this.getFechaDeFin().getTime() - this.getFechaDeInicio().getTime();
         return diferencia / (1000 * 60 * 60 * 24)
     }
-
+    
     public calcularCostoTotal(): void{
-        this.costoTotal = this.calcularDias() * 2 //precio 
+        const dias = this.calcularDias();
+        const kmRecorridos = this.calcularKilometrosRecorridos();
+
+        this.costoTotal = this.vehiculo.calcularTarifa(dias, kmRecorridos);
+    
+        
     }
 
 }
