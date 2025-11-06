@@ -20,7 +20,7 @@ export default class Reserva {
         this.costoTotal = 0;
     }
 
-    public setCliente(value: Cliente){
+    public setCliente(value: Cliente){ // No testeado
         this.cliente = value;
     }
 
@@ -28,7 +28,7 @@ export default class Reserva {
         return this.cliente;
     }
 
-    public setVehiculo(value: Vehiculo){
+    public setVehiculo(value: Vehiculo){ // No testeado
         this.vehiculo = value;
     }
 
@@ -36,7 +36,7 @@ export default class Reserva {
         return this.vehiculo;
     }
 
-    public setFechaDeInicio(value: Date){
+    public setFechaDeInicio(value: Date){ // No testeado
         this.fechaDeInicio = value;
     }
 
@@ -44,7 +44,7 @@ export default class Reserva {
         return this.fechaDeInicio;
     }
 
-    public setFechaDeFin(value: Date){
+    public setFechaDeFin(value: Date){ // No testeado
         this.fechaDeFin = value;
     }
 
@@ -58,6 +58,14 @@ export default class Reserva {
 
     public getKilometrajeFinal(){
         return this.kilometrajeFinal;
+    }
+
+    public getKilometrajeInicial(){
+        return this.kilometrajeInicial;
+    }
+
+    public setKilometrajeInicial(value: number) {
+        this.kilometrajeInicial = value;
     }
 
     public setCostoTotal(value: number){
@@ -82,8 +90,7 @@ export default class Reserva {
         const kmRecorridos = this.calcularKilometrosRecorridos();
 
         this.costoTotal = this.vehiculo.calcularTarifa(dias, kmRecorridos);
-
-
+        
     }
 
 }
