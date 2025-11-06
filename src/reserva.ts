@@ -21,7 +21,7 @@ export default class Reserva {
         this.costoTotal = 0;
     }
 
-    public setCliente(value: Cliente){ // No testeado
+    public setCliente(value: Cliente){
         this.cliente = value;
     }
 
@@ -29,7 +29,7 @@ export default class Reserva {
         return this.cliente;
     }
 
-    public setVehiculo(value: Vehiculo){ // No testeado
+    public setVehiculo(value: Vehiculo){
         this.vehiculo = value;
     }
 
@@ -37,7 +37,7 @@ export default class Reserva {
         return this.vehiculo;
     }
 
-    public setFechaDeInicio(value: Date){ // No testeado
+    public setFechaDeInicio(value: Date){
         this.fechaDeInicio = value;
     }
 
@@ -45,7 +45,7 @@ export default class Reserva {
         return this.fechaDeInicio;
     }
 
-    public setFechaDeFin(value: Date){ // No testeado
+    public setFechaDeFin(value: Date){
         this.fechaDeFin = value;
     }
 
