@@ -14,4 +14,5 @@ export default class Sedan extends Vehiculo {
         const costo = (this.tarifaBase * dias) + (kilometrosRecorridos * Sedan.CARGO_KM);
         return costo;
     }
+    
 }

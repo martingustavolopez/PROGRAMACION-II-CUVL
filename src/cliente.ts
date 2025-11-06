@@ -17,7 +17,7 @@ export default class Cliente {
         return this.nombre;
     }
 
-    public getid(): number {
+    public getId(): number {
         return this.id;
     }
 
@@ -29,7 +29,7 @@ export default class Cliente {
         this.nombre = nombre;
     }
 
-    public setEid(id: number): void {
+    public setId(id: number): void {
         this.id = id;
     }
 
