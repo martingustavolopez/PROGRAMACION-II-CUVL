@@ -1,4 +1,4 @@
-/*
+
 import Plataforma from "../src/plataforma";
 import Vehiculo from "../src/vehiculo";
 import Compacto from "../src/compacto";
@@ -86,4 +86,3 @@ describe("Test clase Plataforma", () => {
 
 
 })
-        */
