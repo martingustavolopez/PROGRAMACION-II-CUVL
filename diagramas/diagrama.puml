@@ -9,21 +9,32 @@ enum EstadoVehiculo {
     EN_MANTENIMIENTO
     NECESITA_LIMPIEZA
 }
+' Cambiar el EstadoVehiculo por una interfaz IEstadoVehiculo
+' Y utilizar el PATRÓN DE DISEÑO - STATE
+' Planteo
+interface IEstadoVehiculo {
+    + getNombre(): string
+    + reservar(vehiculo: Vehiculo): void
+    + devolver(vehiculo: Vehiculo): void
+    + puedeReservar(): boolean
+    + enviarAMantenimineto(vehiculo: Vehiculo): void
+}
+' Crear las clases Concretas que implementen IEstadoVehiculo
+' EstadoDisponible : EstadoEnMantenimiento : EstadoEnAlquiler
 
 abstract class Vehiculo {
     - matricula: string
     - estado: EstadoVehiculo
     - kilometraje: number
+    - mantenimientos: Array<Mantenimiento>
     
-    -- getters y setters --
-
+    constructor(matricula: string, kilometraje: number)
     + getMantenimientos(): Mantenimiento[]
-    + cambiarEstado(nuevoEstado: EstadoVehiculo): void
+    + setEstado(nuevoEstado: EstadoVehiculo): void
     + agregarMantenimiento(mantenimiento: Mantenimiento): void
     + estaDisponible(fechaInicio: Date, fechaFin: Date): boolean
     # {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
     - historialMantenimiento: Mantenimiento[]
-    
 }
 
 class Compacto {
@@ -55,16 +66,12 @@ class SUV {
 class Cliente {
     - idCliente: number
     - nombre: string
-    - apellido: string
     - reservas: Reserva []
 
     -- getters y setters --
-
-    + getReservas(): Reserva[]
+    + getReservas(): Array<Reserva>
     + agregarReserva(reserva: Reserva): void //opc.1
     + crearReserva(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): Reserva //opc.2
-
-
 }
 
 class Reserva {
@@ -77,24 +84,23 @@ class Reserva {
     - costoTotal: number
 
     -- getters y setters --
-
     + calcularDias(): number
     + calcularKilometrosRecorridos(): number
     + calcularCostoTotal(): void
     + iniciarAlquiler(kilometrajeInicial: number): void
     + finalizarAlquiler(kilometrajeFinal: number): void
     + registrarKmsRecorridos(): number
-
 }
 
 class Mantenimiento {
-    - fecha: Date
-    - costo: number
+    - idMantenimiento: number;
+    - fecha: Date;
+    - costo: number;
+    - descripcion: string;
     
+    constructor(fecha: Date, costo: number, descripcion: string)
     -- getters y setters --
-
-    + registrarMantenimineto(): void
-
+    + obtenerDetalles(): void
 }
 
 class Plataforma {
@@ -111,10 +117,7 @@ class Plataforma {
     + validarDisponibilidad(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean
     + crearReserva(idCliente: number, matricula: string, fechaInicio: Date, fechaFin: Date): Reserva
     + registrarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
-
 }
-
-
 
 ' Relaciones de herencia
 Vehiculo <|-- Compacto
@@ -127,9 +130,6 @@ Cliente *-- Reserva
 Plataforma *-- Vehiculo
 Plataforma *-- Cliente
 Plataforma *-- Reserva
-
-
-
 
 ' Notas
 

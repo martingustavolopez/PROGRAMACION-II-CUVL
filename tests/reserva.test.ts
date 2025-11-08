@@ -40,27 +40,13 @@ describe("Test de la clase Reserva", () => {
     expect(reserva.getVehiculo()).toBe(vehiculoMock);
     expect(reserva.getFechaDeInicio()).toBe(fechaInicio);
     expect(reserva.getFechaDeFin()).toBe(fechaFin);
-    expect(reserva.getKilometrajeFinal()).toBe(0);
-    expect(reserva.getKilometrajeInicial()).toBe(0);
+    expect(reserva.getKilometrosRecorridos()).toBe(0);
     expect(reserva.getCostoTotal()).toBe(0);
   })
 
-
-
-  it("Debe registrar el kilometraje inicial correctamente", () => {
-    reserva.setKilometrajeInicial(12000);
-    expect(reserva.getKilometrajeInicial()).toBe(12000);
-  })
-
-  it("Debe registrar el kilometraje final correctamente", () => {
-    reserva.setKilometrajeFinal(15000);
-    expect(reserva.getKilometrajeFinal()).toBe(15000);
-  })
-
-  it("Debe calcular los kilometros recorridos", () => {
-    reserva.setKilometrajeInicial(10000);
-    reserva.setKilometrajeFinal(15000);
-    expect(reserva.calcularKilometrosRecorridos()).toBe(5000);
+  it("Debe registrar los kilometros recorridos correctamente", () => {
+    reserva.setKilometrosRecorridos(12000);
+    expect(reserva.getKilometrosRecorridos()).toBe(12000);
   })
 
   it("Debe calcular los dias de reserva", () => {
@@ -68,19 +54,10 @@ describe("Test de la clase Reserva", () => {
     expect(dias).toBe(4);
   })
 
-  it("Debe calcular los kilometros recorridos", () => {
-    reserva.setKilometrajeInicial(10000);
-    reserva.setKilometrajeFinal(15000);
-    const kilometrosRecorridos = reserva.calcularKilometrosRecorridos();
-    expect(kilometrosRecorridos).toBe(5000);
-  })
-
   // Ver bien este test... me perdí que estoy testeando exactamente???
   it("Debe registrar el costo total de la reserva", () => {
     const dias = reserva.calcularDias();
-    reserva.setKilometrajeInicial(10000);
-    reserva.setKilometrajeFinal(15000);
-    const kilometrosRecorridos = reserva.calcularKilometrosRecorridos();
+    const kilometrosRecorridos = reserva.getKilometrosRecorridos();
 
     const vehiculoMockSedan = {
       getMatricula: jest.fn(),
@@ -93,6 +70,5 @@ describe("Test de la clase Reserva", () => {
 
     expect(reserva.getCostoTotal()).toBe(1200);
   })
-
-
+  
 })

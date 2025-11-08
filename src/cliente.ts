@@ -1,6 +1,7 @@
 import Reserva from "./reserva";
 
 export default class Cliente {
+
     private nombre: string;
     private id: number;
     private reservas: Reserva[];
@@ -36,4 +37,5 @@ export default class Cliente {
     public agregarReserva(reserva: Reserva): void {
         this.reservas.push(reserva);
     }
+    
 }

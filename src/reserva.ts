@@ -3,37 +3,46 @@ import { EstadoVehiculo } from "./estado_vehiculo";
 import Vehiculo from "./vehiculo";
 
 export default class Reserva {
+
+    private idReserva: string;
     private cliente: Cliente;
     private vehiculo: Vehiculo;
     private fechaDeInicio: Date
     private fechaDeFin: Date
-    private kilometrajeInicial: number
-    private kilometrajeFinal: number
+    private kilometrosRecorridos: number;
     private costoTotal: number
 
-    constructor(cliente: Cliente, vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date){
+    constructor(cliente: Cliente, vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date) {
+        this.idReserva = "";
         this.cliente = cliente;
         this.vehiculo = vehiculo;
         this.fechaDeInicio = fechaInicio;
         this.fechaDeFin = fechaFin;
-        this.kilometrajeInicial = 0;
-        this.kilometrajeFinal = 0;
+        this.kilometrosRecorridos = 0;
         this.costoTotal = 0;
     }
 
-    public setCliente(value: Cliente){
+    public setIdReserva(value: string): void {
+        this.idReserva = value;
+    }
+
+    public getIdReserva(): string {
+        return this.idReserva;        
+    }
+
+    public setCliente(value: Cliente): void {
         this.cliente = value;
     }
 
-    public getCliente(){
+    public getCliente(): Cliente {
         return this.cliente;
     }
 
-    public setVehiculo(value: Vehiculo){
+    public setVehiculo(value: Vehiculo): void {
         this.vehiculo = value;
     }
 
-    public getVehiculo(){
+    public getVehiculo(): Vehiculo {
         return this.vehiculo;
     }
 
@@ -41,32 +50,24 @@ export default class Reserva {
         this.fechaDeInicio = value;
     }
 
-    public getFechaDeInicio(){
+    public getFechaDeInicio(): Date{
         return this.fechaDeInicio;
     }
 
-    public setFechaDeFin(value: Date){
+    public setFechaDeFin(value: Date): void {
         this.fechaDeFin = value;
     }
 
-    public getFechaDeFin(){
+    public getFechaDeFin(): Date {
         return this.fechaDeFin;
     }
-    
-    public setKilometrajeFinal(value: number){
-        this.kilometrajeFinal = value;
+
+    public setKilometrosRecorridos(value: number): void {
+        this.kilometrosRecorridos = value;
     }
 
-    public getKilometrajeFinal(){
-        return this.kilometrajeFinal;
-    }
-
-    public getKilometrajeInicial(){
-        return this.kilometrajeInicial;
-    }
-
-    public setKilometrajeInicial(value: number) {
-        this.kilometrajeInicial = value;
+    public getKilometrosRecorridos(): number {
+        return this.kilometrosRecorridos;
     }
 
     public setCostoTotal(value: number){
@@ -77,22 +78,16 @@ export default class Reserva {
         return this.costoTotal;
     }
 
-    public calcularKilometrosRecorridos(): number {
-        return this.kilometrajeFinal - this.kilometrajeInicial;
-    }
-
     public calcularDias(): number{
         const diferencia = this.getFechaDeFin().getTime() - this.getFechaDeInicio().getTime();
         return diferencia / (1000 * 60 * 60 * 24)
     }
     
-    public calcularCostoTotal(): void{
+    public calcularCostoTotal(): number {
         const dias = this.calcularDias();
-        const kmRecorridos = this.calcularKilometrosRecorridos();
+        const kmRecorridos = this.getKilometrosRecorridos();
 
-        this.costoTotal = this.vehiculo.calcularTarifa(dias, kmRecorridos);
-    
-        
+        return this.vehiculo.calcularTarifa(dias, kmRecorridos);     
     }
 
 }

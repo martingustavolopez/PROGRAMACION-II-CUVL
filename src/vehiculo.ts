@@ -19,6 +19,7 @@ export default abstract class Vehiculo {
         this.mantenimientos = [];
     }
 
+    // Getters
     public getMatricula(): string {
         return this.matricula;
     }
@@ -35,12 +36,17 @@ export default abstract class Vehiculo {
         return [...this.mantenimientos];
     }
 
+    public getTarifaBase(): number {
+        return this.tarifaBase;
+    }
+
+    // Setters
     public setMatricula(matricula: string): void {
         this.matricula = matricula;
     }
 
-    public setEstado(estado: EstadoVehiculo): void {
-        this.estado = estado;
+    public setEstado(estadoNuevo: EstadoVehiculo): void {
+        this.estado = estadoNuevo;
     }
 
     public setKilometraje(kilometraje: number): void {
@@ -50,6 +56,7 @@ export default abstract class Vehiculo {
         this.kilometraje = kilometraje;
     }
 
+    // Lógica
     public agregarMantenimiento(mantenimiento: Mantenimiento): void {
         this.mantenimientos.push(mantenimiento);
     }
@@ -59,9 +66,5 @@ export default abstract class Vehiculo {
     }
 
     public abstract calcularTarifa(dias: number, kilometrosRecorridos: number): number;
-
-    public getTarifaBase(): number {
-        return this.tarifaBase;
-    }
 
 }
