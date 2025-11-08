@@ -21,6 +21,9 @@ interface IEstadoVehiculo {
 }
 ' Crear las clases Concretas que implementen IEstadoVehiculo
 ' EstadoDisponible : EstadoEnMantenimiento : EstadoEnAlquiler
+class EstadoDisponible {}
+class EstadoEnMantenimiento {}
+class EstadoEnAlquiler {}
 
 abstract class Vehiculo {
     - matricula: string
@@ -131,8 +134,9 @@ Plataforma *-- Vehiculo
 Plataforma *-- Cliente
 Plataforma *-- Reserva
 
-' Notas
-
-
+Vehiculo o--> IEstadoVehiculo
+IEstadoVehiculo <|.. EstadoEnMantenimiento
+IEstadoVehiculo <|.. EstadoEnAlquiler
+IEstadoVehiculo <|.. EstadoDisponible
 
 @enduml
