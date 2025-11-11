@@ -40,11 +40,12 @@ abstract class Vehiculo {
     + getMantenimientos(): Mantenimiento[]
 
     + agregarMantenimiento(mantenimiento: Mantenimiento): void
+    + necesitaMantenimiento(): boolean
     + setEstado(nuevoEstado: EstadoVehiculo): void
     + reservar(): void
     + devolver(kilometros: number): void
     + estaDisponible(): boolean
-    
+
     # {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
 }
 

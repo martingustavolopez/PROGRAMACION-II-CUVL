@@ -11,6 +11,10 @@ export default abstract class Vehiculo {
     protected tarifaBase: number;
     protected mantenimientos: Mantenimiento[];
 
+    private kmDesdeUltimoMantenimiento: number
+    private fechaUltimoMantenimiento: Date
+    private alquileresDesdeUltimoMantenimiento: number
+
     constructor()
     constructor(matricula: string, kilometraje: number, tarifaBase: number)
     constructor(matricula?: string, kilometraje?: number, tarifaBase?: number) {
@@ -68,8 +72,24 @@ export default abstract class Vehiculo {
     public necesitaMantenimiento(): boolean {
         // Un vehicuo debe pasar a estado "En Mantenimiento" y ser inhabilitado para nuevas reservas automáticamente bajo cualquiera de las siguientes condiciones
         
-        // 1º Criterio
-        if (this.kmDesde) 
+        // 1º Criterio - Ha superado los 10.000 km desde su último mantenimiento.
+        if (this.kmDesdeUltimoMantenimiento > 10000) {
+            return true;
+        }
+
+        // 2º Criterio - Han pasado 12 meses desde su último mantenimiento. (12 meses = 1 año) => (1 año = 365 dias)
+        const milisegundosPorDia = 1000 * 60 * 60 * 24;
+        const diasDesdeMantenimiento = (Date.now() - this.fechaUltimoMantenimiento.getTime() / milisegundosPorDia);
+        if (diasDesdeMantenimiento > 365) {
+            return true;
+        }
+
+        // 3º Criterio - Después de cada 5 alquileres completados.
+        if (this.alquileresDesdeUltimoMantenimiento >= 5) {
+            return true;
+        }
+
+        return false;
     }
 
     public estaDisponible(): boolean { 
