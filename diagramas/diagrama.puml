@@ -11,7 +11,6 @@ enum EstadoVehiculo {
 }
 ' Cambiar el EstadoVehiculo por una interfaz IEstadoVehiculo
 ' Y utilizar el PATRÓN DE DISEÑO - STATE
-' Planteo
 interface IEstadoVehiculo {
     + getNombre(): string
     + reservar(vehiculo: Vehiculo): void
@@ -20,8 +19,7 @@ interface IEstadoVehiculo {
     + enviarAMantenimineto(vehiculo: Vehiculo): void
     + completarMantenimiento(vehiculo: Vehiculo): void
 }
-' Crear las clases Concretas que implementen IEstadoVehiculo
-' EstadoDisponible : EstadoEnMantenimiento : EstadoEnAlquiler
+
 class EstadoDisponible {}
 class EstadoEnMantenimiento {}
 class EstadoEnAlquiler {}
@@ -48,6 +46,7 @@ abstract class Vehiculo {
     + devolver(kilometros: number): void
     + estaDisponible(): boolean
 
+    + {abstract} getTarifaBase(): number
     # {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
 }
 
@@ -56,6 +55,7 @@ class Compacto {
     - {static} CARGO_KM: number = 0.15
     - {static} KM_LIMITE_DIARIO: number = 100 
 
+    + getTarifaBase(): number
     + calcularTarifa(dias: number, kmRecorridos: number): number        
 }
 
@@ -63,6 +63,7 @@ class Sedan {
     - {static} TARIFA_BASE_DIA: number = 50
     - {static} CARGO_KM: number = 0.20
 
+    + getTarifaBase(): number
     + calcularTarifa(dias: number, kmRecorridos: number): number
 }
 
@@ -73,9 +74,9 @@ class SUV {
     - {static} CARGO_KM: number = 0.25
     - {static} KM_LIMITE_TOTAL: number = 500
 
+    + getTarifaBase(): number
     + calcularTarifa(dias: number, kmRecorridos: number): number
 }
-
 
 class Cliente {
     - idCliente: number

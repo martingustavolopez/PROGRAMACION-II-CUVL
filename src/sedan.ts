@@ -2,16 +2,21 @@ import Vehiculo from "./vehiculo";
 
 export default class Sedan extends Vehiculo {
 
+    private static readonly TARIFA_BASE: number = 50;
     private static readonly CARGO_KM: number = 0.20;
 
     constructor()
-    constructor(matricula: string, kilometraje: number, tarifaBase: number)
-    constructor(matricula?: string, kilometraje?: number, tarifaBase?: number) {
-        super(matricula as string, kilometraje as number, tarifaBase as 50);
+    constructor(matricula: string, kilometraje: number)
+    constructor(matricula?: string, kilometraje?: number) {
+        super(matricula as string, kilometraje as number);
+    }
+
+    public getTarifaBase(): number {
+        return Sedan.TARIFA_BASE;
     }
 
     public calcularTarifa(dias: number, kilometrosRecorridos: number): number {
-        const costo = (this.tarifaBase * dias) + (kilometrosRecorridos * Sedan.CARGO_KM);
+        const costo = (this.getTarifaBase() * dias) + (kilometrosRecorridos * Sedan.CARGO_KM);
         return costo;
     }
     

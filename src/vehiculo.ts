@@ -7,7 +7,6 @@ export default abstract class Vehiculo {
     protected matricula: string;
     protected estado: IEstadoVehiculo;
     protected kilometraje: number;
-    protected tarifaBase: number;
     protected mantenimientos: Mantenimiento[];
 
     private kmDesdeUltimoMantenimiento: number
@@ -15,12 +14,11 @@ export default abstract class Vehiculo {
     private alquileresDesdeUltimoMantenimiento: number
 
     constructor()
-    constructor(matricula: string, kilometraje: number, tarifaBase: number)
-    constructor(matricula?: string, kilometraje?: number, tarifaBase?: number) {
+    constructor(matricula: string, kilometraje: number)
+    constructor(matricula?: string, kilometraje?: number) {
         this.matricula = matricula ?? "";
         this.estado = undefined as unknown as IEstadoVehiculo;
         this.kilometraje = kilometraje ?? 0;
-        this.tarifaBase = tarifaBase ?? 0;
         this.mantenimientos = [];
 
         this.kmDesdeUltimoMantenimiento = 0
@@ -43,10 +41,6 @@ export default abstract class Vehiculo {
 
     public getMantenimientos(): Mantenimiento[] {
         return [...this.mantenimientos];
-    }
-
-    public getTarifaBase(): number {
-        return this.tarifaBase;
     }
 
     public getKmDesdeUltimoMantenimiento(): number {
@@ -131,5 +125,7 @@ export default abstract class Vehiculo {
     }
 
     public abstract calcularTarifa(dias: number, kilometrosRecorridos: number): number;
+
+    public abstract getTarifaBase(): number;
 
 }
