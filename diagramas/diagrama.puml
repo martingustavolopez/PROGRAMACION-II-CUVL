@@ -30,14 +30,22 @@ abstract class Vehiculo {
     - estado: EstadoVehiculo
     - kilometraje: number
     - mantenimientos: Array<Mantenimiento>
+
+    'Disparadores de Mantenimiento
+    - kmDesdeUltimoMantenimiento: number
+    - fechaUltimoMantenimiento: Date
+    - alquileresDesdeUltimoMantenimiento: number
     
     constructor(matricula: string, kilometraje: number)
     + getMantenimientos(): Mantenimiento[]
-    + setEstado(nuevoEstado: EstadoVehiculo): void
+
     + agregarMantenimiento(mantenimiento: Mantenimiento): void
-    + estaDisponible(fechaInicio: Date, fechaFin: Date): boolean
+    + setEstado(nuevoEstado: EstadoVehiculo): void
+    + reservar(): void
+    + devolver(kilometros: number): void
+    + estaDisponible(): boolean
+    
     # {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
-    - historialMantenimiento: Mantenimiento[]
 }
 
 class Compacto {
@@ -83,16 +91,14 @@ class Reserva {
     - vehiculo: Vehiculo
     - fechaDeInicio: Date
     - fechaDeFin: Date
-    - kilometrajeFinal: number
+    - kilometrosRecoridos: number
     - costoTotal: number
 
     -- getters y setters --
     + calcularDias(): number
-    + calcularKilometrosRecorridos(): number
     + calcularCostoTotal(): void
     + iniciarAlquiler(kilometrajeInicial: number): void
     + finalizarAlquiler(kilometrajeFinal: number): void
-    + registrarKmsRecorridos(): number
 }
 
 class Mantenimiento {
@@ -133,6 +139,7 @@ Cliente *-- Reserva
 Plataforma *-- Vehiculo
 Plataforma *-- Cliente
 Plataforma *-- Reserva
+
 
 Vehiculo o--> IEstadoVehiculo
 IEstadoVehiculo <|.. EstadoEnMantenimiento

@@ -1,10 +1,12 @@
 import { EstadoVehiculo } from "./estado_vehiculo";
+import { IEstadoVehiculo } from "./EstadoVehiculo/iestadoVehiculo";
 import Mantenimiento from "./mantenimiento";
 
 export default abstract class Vehiculo {
 
     protected matricula: string;
-    protected estado: EstadoVehiculo;
+    // protected estado: EstadoVehiculo;
+    protected estado: IEstadoVehiculo;
     protected kilometraje: number;
     protected tarifaBase: number;
     protected mantenimientos: Mantenimiento[];
@@ -13,7 +15,8 @@ export default abstract class Vehiculo {
     constructor(matricula: string, kilometraje: number, tarifaBase: number)
     constructor(matricula?: string, kilometraje?: number, tarifaBase?: number) {
         this.matricula = matricula ?? "";
-        this.estado = EstadoVehiculo.DISPONIBLE;
+        // this.estado = EstadoVehiculo.DISPONIBLE;
+        this.estado = undefined as unknown as IEstadoVehiculo;
         this.kilometraje = kilometraje ?? 0;
         this.tarifaBase = tarifaBase ?? 0;
         this.mantenimientos = [];
@@ -24,7 +27,7 @@ export default abstract class Vehiculo {
         return this.matricula;
     }
 
-    public getEstado(): EstadoVehiculo {
+    public getEstado(): IEstadoVehiculo {
         return this.estado;
     }
 
@@ -45,7 +48,7 @@ export default abstract class Vehiculo {
         this.matricula = matricula;
     }
 
-    public setEstado(estadoNuevo: EstadoVehiculo): void {
+    public setEstado(estadoNuevo: IEstadoVehiculo): void {
         this.estado = estadoNuevo;
     }
 
@@ -61,8 +64,16 @@ export default abstract class Vehiculo {
         this.mantenimientos.push(mantenimiento);
     }
 
-    public estaDisponible(): boolean {
-        return this.estado === EstadoVehiculo.DISPONIBLE;
+    // Disparadores de Mantenimiento
+    public necesitaMantenimiento(): boolean {
+        // Un vehicuo debe pasar a estado "En Mantenimiento" y ser inhabilitado para nuevas reservas automáticamente bajo cualquiera de las siguientes condiciones
+        
+        // 1º Criterio
+        if (this.kmDesde) 
+    }
+
+    public estaDisponible(): boolean { 
+        return this.estado.puedeReservar();
     }
 
     public abstract calcularTarifa(dias: number, kilometrosRecorridos: number): number;

@@ -26,6 +26,10 @@ describe("Test de la clase Compacto", () => {
     expect(compacto.getEstado()).toBe(EstadoVehiculo.EN_ALQUILER);
   })
 
+  it("Debe estar disponible al crearse", () => {
+    expect(compacto.estaDisponible()).toBe(true));
+  })
+
   it("Debe registrar el kilometraje correctamente", () => {
     compacto.setKilometraje(20000);
     expect(compacto.getKilometraje()).toBe(20000);
