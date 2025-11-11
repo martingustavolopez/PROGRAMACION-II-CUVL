@@ -18,6 +18,7 @@ interface IEstadoVehiculo {
     + devolver(vehiculo: Vehiculo): void
     + puedeReservar(): boolean
     + enviarAMantenimineto(vehiculo: Vehiculo): void
+    + completarMantenimiento(vehiculo: Vehiculo): void
 }
 ' Crear las clases Concretas que implementen IEstadoVehiculo
 ' EstadoDisponible : EstadoEnMantenimiento : EstadoEnAlquiler
@@ -41,6 +42,7 @@ abstract class Vehiculo {
 
     + agregarMantenimiento(mantenimiento: Mantenimiento): void
     + necesitaMantenimiento(): boolean
+    + resetearContadoresMantenimiento(): void
     + setEstado(nuevoEstado: EstadoVehiculo): void
     + reservar(): void
     + devolver(kilometros: number): void

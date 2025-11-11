@@ -82,6 +82,12 @@ export default class Reserva {
         const diferencia = this.getFechaDeFin().getTime() - this.getFechaDeInicio().getTime();
         return diferencia / (1000 * 60 * 60 * 24)
     }
+
+    public calcularDiasAlternativa(): number {
+        const milisegundosPorDia = 1000 * 60 * 60 * 24;
+        const diferenciaMiliSegundos = this.fechaDeFin.getTime()- this.fechaDeInicio.getTime();
+        return Math.ceil(diferenciaMiliSegundos / milisegundosPorDia);
+    }
     
     public calcularCostoTotal(): number {
         const dias = this.calcularDias();

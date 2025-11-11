@@ -1,5 +1,4 @@
 import Compacto from "../src/compacto"
-import { EstadoVehiculo } from "../src/estado_vehiculo";
 import Mantenimiento from "../src/mantenimiento";
 
 describe("Test de la clase Compacto", () => {
@@ -8,7 +7,7 @@ describe("Test de la clase Compacto", () => {
   beforeEach(() => {
     compacto = new Compacto("TYU678", 10000);
   })
-  afterEach(() => {});
+  // afterEach(() => {});
 
   it("Es una instancia de la clase Compacto", () => {
     expect(compacto).toBeInstanceOf(Compacto);
@@ -17,17 +16,16 @@ describe("Test de la clase Compacto", () => {
   it("Debe crear un vehículo Compacto con sus valores iniciales correctos", () => {
     expect(compacto.getMatricula()).toBe("TYU678");
     expect(compacto.getKilometraje()).toBe(10000);
-    expect(compacto.getEstado()).toBe(EstadoVehiculo.DISPONIBLE);
     expect(compacto.getTarifaBase()).toBe(30);
   })
 
-  it("Debe poder cambiar el estado del vehiculo", () => {
-    compacto.setEstado(EstadoVehiculo.EN_ALQUILER);
-    expect(compacto.getEstado()).toBe(EstadoVehiculo.EN_ALQUILER);
+  it("Debe estar disponible al crearse", () => {
+    expect(compacto.estaDisponible()).toBe(true);
   })
 
-  it("Debe estar disponible al crearse", () => {
-    expect(compacto.estaDisponible()).toBe(true));
+  it("Debe poder cambiar el estado al reservar", () => {
+    compacto.reservar();
+    expect(compacto.estaDisponible()).toBe(false);
   })
 
   it("Debe registrar el kilometraje correctamente", () => {
@@ -35,15 +33,19 @@ describe("Test de la clase Compacto", () => {
     expect(compacto.getKilometraje()).toBe(20000);
   })
 
+  it("Debe acumular los kilometros al devolver el vehiculo", () => {
+    compacto.reservar();
+    compacto.devolver(500);
+    expect(compacto.getKmDesdeUltimoMantenimiento()).toBe(500);
+  })
+
   it("NO debe permitir registrar un kilometraje menor al actual", () => {
     compacto.setKilometraje(30000);
     expect(() => compacto.setKilometraje(25000)).toThrow("El kilometraje no puede ser menor al actual.");
   })
 
-  it("Debe verificar que el vehiculo esta disponible", () => {
-    expect(compacto.estaDisponible()).toBe(true);
-    compacto.setEstado(EstadoVehiculo.EN_ALQUILER);
-    expect(compacto.estaDisponible()).toBe(false);
+  it("Debe necesitar mantenimiento después de 10000 km", () => {
+    compacto.reservar();
   })
 
   it("Debe calcular tarifa sin cargos extras (dentro del límite)", () => {

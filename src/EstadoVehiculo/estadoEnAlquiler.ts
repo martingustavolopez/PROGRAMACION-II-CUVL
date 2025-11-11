@@ -30,4 +30,8 @@ export default class EstadoEnAlquiler implements IEstadoVehiculo {
     throw new Error("No se puede enviar a Mantenimiento un Vehículo alquilado");
   }
 
+  public completarMantenimiento(vehiculo: Vehiculo): void {
+    throw new Error("El vehículo no está en mantenimiento");
+  }
+
 }

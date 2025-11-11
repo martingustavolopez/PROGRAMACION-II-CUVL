@@ -5,7 +5,6 @@ import Mantenimiento from "./mantenimiento";
 export default abstract class Vehiculo {
 
     protected matricula: string;
-    // protected estado: EstadoVehiculo;
     protected estado: IEstadoVehiculo;
     protected kilometraje: number;
     protected tarifaBase: number;
@@ -19,11 +18,14 @@ export default abstract class Vehiculo {
     constructor(matricula: string, kilometraje: number, tarifaBase: number)
     constructor(matricula?: string, kilometraje?: number, tarifaBase?: number) {
         this.matricula = matricula ?? "";
-        // this.estado = EstadoVehiculo.DISPONIBLE;
         this.estado = undefined as unknown as IEstadoVehiculo;
         this.kilometraje = kilometraje ?? 0;
         this.tarifaBase = tarifaBase ?? 0;
         this.mantenimientos = [];
+
+        this.kmDesdeUltimoMantenimiento = 0
+        this.fechaUltimoMantenimiento = undefined as unknown as Date;
+        this.alquileresDesdeUltimoMantenimiento = 0;
     }
 
     // Getters
@@ -47,13 +49,21 @@ export default abstract class Vehiculo {
         return this.tarifaBase;
     }
 
+    public getKmDesdeUltimoMantenimiento(): number {
+        return this.kmDesdeUltimoMantenimiento;
+    }
+
+    public getFechaUltimoMantenimiento(): Date {
+        return this.fechaUltimoMantenimiento;
+    }
+
+    public getAlquileresDesdeUltimoMantenimiento(): number {
+        return this.alquileresDesdeUltimoMantenimiento;
+    }
+
     // Setters
     public setMatricula(matricula: string): void {
         this.matricula = matricula;
-    }
-
-    public setEstado(estadoNuevo: IEstadoVehiculo): void {
-        this.estado = estadoNuevo;
     }
 
     public setKilometraje(kilometraje: number): void {
@@ -63,7 +73,7 @@ export default abstract class Vehiculo {
         this.kilometraje = kilometraje;
     }
 
-    // Lógica
+    // Mantenimiento
     public agregarMantenimiento(mantenimiento: Mantenimiento): void {
         this.mantenimientos.push(mantenimiento);
     }
@@ -90,6 +100,30 @@ export default abstract class Vehiculo {
         }
 
         return false;
+    }
+
+    public resetearContadoresMantenimiento(): void {
+        this.kmDesdeUltimoMantenimiento = 0;
+        this.fechaUltimoMantenimiento = new Date();
+        this.alquileresDesdeUltimoMantenimiento = 0;
+    }
+
+    // Patrón State
+    public reservar(): void {
+        this.estado.reservar(this);
+    }
+
+    public devolver(kilometros: number): void {
+        if (kilometros < 0) {
+            throw new Error("El kilometraje no puede ser negativo");
+        }
+        this.kmDesdeUltimoMantenimiento += kilometros;
+        this.alquileresDesdeUltimoMantenimiento++;
+        this.estado.devolver(this);
+    }
+
+    public setEstado(estadoNuevo: IEstadoVehiculo): void {
+        this.estado = estadoNuevo;
     }
 
     public estaDisponible(): boolean { 

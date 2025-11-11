@@ -6,4 +6,5 @@ export interface IEstadoVehiculo {
   devolver(vehiculo: Vehiculo): void
   puedeReservar(): boolean
   enviarAMantenimiento(vehiculo: Vehiculo): void
+  completarMantenimiento(vehiculo: Vehiculo): void
 }

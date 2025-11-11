@@ -1,4 +1,5 @@
 import Vehiculo from "../vehiculo";
+import EstadoDisponible from "./estadoDisponible";
 import { IEstadoVehiculo } from "./iestadoVehiculo";
 
 export default class EstadoEnMantenimiento implements IEstadoVehiculo {
@@ -21,6 +22,11 @@ export default class EstadoEnMantenimiento implements IEstadoVehiculo {
   
   public enviarAMantenimiento(vehiculo: Vehiculo): void {
     throw new Error("Ya se encuentra en Mantenimiento el Vehículo");
+  }
+
+  public completarMantenimiento(vehiculo: Vehiculo): void {
+    vehiculo.resetearContadoresMantenimiento();
+    vehiculo.setEstado(new EstadoDisponible());
   }
 
 }

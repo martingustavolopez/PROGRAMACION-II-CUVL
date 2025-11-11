@@ -25,4 +25,8 @@ export default class EstadoDisponible implements IEstadoVehiculo {
     vehiculo.setEstado(new EstadoEnMantenimiento());
   }
 
+  public completarMantenimiento(vehiculo: Vehiculo): void {
+    throw new Error("El vehículo no está en mantenimiento");
+  }
+
 }
