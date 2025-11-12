@@ -1,5 +1,5 @@
-import Compacto from "../src/compacto";
-import Vehiculo from "../src/vehiculo";
+import Compacto from "../src/Vehiculo/compacto";
+import Vehiculo from "../src/Vehiculo/vehiculo";
 import EstadoDisponible from "../src/EstadoVehiculo/estadoDisponible"
 import EstadoEnAlquiler from "../src/EstadoVehiculo/estadoEnAlquiler";
 import EstadoEnMantenimiento from "../src/EstadoVehiculo/estadoEnMantenimiento";

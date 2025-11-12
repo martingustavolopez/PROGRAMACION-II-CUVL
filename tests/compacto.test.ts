@@ -1,7 +1,5 @@
-import Compacto from "../src/compacto"
+import Compacto from "../src/Vehiculo/compacto"
 import EstadoDisponible from "../src/EstadoVehiculo/estadoDisponible";
-import { IEstadoVehiculo } from "../src/EstadoVehiculo/iestadoVehiculo";
-import Mantenimiento from "../src/mantenimiento";
 
 describe("Test de la clase Compacto", () => {
   let compacto: Compacto;

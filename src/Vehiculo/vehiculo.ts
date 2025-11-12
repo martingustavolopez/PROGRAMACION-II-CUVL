@@ -1,6 +1,5 @@
-import { EstadoVehiculo } from "./estado_vehiculo";
-import { IEstadoVehiculo } from "./EstadoVehiculo/iestadoVehiculo";
-import Mantenimiento from "./mantenimiento";
+import { IEstadoVehiculo } from "../EstadoVehiculo/iestadoVehiculo";
+import Mantenimiento from "../mantenimiento";
 
 export default abstract class Vehiculo {
 

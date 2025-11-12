@@ -1,4 +1,4 @@
-import Vehiculo from "../vehiculo";
+import Vehiculo from "../Vehiculo/vehiculo";
 import EstadoDisponible from "./estadoDisponible";
 import EstadoEnMantenimiento from "./estadoEnMantenimiento";
 import { IEstadoVehiculo } from "./iestadoVehiculo";

@@ -1,8 +1,7 @@
 import Cliente from "../src/cliente";
 import Reserva from "../src/reserva"
-import Vehiculo from "../src/vehiculo";
-
-import Sedan from "../src/sedan";
+import Vehiculo from "../src/Vehiculo/vehiculo";
+import Sedan from "../src/Vehiculo/sedan";
 
 describe("Test de la clase Reserva", () => {
 

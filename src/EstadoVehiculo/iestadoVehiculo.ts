@@ -1,4 +1,4 @@
-import Vehiculo from "../vehiculo"
+import Vehiculo from "../Vehiculo/vehiculo"
 
 export interface IEstadoVehiculo {
   getNombre(): string

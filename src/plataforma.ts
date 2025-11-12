@@ -1,7 +1,7 @@
 import Cliente from "./cliente";
 import Mantenimiento from "./mantenimiento";
 import Reserva from "./reserva";
-import Vehiculo from "./vehiculo";
+import Vehiculo from "./Vehiculo/vehiculo";
 import { EstadoVehiculo } from "./estado_vehiculo";
 
 export default class Plataforma {

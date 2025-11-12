@@ -1,4 +1,4 @@
-import Suv from "../src/suv"
+import Suv from "../src/Vehiculo/suv"
 
 describe("Test de la clase SUV", () => {
   let suv: Suv;

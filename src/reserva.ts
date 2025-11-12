@@ -3,7 +3,7 @@ import { ITemporada } from "./Temporada/iTemporada";
 import TemporadaAlta from "./Temporada/temporadaAlta";
 import TemporadaBaja from "./Temporada/temporadaBaja";
 import TemporadaMedia from "./Temporada/temporadaMedia";
-import Vehiculo from "./vehiculo";
+import Vehiculo from "../src/Vehiculo/vehiculo";
 
 export default class Reserva {
 
