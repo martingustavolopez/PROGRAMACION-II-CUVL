@@ -65,7 +65,7 @@ describe("Test de la clase Reserva", () => {
       calcularTarifa: jest.fn().mockReturnValue(1200)
     } as unknown as Sedan;
 
-    const costoTotal = vehiculoMockSedan.calcularTarifa(dias, kilometrosRecorridos);
+    const costoTotal = vehiculoMockSedan.calcularTarifaBase(dias, kilometrosRecorridos, tarifaAjustada);
     reserva.setCostoTotal(costoTotal)
 
     expect(reserva.getCostoTotal()).toBe(1200);

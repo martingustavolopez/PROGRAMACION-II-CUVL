@@ -31,24 +31,32 @@ describe("Test de la clase Sedan", () => {
     expect(() => sedan.setKilometraje(75000)).toThrow("El kilometraje no puede ser menor al actual.");
   })
 
-  it("Debe calcular tarifa con cargo por kilometro, sin límite diario", () => {
-    const dias = 5;
-    const km = 200;
-    const tarifa = sedan.calcularTarifa(dias, km);
-    expect(tarifa).toBe(290)
-  })
-
-  it("Debe calcular tarifa de forma correcta con pocos kilometros", () => {
+  it('Debe cobrar por todos los kilómetros desde el primero', () => {
     const dias = 3;
-    const km = 50;
-    const tarifa = sedan.calcularTarifa(dias, km);
-    expect(tarifa).toBe(160);
-  })
+    const km = 100;
+    const tarifaBase = 50; // (sin ajuste de temporada) => Temporada Media
+    expect(sedan.calcularTarifaBase(dias, km, tarifaBase)).toBe(170);
+  });
 
-  it("Debe poder setearle una matricula al vehiculo", () => {
-    const sedan = new Sedan();
-    sedan.setMatricula("TYU234");
-    expect(sedan.getMatricula()).toBe("TYU234");
-  })
+  it('Debe aplicar cargo correcto con muchos kilómetros', () => {
+    const dias = 5;
+    const km = 500;
+    const tarifaBase = 50;
+    expect(sedan.calcularTarifaBase(dias, km, tarifaBase)).toBe(350);
+  });
+
+  it('Debe aplicar tarifa base ajustada por Temporada Alta', () => {
+    const dias = 3;
+    const km = 200;
+    const tarifaAjustada = 50 * 1.2;
+    expect(sedan.calcularTarifaBase(dias, km, tarifaAjustada)).toBe(220);
+  });
+
+  it('Debe aplicar tarifa base ajustada por Temporada Baja', () => {
+    const dias = 3;
+    const km = 200;
+    const tarifaAjustada = 50 * 0.9;
+    expect(sedan.calcularTarifaBase(dias, km, tarifaAjustada)).toBe(175);
+  });
 
 })

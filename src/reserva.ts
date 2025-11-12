@@ -124,7 +124,7 @@ export default class Reserva {
         const tarifaBase = this.vehiculo.getTarifaBase();
         const tarifaAjustada = this.temporada.ajustar(tarifaBase);
 
-        return this.vehiculo.calcularTarifaAjustada(dias, kmRecorridos, tarifaAjustada);    
+        return this.vehiculo.calcularTarifaBase(dias, kmRecorridos, tarifaAjustada);    
     }
 
 }

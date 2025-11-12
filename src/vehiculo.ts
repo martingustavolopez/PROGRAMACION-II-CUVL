@@ -125,9 +125,14 @@ export default abstract class Vehiculo {
         return this.estado.puedeReservar();
     }
 
-    public abstract calcularTarifa(dias: number, kilometrosRecorridos: number): number;
-
     public abstract getTarifaBase(): number;
 
+    protected abstract calcularCargosPorKm(dias: number, km: number): number;
+
+    public calcularTarifaBase(dias: number, kmRecorridos: number, tarifaAjustada: number): number {
+        const tarifaBaseTotal = tarifaAjustada * dias;
+        const cargosPorKm = this.calcularCargosPorKm(dias, kmRecorridos);
+        return tarifaBaseTotal + cargosPorKm;
+    }
 
 }

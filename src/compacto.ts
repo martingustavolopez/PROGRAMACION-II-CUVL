@@ -16,16 +16,14 @@ export default class Compacto extends Vehiculo {
         return Compacto.TARIFA_BASE;
     }
 
-    public calcularTarifa(dias: number, kilometrosRecorridos: number): number {
-        let costo = this.getTarifaBase() * dias;
-        
-        const kmPorDia = kilometrosRecorridos / dias;
+    protected calcularCargosPorKm(dias: number, kmRecorridos: number): number {
+        let costo = 0;
+        const kmPorDia = kmRecorridos / dias;
         if (kmPorDia > Compacto.KM_LIMITE_DIARIO) {
-            const kmExcedentes = kilometrosRecorridos - (Compacto.KM_LIMITE_DIARIO * dias);
+            const kmExcedentes = kmRecorridos - (Compacto.KM_LIMITE_DIARIO * dias);
             costo += kmExcedentes * Compacto.CARGO_KM;
         }
-        
         return costo;
     }
-    
+
 }

@@ -17,14 +17,13 @@ export default class Suv extends Vehiculo {
         return Suv.TARIFA_BASE;
     }
 
-    public calcularTarifa(dias: number, kilometrosRecorridos: number): number {
-        let costo = (this.getTarifaBase() * dias) + (Suv.CARGO_SEGURO_DIA * dias);
+    protected calcularCargosPorKm(dias: number, kmRecorridos: number): number {
+        const cargoSeguro = Suv.CARGO_SEGURO_DIA * dias;
         
-        if (kilometrosRecorridos > Suv.KM_LIMITE_TOTAL) {
-            const kmExcedentes = kilometrosRecorridos - Suv.KM_LIMITE_TOTAL;
-            costo += kmExcedentes * Suv.CARGO_KM;
-        }
+        const kmExcedentes = Math.max(0, kmRecorridos - Suv.KM_LIMITE_TOTAL);
+        const cargoPorKm = kmExcedentes * Suv.CARGO_KM;
         
-        return costo;
+        return cargoSeguro + cargoPorKm;
     }
+
 }
