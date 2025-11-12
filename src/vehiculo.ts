@@ -129,4 +129,5 @@ export default abstract class Vehiculo {
 
     public abstract getTarifaBase(): number;
 
+
 }

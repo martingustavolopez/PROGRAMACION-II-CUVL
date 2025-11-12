@@ -24,6 +24,14 @@ class EstadoDisponible {}
 class EstadoEnMantenimiento {}
 class EstadoEnAlquiler {}
 
+' Idea para la Tarifa Variable por Temporada (STRATEGY)
+interface VariableTemporada {
+    ajustar(tarifaBase: number): number
+}
+class TemporadaBaja {}
+class TemporadaMedia {}
+class TemporadaAlta {}
+
 abstract class Vehiculo {
     - matricula: string
     - estado: EstadoVehiculo
@@ -97,12 +105,11 @@ class Reserva {
     - fechaDeFin: Date
     - kilometrosRecoridos: number
     - costoTotal: number
+    - estrategia: VariableTemporada
 
     -- getters y setters --
     + calcularDias(): number
     + calcularCostoTotal(): void
-    + iniciarAlquiler(kilometrajeInicial: number): void
-    + finalizarAlquiler(kilometrajeFinal: number): void
 }
 
 class Mantenimiento {
@@ -149,5 +156,10 @@ Vehiculo o--> IEstadoVehiculo
 IEstadoVehiculo <|.. EstadoEnMantenimiento
 IEstadoVehiculo <|.. EstadoEnAlquiler
 IEstadoVehiculo <|.. EstadoDisponible
+
+VariableTemporada <|.. TemporadaBaja
+VariableTemporada <|.. TemporadaMedia
+VariableTemporada <|.. TemporadaAlta
+Reserva *-- VariableTemporada
 
 @enduml

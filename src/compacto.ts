@@ -27,4 +27,5 @@ export default class Compacto extends Vehiculo {
         
         return costo;
     }
+    
 }

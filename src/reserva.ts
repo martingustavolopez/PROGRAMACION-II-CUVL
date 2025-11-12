@@ -1,5 +1,8 @@
 import Cliente from "./cliente";
-import { EstadoVehiculo } from "./estado_vehiculo";
+import { ITemporada } from "./Temporada/iTemporada";
+import TemporadaAlta from "./Temporada/temporadaAlta";
+import TemporadaBaja from "./Temporada/temporadaBaja";
+import TemporadaMedia from "./Temporada/temporadaMedia";
 import Vehiculo from "./vehiculo";
 
 export default class Reserva {
@@ -11,6 +14,7 @@ export default class Reserva {
     private fechaDeFin: Date
     private kilometrosRecorridos: number;
     private costoTotal: number
+    private temporada: ITemporada;
 
     constructor(cliente: Cliente, vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date) {
         this.idReserva = "";
@@ -20,6 +24,7 @@ export default class Reserva {
         this.fechaDeFin = fechaFin;
         this.kilometrosRecorridos = 0;
         this.costoTotal = 0;
+        this.temporada = undefined as unknown as ITemporada;
     }
 
     public setIdReserva(value: string): void {
@@ -78,43 +83,48 @@ export default class Reserva {
         return this.costoTotal;
     }
 
+    
     public calcularDias(): number{
         const diferencia = this.getFechaDeFin().getTime() - this.getFechaDeInicio().getTime();
         return diferencia / (1000 * 60 * 60 * 24)
     }
-
+    
     public calcularDiasAlternativa(): number {
         const milisegundosPorDia = 1000 * 60 * 60 * 24;
         const diferenciaMiliSegundos = this.fechaDeFin.getTime()- this.fechaDeInicio.getTime();
         return Math.ceil(diferenciaMiliSegundos / milisegundosPorDia);
     }
     
+    
+    
+    
+    // Lógica
+    public obtenerTemporada(fechaInicio: Date): ITemporada {
+        const mes = fechaInicio.getMonth() + 1; // por que empieza desde el 0.
+
+        if (mes === 1 || mes === 2 || mes === 12) {
+            return new TemporadaAlta();
+        }
+
+        if (mes >= 6 && mes <= 8) {
+            return new TemporadaMedia();
+        }
+
+        return new TemporadaBaja();
+    }
+
+    public setEstrategiaTarifa(estrategia: ITemporada): void {
+        this.temporada = estrategia;
+    }
+    
     public calcularCostoTotal(): number {
         const dias = this.calcularDias();
         const kmRecorridos = this.getKilometrosRecorridos();
 
-        return this.vehiculo.calcularTarifa(dias, kmRecorridos);     
+        const tarifaBase = this.vehiculo.getTarifaBase();
+        const tarifaAjustada = this.temporada.ajustar(tarifaBase);
+
+        return this.vehiculo.calcularTarifaAjustada(dias, kmRecorridos, tarifaAjustada);    
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
