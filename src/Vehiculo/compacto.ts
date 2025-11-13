@@ -1,5 +1,8 @@
 import Vehiculo from "./vehiculo";
 
+/**
+ * Esta clase es una categoria de Vehiculo,
+*/
 export default class Compacto extends Vehiculo {
 
     private static readonly TARIFA_BASE: number = 30;
@@ -15,7 +18,7 @@ export default class Compacto extends Vehiculo {
     public getTarifaBase(): number {
         return Compacto.TARIFA_BASE;
     }
-
+    
     protected calcularCargosPorKm(dias: number, kmRecorridos: number): number {
         let costo = 0;
         const kmPorDia = kmRecorridos / dias;
