@@ -1,5 +1,5 @@
-import { ITemporada } from "../src/Temporada/iTemporada";
-import Sedan from "../src/Vehiculo/sedan"
+import { ITemporada } from "../../src/Temporada/iTemporada";
+import Sedan from "../../src/Vehiculo/sedan"
 
 describe("Test de la clase Sedan", () => {
   let sedan: Sedan;

@@ -1,5 +1,5 @@
-import { ITemporada } from "../src/Temporada/iTemporada";
-import Suv from "../src/Vehiculo/suv"
+import { ITemporada } from "../../src/Temporada/iTemporada";
+import Suv from "../../src/Vehiculo/suv"
 
 describe("Test de la clase SUV", () => {
   let suv: Suv;

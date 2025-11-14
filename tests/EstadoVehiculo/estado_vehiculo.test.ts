@@ -1,4 +1,4 @@
-import { EstadoVehiculo } from "../src/estado_vehiculo";
+import { EstadoVehiculo } from "../../src/estado_vehiculo";
 
 describe("Test del enum Estado Vehiculo", () => {
   it("Debe tener todos los estados definidos", () => {

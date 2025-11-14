@@ -1,6 +1,6 @@
-import Compacto from "../src/Vehiculo/compacto"
-import EstadoDisponible from "../src/EstadoVehiculo/estadoDisponible";
-import { ITemporada } from "../src/Temporada/iTemporada";
+import Compacto from "../../src/Vehiculo/compacto"
+import EstadoDisponible from "../../src/EstadoVehiculo/estadoDisponible";
+import { ITemporada } from "../../src/Temporada/iTemporada";
 
 describe("Test de la clase Compacto", () => {
   let compacto: Compacto;

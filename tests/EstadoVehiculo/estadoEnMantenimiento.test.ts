@@ -1,8 +1,8 @@
-import Compacto from "../src/Vehiculo/compacto";
-import Vehiculo from "../src/Vehiculo/vehiculo";
-import EstadoDisponible from "../src/EstadoVehiculo/estadoDisponible"
-import EstadoEnAlquiler from "../src/EstadoVehiculo/estadoEnAlquiler";
-import EstadoEnMantenimiento from "../src/EstadoVehiculo/estadoEnMantenimiento";
+import Compacto from "../../src/Vehiculo/compacto";
+import Vehiculo from "../../src/Vehiculo/vehiculo";
+import EstadoDisponible from "../../src/EstadoVehiculo/estadoDisponible"
+import EstadoEnAlquiler from "../../src/EstadoVehiculo/estadoEnAlquiler";
+import EstadoEnMantenimiento from "../../src/EstadoVehiculo/estadoEnMantenimiento";
 
 describe("Test de la clase Estado Mantenimiento (State)", () => {
 
