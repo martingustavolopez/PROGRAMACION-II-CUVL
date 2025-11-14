@@ -1,10 +1,17 @@
+import { ITemporada } from "../src/Temporada/iTemporada";
 import Suv from "../src/Vehiculo/suv"
 
 describe("Test de la clase SUV", () => {
   let suv: Suv;
+  let temporadaMock: jest.Mocked<ITemporada>;
 
   beforeEach(() => {
     suv = new Suv("BNM890", 5000);
+
+    temporadaMock = {
+      ajustar: jest.fn(),
+      getNombre: jest.fn()
+    };
   })
 
   it("Es una instancia de la clase SUV", () => {
@@ -31,59 +38,59 @@ describe("Test de la clase SUV", () => {
   })
 
   it("Debe incluir cargo de seguro por día", () => {
+    temporadaMock.ajustar.mockReturnValue(80); 
     const dias = 3;
     const km = 200;
-    const tarifaBase = suv.getTarifaBase();
-    expect(suv.calcularTarifaBase(dias, km, tarifaBase)).toBe(285);
+    expect(suv.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(285);
   })
 
   it("Debe cobrar por km excedentes sobre 500 km totales", () => {
+    temporadaMock.ajustar.mockReturnValue(80);
     const dias = 3;
     const km = 200;
-    const tarifaBase = suv.getTarifaBase();
-    expect(suv.calcularTarifaBase(5, 600, 80)).toBe(500);
+    expect(suv.calcularTarifaConTemporada(5, 600, temporadaMock)).toBe(500);
   })
 
   it("NO debe cobrar extra por km si no supera 500 km", () => {
+    temporadaMock.ajustar.mockReturnValue(80);
     const dias = 10;
     const km = 499;
-    const tarifaBase = suv.getTarifaBase();
-    expect(suv.calcularTarifaBase(dias, km, tarifaBase)).toBe(950);
+    expect(suv.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(950);
   });
 
   it("Debe calcular correctamente con justo 500 km", () => {
+    temporadaMock.ajustar.mockReturnValue(80);
     const dias = 5;
     const km = 500;
-    const tarifaBase = suv.getTarifaBase();
-    expect(suv.calcularTarifaBase(dias, km, tarifaBase)).toBe(475);
+    expect(suv.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(475);
   });
 
   it("Debe aplicar tarifa base ajustada por Temporada Alta", () => {
+    temporadaMock.ajustar.mockReturnValue(80 * 1.2);
     const dias = 3;
     const km = 300;
-    const tarifaAjustada = suv.getTarifaBase() * 1.2;
-    expect(suv.calcularTarifaBase(dias, km, tarifaAjustada)).toBe(333);
+    expect(suv.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(333);
   });
 
   it("Debe aplicar tarifa base ajustada por Temporada Baja", () => {
+    temporadaMock.ajustar.mockReturnValue(80 * 0.9);
     const dias = 3;
     const km = 300;
-    const tarifaAjustada = suv.getTarifaBase() * 0.9;
-    expect(suv.calcularTarifaBase(dias, km, tarifaAjustada)).toBe(261);
+    expect(suv.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(261);
   })
 
-  it("debe calcular correctamente con temporada y km excedentes", () => {
+  it("Debe calcular correctamente con temporada y km excedentes", () => {
+    temporadaMock.ajustar.mockReturnValue(80 * 1.2);
     const dias = 5;
     const km = 700;
-    const tarifaAjustada = suv.getTarifaBase() * 1.2;
-    expect(suv.calcularTarifaBase(dias, km, tarifaAjustada)).toBe(605);
+    expect(suv.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(605);
   })
 
-  it('debe calcular correctamente con muchos km excedentes', () => {
+  it("Debe calcular correctamente con muchos km excedentes", () => {
+    temporadaMock.ajustar.mockReturnValue(80);
     const dias = 10;
     const km = 2000;
-    const tarifaBase = suv.getTarifaBase();
-    expect(suv.calcularTarifaBase(dias, km, tarifaBase)).toBe(1325);
+    expect(suv.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(1325);
   })
 
 })

@@ -99,7 +99,7 @@ export default class Reserva {
     
     
     // Lógica
-    public obtenerTemporada(fechaInicio: Date): ITemporada {
+    /*public obtenerTemporada(fechaInicio: Date): ITemporada {
         const mes = fechaInicio.getMonth() + 1; // por que empieza desde el 0.
 
         if (mes === 1 || mes === 2 || mes === 12) {
@@ -111,7 +111,7 @@ export default class Reserva {
         }
 
         return new TemporadaBaja();
-    }
+    }*/
 
     public setEstrategiaTarifa(estrategia: ITemporada): void {
         this.temporada = estrategia;
@@ -121,10 +121,7 @@ export default class Reserva {
         const dias = this.calcularDias();
         const kmRecorridos = this.getKilometrosRecorridos();
 
-        const tarifaBase = this.vehiculo.getTarifaBase();
-        const tarifaAjustada = this.temporada.ajustar(tarifaBase);
-
-        return this.vehiculo.calcularTarifaBase(dias, kmRecorridos, tarifaAjustada);    
+        return this.vehiculo.calcularTarifaConTemporada(dias, kmRecorridos, this.temporada);
     }
 
 }

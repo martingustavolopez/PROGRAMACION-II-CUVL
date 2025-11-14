@@ -6,4 +6,8 @@ export default class TemporadaMedia implements ITemporada {
     return tarifaBase;
   }
 
+  public getNombre(): string {
+    return "Temporada Media";
+  }
+
 }

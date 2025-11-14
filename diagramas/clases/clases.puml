@@ -2,16 +2,17 @@
 
 title DriveHub - Diagrama de clases
 
-' Enumeracion de estado vehiculo
-enum EstadoVehiculo {
-    DISPONIBLE
-    EN_ALQUILER
-    EN_MANTENIMIENTO
-    NECESITA_LIMPIEZA
-}
-' Cambiar el EstadoVehiculo por una interfaz IEstadoVehiculo
-' Y utilizar el PATRÓN DE DISEÑO - STATE
+' PATRÓN DE DISEÑO - STATE
 interface IEstadoVehiculo {
+    getNombre(): string
+    reservar(vehiculo: Vehiculo): void
+    devolver(vehiculo: Vehiculo): void
+    puedeReservar(): boolean
+    enviarAMantenimineto(vehiculo: Vehiculo): void
+    completarMantenimiento(vehiculo: Vehiculo): void
+}
+
+class EstadoDisponible {
     + getNombre(): string
     + reservar(vehiculo: Vehiculo): void
     + devolver(vehiculo: Vehiculo): void
@@ -20,17 +21,44 @@ interface IEstadoVehiculo {
     + completarMantenimiento(vehiculo: Vehiculo): void
 }
 
-class EstadoDisponible {}
-class EstadoEnMantenimiento {}
-class EstadoEnAlquiler {}
-
-' Idea para la Tarifa Variable por Temporada (STRATEGY)
-interface VariableTemporada {
-    ajustar(tarifaBase: number): number
+class EstadoEnMantenimiento {
+    + getNombre(): string
+    + reservar(vehiculo: Vehiculo): void
+    + devolver(vehiculo: Vehiculo): void
+    + puedeReservar(): boolean
+    + enviarAMantenimineto(vehiculo: Vehiculo): void
+    + completarMantenimiento(vehiculo: Vehiculo): void
 }
-class TemporadaBaja {}
-class TemporadaMedia {}
-class TemporadaAlta {}
+
+class EstadoEnAlquiler {
+    + getNombre(): string
+    + reservar(vehiculo: Vehiculo): void
+    + devolver(vehiculo: Vehiculo): void
+    + puedeReservar(): boolean
+    + enviarAMantenimineto(vehiculo: Vehiculo): void
+    + completarMantenimiento(vehiculo: Vehiculo): void
+}
+
+' Tarifa Variable por Temporada (STRATEGY)
+interface ITemporada {
+    ajustar(tarifaBase: number): number
+    getNombre(): string
+}
+
+class TemporadaBaja {
+    + ajustar(tarifaBase: number): number
+    + getNombre(): string
+}
+
+class TemporadaMedia {
+    + ajustar(tarifaBase: number): number
+    + getNombre(): string
+}
+
+class TemporadaAlta {
+    + ajustar(tarifaBase: number): number
+    + getNombre(): string
+}
 
 abstract class Vehiculo {
     - matricula: string
@@ -53,9 +81,12 @@ abstract class Vehiculo {
     + reservar(): void
     + devolver(kilometros: number): void
     + estaDisponible(): boolean
-
+    
     + {abstract} getTarifaBase(): number
-    # {abstract} calcularTarifa(dias: number, kmRecorridos: number): number
+    # {abstract} calcularCargosPorKm(dias: number, kmRecorridos: number): number
+
+    + calcularTarifaConTemporada(dias: number, kmRecorridos: number, temporada: ITemporada): number
+   
 }
 
 class Compacto {
@@ -109,7 +140,8 @@ class Reserva {
 
     -- getters y setters --
     + calcularDias(): number
-    + calcularCostoTotal(): void
+    + setEstrategiaTarifa(temporada: ITemporada): void
+    + calcularCostoTotal(): number
 }
 
 class Mantenimiento {
@@ -157,9 +189,10 @@ IEstadoVehiculo <|.. EstadoEnMantenimiento
 IEstadoVehiculo <|.. EstadoEnAlquiler
 IEstadoVehiculo <|.. EstadoDisponible
 
-VariableTemporada <|.. TemporadaBaja
-VariableTemporada <|.. TemporadaMedia
-VariableTemporada <|.. TemporadaAlta
-Reserva *-- VariableTemporada
+ITemporada <|.. TemporadaBaja
+ITemporada <|.. TemporadaMedia
+ITemporada <|.. TemporadaAlta
+
+Reserva *-- ITemporada
 
 @enduml

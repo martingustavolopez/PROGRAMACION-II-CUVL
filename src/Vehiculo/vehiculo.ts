@@ -1,5 +1,6 @@
 import { IEstadoVehiculo } from "../EstadoVehiculo/iestadoVehiculo";
 import Mantenimiento from "../mantenimiento";
+import { ITemporada } from "../Temporada/iTemporada";
 
 export default abstract class Vehiculo {
 
@@ -126,11 +127,14 @@ export default abstract class Vehiculo {
 
     public abstract getTarifaBase(): number;
 
-    protected abstract calcularCargosPorKm(dias: number, km: number): number;
+    protected abstract calcularCargosPorKm(dias: number, kmRecorridos: number): number;
 
-    public calcularTarifaBase(dias: number, kmRecorridos: number, tarifaAjustada: number): number {
-        const tarifaBaseTotal = tarifaAjustada * dias;
+    public calcularTarifaConTemporada(dias: number, kmRecorridos: number, temporada: ITemporada): number {
+        const tarifaBase = this.getTarifaBase();
+        const tarifaAjustadaTemporada = temporada.ajustar(tarifaBase);
+        const tarifaBaseTotal = tarifaAjustadaTemporada * dias;
         const cargosPorKm = this.calcularCargosPorKm(dias, kmRecorridos);
+
         return tarifaBaseTotal + cargosPorKm;
     }
 

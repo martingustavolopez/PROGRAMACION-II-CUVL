@@ -6,4 +6,8 @@ export default class TemporadaBaja implements ITemporada {
     return tarifaBase * 0.90;
   }
 
+  public getNombre(): string {
+    return "Temporada Baja";
+  }
+
 }

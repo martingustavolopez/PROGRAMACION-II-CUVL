@@ -1,9 +1,13 @@
 import { ITemporada } from "./iTemporada";
 
 export default class TemporadaAlta implements ITemporada {
-
+  
   public ajustar(tarifaBase: number): number {
     return tarifaBase * 1.20;
+  }
+
+  public getNombre(): string {
+    return "Temporada Alta";
   }
 
 }

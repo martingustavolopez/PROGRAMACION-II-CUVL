@@ -2,7 +2,7 @@ import Cliente from "./cliente";
 import Mantenimiento from "./mantenimiento";
 import Reserva from "./reserva";
 import Vehiculo from "./Vehiculo/vehiculo";
-import { EstadoVehiculo } from "./estado_vehiculo";
+import EstadoEnMantenimiento from "./EstadoVehiculo/estadoEnMantenimiento";
 
 export default class Plataforma {
 
@@ -74,7 +74,7 @@ export default class Plataforma {
         }
 
         vehiculo.agregarMantenimiento(mantenimiento);
-        vehiculo.setEstado(EstadoVehiculo.EN_MANTENIMIENTO);
+        vehiculo.setEstado(new EstadoEnMantenimiento());
         return true;
     }
 
@@ -100,5 +100,9 @@ export default class Plataforma {
 
         return true;
     }
+
+
+    // MÉTODO crearReseva(...): Reserva => teniendo en cuenta EL PATRÓN FACADE
+    public crearReserva(idCliente)
 
 }

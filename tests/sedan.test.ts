@@ -1,10 +1,17 @@
+import { ITemporada } from "../src/Temporada/iTemporada";
 import Sedan from "../src/Vehiculo/sedan"
 
 describe("Test de la clase Sedan", () => {
   let sedan: Sedan;
+  let temporadaMock: jest.Mocked<ITemporada>;
 
   beforeEach(() => {
     sedan = new Sedan("ASD123", 50000);
+
+    temporadaMock = {
+      ajustar: jest.fn(),
+      getNombre: jest.fn()
+    };
   })
 
   it("Es una instancia de la clase Sedan", () => {
@@ -30,32 +37,32 @@ describe("Test de la clase Sedan", () => {
     expect(() => sedan.setKilometraje(75000)).toThrow("El kilometraje no puede ser menor al actual.");
   })
 
-  it('Debe cobrar por todos los kilómetros desde el primero', () => {
+  it("Debe cobrar por todos los kilómetros desde el primero", () => {
+    temporadaMock.ajustar.mockReturnValue(50); // (sin ajuste de temporada) => Temporada Media
     const dias = 3;
     const km = 100;
-    const tarifaBase = 50; // (sin ajuste de temporada) => Temporada Media
-    expect(sedan.calcularTarifaBase(dias, km, tarifaBase)).toBe(170);
+    expect(sedan.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(170);
   });
 
-  it('Debe aplicar cargo correcto con muchos kilómetros', () => {
+  it("Debe aplicar cargo correcto con muchos kilómetros", () => {
+    temporadaMock.ajustar.mockReturnValue(50);
     const dias = 5;
     const km = 500;
-    const tarifaBase = 50;
-    expect(sedan.calcularTarifaBase(dias, km, tarifaBase)).toBe(350);
+    expect(sedan.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(350);
   });
 
-  it('Debe aplicar tarifa base ajustada por Temporada Alta', () => {
+  it("Debe aplicar tarifa base ajustada por Temporada Alta", () => {
+    temporadaMock.ajustar.mockReturnValue(50 * 1.2); // Temporada Alta
     const dias = 3;
     const km = 200;
-    const tarifaAjustada = 50 * 1.2;
-    expect(sedan.calcularTarifaBase(dias, km, tarifaAjustada)).toBe(220);
+    expect(sedan.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(220);
   });
 
-  it('Debe aplicar tarifa base ajustada por Temporada Baja', () => {
+  it("Debe aplicar tarifa base ajustada por Temporada Baja", () => {
+    temporadaMock.ajustar.mockReturnValue(50 * 0.9);
     const dias = 3;
     const km = 200;
-    const tarifaAjustada = 50 * 0.9;
-    expect(sedan.calcularTarifaBase(dias, km, tarifaAjustada)).toBe(175);
+    expect(sedan.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(175);
   });
 
 })

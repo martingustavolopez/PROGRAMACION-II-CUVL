@@ -1,14 +1,21 @@
 import Compacto from "../src/Vehiculo/compacto"
 import EstadoDisponible from "../src/EstadoVehiculo/estadoDisponible";
+import { ITemporada } from "../src/Temporada/iTemporada";
 
 describe("Test de la clase Compacto", () => {
   let compacto: Compacto;
   let estadoInicial: EstadoDisponible;
+  let temporadaMock: jest.Mocked<ITemporada>;
 
   beforeEach(() => {
     compacto = new Compacto("TYU678", 10000);
     estadoInicial = new EstadoDisponible();
     compacto.setEstado(estadoInicial);
+
+    temporadaMock = {
+      ajustar: jest.fn(),
+      getNombre: jest.fn()
+    };
   })
 
   it("Es una instancia de la clase Compacto", () => {
@@ -35,38 +42,38 @@ describe("Test de la clase Compacto", () => {
   })
 
   it("Tarifa sin excedente si está dentro del límite por día (dentro del límite)", () => {
-   const dias = 3;
-   const km = 250;
-   const tarifaBase = 30; // (sin ajuste de temporada) => Temporada Media
-   expect(compacto.calcularTarifaBase(dias, km, tarifaBase)).toBe(90);
+    temporadaMock.ajustar.mockReturnValue(30); // (sin ajuste de temporada) => Temporada Media
+    const dias = 3;
+    const km = 250;
+   expect(compacto.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(90);
   })
 
   it("Tarifa con excedente si se supera el límite por día (excede el límite)", () => {
+    temporadaMock.ajustar.mockReturnValue(30); // (sin ajuste de temporada) => Temporada Media
     const dias = 3;
     const km = 350;
-    const tarifaBase = 30; // (sin ajuste de temporada) => Temporada Media
-    expect(compacto.calcularTarifaBase(dias, km, tarifaBase)).toBe(97.5);
+    expect(compacto.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(97.5);
   })
 
   it('Debe aplicar tarifa base ajustada por Temporada Alta', () => {
+    temporadaMock.ajustar.mockReturnValue(30 * 1.2); // Temporada Alta
     const dias = 3;
     const km = 250;
-    const tarifaAjustada = 30 * 1.2; // Temporada Alta
-    expect(compacto.calcularTarifaBase(dias, km, tarifaAjustada)).toBe(108);
+    expect(compacto.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(108);
   });
 
   test('Debe aplicar tarifa base ajustada por Temporada Baja', () => {
+    temporadaMock.ajustar.mockReturnValue(30 * 0.9); // Temporada Baja
     const dias = 3;
     const km = 250;
-    const tarifaAjustada = 30 * 0.9; // Temporada Baja
-    expect(compacto.calcularTarifaBase(dias, km, tarifaAjustada)).toBe(81);
+    expect(compacto.calcularTarifaConTemporada(dias, km, temporadaMock)).toBe(81);
   });
 
   it('Debe calcular correctamente con Temporada y km excedentes', () => {
     const dias = 3;
     const km = 400;
-    const tarifaAjustada = 30 * 1.2;
-    const tarifa = compacto.calcularTarifaBase(dias, km, tarifaAjustada);
+    temporadaMock.ajustar.mockReturnValue(30 * 1.2); // Temporada Alta
+    const tarifa = compacto.calcularTarifaConTemporada(dias, km, temporadaMock);
     expect(tarifa).toBe(123);
   });
 

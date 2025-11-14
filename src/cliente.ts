@@ -2,15 +2,15 @@ import Reserva from "./reserva";
 
 export default class Cliente {
 
+    private idCliente: number;
     private nombre: string;
-    private id: number;
     private reservas: Reserva[];
 
     constructor()
     constructor(nombre: string, id: number)
     constructor(nombre?: string, id?: number) {
         this.nombre = nombre ?? "";
-        this.id = id ?? 0;
+        this.idCliente = id ?? 0;
         this.reservas = [];
     }
 
@@ -19,7 +19,7 @@ export default class Cliente {
     }
 
     public getId(): number {
-        return this.id;
+        return this.idCliente;
     }
 
     public getReservas(): Reserva[] {
@@ -31,7 +31,7 @@ export default class Cliente {
     }
 
     public setId(id: number): void {
-        this.id = id;
+        this.idCliente = id;
     }
 
     public agregarReserva(reserva: Reserva): void {

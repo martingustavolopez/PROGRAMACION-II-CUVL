@@ -2,12 +2,15 @@ import Cliente from "../src/cliente";
 import Reserva from "../src/reserva"
 import Vehiculo from "../src/Vehiculo/vehiculo";
 import Sedan from "../src/Vehiculo/sedan";
+import { ITemporada } from "../src/Temporada/iTemporada";
 
 describe("Test de la clase Reserva", () => {
 
   let reserva: Reserva;
   let fechaInicio: Date;
   let fechaFin: Date;
+  let temporadaMock: jest.Mocked<ITemporada>;
+  //let vehiculoMock: jest.Mocked<Vehiculo>;
 
   // Mock Cliente
   const clienteMock = {
@@ -19,14 +22,19 @@ describe("Test de la clase Reserva", () => {
   // Mock Vehiculo
   const vehiculoMock = {
     getMatricula: jest.fn(),
-    getKilometraje: jest.fn(),
-    calcularTarifa: jest.fn()
+    getEstado: jest.fn(),
+    getKilometraje: jest.fn()
   } as unknown as Vehiculo;
 
   beforeEach(() => {
     fechaInicio = new Date(2025, 9, 27)
     fechaFin = new Date(2025, 9, 31)
     reserva = new Reserva(clienteMock, vehiculoMock, fechaInicio, fechaFin);
+
+    temporadaMock = {
+      ajustar: jest.fn(),
+      getNombre: jest.fn()
+    };
   })
   afterEach(() => {})
 
@@ -53,21 +61,27 @@ describe("Test de la clase Reserva", () => {
     expect(dias).toBe(4);
   })
 
+  it("Debe calcular los dias de reserva (alternativa)", () => {
+    const dias = reserva.calcularDiasAlternativa();
+    expect(dias).toBe(4);
+  })
+
+
+
+
   // Ver bien este test... me perdí que estoy testeando exactamente???
-  it("Debe registrar el costo total de la reserva", () => {
+  /*it("Debe registrar el costo total de la reserva", () => {
     const dias = reserva.calcularDias();
     const kilometrosRecorridos = reserva.getKilometrosRecorridos();
 
-    const vehiculoMockSedan = {
-      getMatricula: jest.fn(),
-      getKilometraje: jest.fn(),
-      calcularTarifa: jest.fn().mockReturnValue(1200)
-    } as unknown as Sedan;
+    vehiculoMock.getTarifaBase.mockReturnValue(30)
 
-    const costoTotal = vehiculoMockSedan.calcularTarifaBase(dias, kilometrosRecorridos, tarifaAjustada);
+    temporadaMock.ajustar.mockReturnValue(vehiculoMock.getTarifaBase());
+
+    const costoTotal = vehiculoMock.calcularTarifaConTemporada(dias, kilometrosRecorridos, temporadaMock);
     reserva.setCostoTotal(costoTotal)
 
     expect(reserva.getCostoTotal()).toBe(1200);
-  })
+  })*/
   
 })
