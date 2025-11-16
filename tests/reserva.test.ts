@@ -23,7 +23,8 @@ describe("Test de la clase Reserva", () => {
   const vehiculoMock = {
     getMatricula: jest.fn(),
     getEstado: jest.fn(),
-    getKilometraje: jest.fn()
+    getKilometraje: jest.fn(),
+    devolver: jest.fn()
   } as unknown as Vehiculo;
 
   beforeEach(() => {
@@ -48,7 +49,6 @@ describe("Test de la clase Reserva", () => {
     expect(reserva.getFechaDeInicio()).toBe(fechaInicio);
     expect(reserva.getFechaDeFin()).toBe(fechaFin);
     expect(reserva.getKilometrosRecorridos()).toBe(0);
-    expect(reserva.getCostoTotal()).toBe(0);
   })
 
   it("Debe registrar los kilometros recorridos correctamente", () => {
@@ -68,7 +68,7 @@ describe("Test de la clase Reserva", () => {
 
 
 
-
+  
   // Ver bien este test... me perdí que estoy testeando exactamente???
   /*it("Debe registrar el costo total de la reserva", () => {
     const dias = reserva.calcularDias();
@@ -83,5 +83,17 @@ describe("Test de la clase Reserva", () => {
 
     expect(reserva.getCostoTotal()).toBe(1200);
   })*/
+
+  it("Debe finalizar la reserva", () => {
+    expect(reserva.getFinalizada()).toBe(false);
+    reserva.setKilometrosRecorridos(5000);
+    reserva.finalizarReserva()
+    expect(() => reserva.finalizarReserva()).toThrow(
+      "La reserva está finalizada."
+    );
+    expect(() => reserva.finalizarReserva()).not.toThrow(
+      "El kilometraje no puede ser negativo o cero"
+    );
+  })
   
 })

@@ -13,8 +13,9 @@ export default class Reserva {
     private fechaDeInicio: Date
     private fechaDeFin: Date
     private kilometrosRecorridos: number;
-    private costoTotal: number
     private temporada: ITemporada;
+    
+    private finalizada: boolean; // Ver bien esto
 
     constructor(cliente: Cliente, vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date) {
         this.idReserva = "";
@@ -23,8 +24,9 @@ export default class Reserva {
         this.fechaDeInicio = fechaInicio;
         this.fechaDeFin = fechaFin;
         this.kilometrosRecorridos = 0;
-        this.costoTotal = 0;
         this.temporada = undefined as unknown as ITemporada;
+
+        this.finalizada = false;
     }
 
     public setIdReserva(value: string): void {
@@ -75,14 +77,6 @@ export default class Reserva {
         return this.kilometrosRecorridos;
     }
 
-    public setCostoTotal(value: number){
-        this.costoTotal = value;
-    }
-
-    public getCostoTotal(){
-        return this.costoTotal;
-    }
-
     
     public calcularDias(): number{
         const diferencia = this.getFechaDeFin().getTime() - this.getFechaDeInicio().getTime();
@@ -118,10 +112,31 @@ export default class Reserva {
     }
     
     public calcularCostoTotal(): number {
+        if (this.kilometrosRecorridos === 0) {
+            throw new Error("Debe registrar el kilometraje antes de calcular el costo");
+        }
         const dias = this.calcularDias();
         const kmRecorridos = this.getKilometrosRecorridos();
 
         return this.vehiculo.calcularTarifaConTemporada(dias, kmRecorridos, this.temporada);
     }
+
+    public getFinalizada(): boolean {
+        return this.finalizada;
+    }
+
+    public finalizarReserva(): void {
+        if (this.finalizada) {
+            throw new Error("La reserva está finalizada.");
+        }
+        if (this.kilometrosRecorridos <= 0) {
+            throw new Error("El kilometraje no puede ser negativo o cero");
+        }
+        
+        this.vehiculo.devolver(this.kilometrosRecorridos);
+        this.finalizada = true;
+    }
+
+
 
 }

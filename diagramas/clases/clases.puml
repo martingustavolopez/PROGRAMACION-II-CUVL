@@ -86,7 +86,6 @@ abstract class Vehiculo {
     # {abstract} calcularCargosPorKm(dias: number, kmRecorridos: number): number
 
     + calcularTarifaConTemporada(dias: number, kmRecorridos: number, temporada: ITemporada): number
-   
 }
 
 class Compacto {
@@ -95,7 +94,7 @@ class Compacto {
     - {static} KM_LIMITE_DIARIO: number = 100 
 
     + getTarifaBase(): number
-    + calcularTarifa(dias: number, kmRecorridos: number): number        
+    + calcularCargosPorKm(dias: number, kmRecorridos: number): number     
 }
 
 class Sedan {
@@ -103,9 +102,8 @@ class Sedan {
     - {static} CARGO_KM: number = 0.20
 
     + getTarifaBase(): number
-    + calcularTarifa(dias: number, kmRecorridos: number): number
+    + calcularCargosPorKm(dias: number, kmRecorridos: number): number
 }
-
 
 class SUV {
     - {static} TARIFA_BASE_DIA: number = 80
@@ -114,7 +112,7 @@ class SUV {
     - {static} KM_LIMITE_TOTAL: number = 500
 
     + getTarifaBase(): number
-    + calcularTarifa(dias: number, kmRecorridos: number): number
+    + calcularCargosPorKm(dias: number, kmRecorridos: number): number
 }
 
 class Cliente {
@@ -124,9 +122,10 @@ class Cliente {
 
     -- getters y setters --
     + getReservas(): Array<Reserva>
-    + agregarReserva(reserva: Reserva): void //opc.1
-    + crearReserva(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): Reserva //opc.2
 }
+'   ' Eliminar?? No lo debería tener la Plataforma? alguna opc.
+    '+ agregarReserva(reserva: Reserva): void //opc.1
+    '+ crearReserva(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): Reserva //opc.2
 
 class Reserva {
     - idReserva: number
@@ -135,33 +134,43 @@ class Reserva {
     - fechaDeInicio: Date
     - fechaDeFin: Date
     - kilometrosRecoridos: number
-    - costoTotal: number
-    - estrategia: VariableTemporada
+    - finalizada: boolean
+    - temporada: ITemporada
 
     -- getters y setters --
     + calcularDias(): number
+    + setKilometrosRecorridos(km: number): void
     + setEstrategiaTarifa(temporada: ITemporada): void
     + calcularCostoTotal(): number
+    + finalizarReserva(): void
+    + estaFinalizada(): boolean
+    + estaActiva(): boolean
 }
 
+' VER QUE PASA CON ESTA CLASE
 class Mantenimiento {
     - idMantenimiento: number;
     - fecha: Date;
     - costo: number;
     - descripcion: string;
-    
+    - vehiculo: Vehiculo
+
     constructor(fecha: Date, costo: number, descripcion: string)
     -- getters y setters --
+    + getCosto(): number
+    + getFecha(): Date
     + obtenerDetalles(): void
 }
 
+' FACADE ???
 class Plataforma {
     - vehiculos: Vehiculo[]
     - reservas: Reserva[]
     - clientes: Cliente[]
 
-    -- getters y setters --
+    - estadisticas: ServicioEstadistica
 
+    -- getters y setters --
     + agregarVehiculo(vehiculo: Vehiculo): void
     + buscarVehiculo(matricula: string): Vehiculo
     + agregarCliente(cliente: Cliente): void
@@ -170,6 +179,20 @@ class Plataforma {
     + crearReserva(idCliente: number, matricula: string, fechaInicio: Date, fechaFin: Date): Reserva
     + registrarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
 }
+
+class ServicioEstadistica {
+    - vehiculos: <Array>Vehiculo
+    - reservas: <Array>Reserva
+
+    + vehiculoMasAlquilado(fechaInicio: Date, fechaFin: Date): Vehiculo
+    + vehiculoMenosAlquilado(fechaInicio: Date, fechaFin: Date): Vehiculo
+    + vehiculoMasRentable(): Vehiculo
+    + vehiculoMenosRentable(): Vehiculo
+    + porcentajeDeOcupacionFlota(): number
+    + calcularRentabilidad(vehiculo: Vehiculo): number
+}
+
+' El método calcularRentabilidad(vehiculo: Vehiculo):number ver si es necesario. Para obtener la rentabildiad del vehiculo (ingresos por alquiler - costos de mantenimiento).
 
 ' Relaciones de herencia
 Vehiculo <|-- Compacto
@@ -194,5 +217,6 @@ ITemporada <|.. TemporadaMedia
 ITemporada <|.. TemporadaAlta
 
 Reserva *-- ITemporada
+Plataforma *-- ServicioEstadistica
 
 @enduml
