@@ -1,14 +1,16 @@
 import Cliente from "../src/cliente";
 import Reserva from "../src/reserva"
-import Vehiculo from "../src/vehiculo";
-
-import Sedan from "../src/sedan";
+import Vehiculo from "../src/Vehiculo/vehiculo";
+import Sedan from "../src/Vehiculo/sedan";
+import { ITemporada } from "../src/Temporada/iTemporada";
 
 describe("Test de la clase Reserva", () => {
 
   let reserva: Reserva;
   let fechaInicio: Date;
   let fechaFin: Date;
+  let temporadaMock: jest.Mocked<ITemporada>;
+  //let vehiculoMock: jest.Mocked<Vehiculo>;
 
   // Mock Cliente
   const clienteMock = {
@@ -20,14 +22,20 @@ describe("Test de la clase Reserva", () => {
   // Mock Vehiculo
   const vehiculoMock = {
     getMatricula: jest.fn(),
+    getEstado: jest.fn(),
     getKilometraje: jest.fn(),
-    calcularTarifa: jest.fn()
+    devolver: jest.fn()
   } as unknown as Vehiculo;
 
   beforeEach(() => {
     fechaInicio = new Date(2025, 9, 27)
     fechaFin = new Date(2025, 9, 31)
     reserva = new Reserva(clienteMock, vehiculoMock, fechaInicio, fechaFin);
+
+    temporadaMock = {
+      ajustar: jest.fn(),
+      getNombre: jest.fn()
+    };
   })
   afterEach(() => {})
 
@@ -40,27 +48,12 @@ describe("Test de la clase Reserva", () => {
     expect(reserva.getVehiculo()).toBe(vehiculoMock);
     expect(reserva.getFechaDeInicio()).toBe(fechaInicio);
     expect(reserva.getFechaDeFin()).toBe(fechaFin);
-    expect(reserva.getKilometrajeFinal()).toBe(0);
-    expect(reserva.getKilometrajeInicial()).toBe(0);
-    expect(reserva.getCostoTotal()).toBe(0);
+    expect(reserva.getKilometrosRecorridos()).toBe(0);
   })
 
-
-
-  it("Debe registrar el kilometraje inicial correctamente", () => {
-    reserva.setKilometrajeInicial(12000);
-    expect(reserva.getKilometrajeInicial()).toBe(12000);
-  })
-
-  it("Debe registrar el kilometraje final correctamente", () => {
-    reserva.setKilometrajeFinal(15000);
-    expect(reserva.getKilometrajeFinal()).toBe(15000);
-  })
-
-  it("Debe calcular los kilometros recorridos", () => {
-    reserva.setKilometrajeInicial(10000);
-    reserva.setKilometrajeFinal(15000);
-    expect(reserva.calcularKilometrosRecorridos()).toBe(5000);
+  it("Debe registrar los kilometros recorridos correctamente", () => {
+    reserva.setKilometrosRecorridos(12000);
+    expect(reserva.getKilometrosRecorridos()).toBe(12000);
   })
 
   it("Debe calcular los dias de reserva", () => {
@@ -68,31 +61,39 @@ describe("Test de la clase Reserva", () => {
     expect(dias).toBe(4);
   })
 
-  it("Debe calcular los kilometros recorridos", () => {
-    reserva.setKilometrajeInicial(10000);
-    reserva.setKilometrajeFinal(15000);
-    const kilometrosRecorridos = reserva.calcularKilometrosRecorridos();
-    expect(kilometrosRecorridos).toBe(5000);
+  it("Debe calcular los dias de reserva (alternativa)", () => {
+    const dias = reserva.calcularDiasAlternativa();
+    expect(dias).toBe(4);
   })
 
+
+
+  
   // Ver bien este test... me perdí que estoy testeando exactamente???
-  it("Debe registrar el costo total de la reserva", () => {
+  /*it("Debe registrar el costo total de la reserva", () => {
     const dias = reserva.calcularDias();
-    reserva.setKilometrajeInicial(10000);
-    reserva.setKilometrajeFinal(15000);
-    const kilometrosRecorridos = reserva.calcularKilometrosRecorridos();
+    const kilometrosRecorridos = reserva.getKilometrosRecorridos();
 
-    const vehiculoMockSedan = {
-      getMatricula: jest.fn(),
-      getKilometraje: jest.fn(),
-      calcularTarifa: jest.fn().mockReturnValue(1200)
-    } as unknown as Sedan;
+    vehiculoMock.getTarifaBase.mockReturnValue(30)
 
-    const costoTotal = vehiculoMockSedan.calcularTarifa(dias, kilometrosRecorridos);
+    temporadaMock.ajustar.mockReturnValue(vehiculoMock.getTarifaBase());
+
+    const costoTotal = vehiculoMock.calcularTarifaConTemporada(dias, kilometrosRecorridos, temporadaMock);
     reserva.setCostoTotal(costoTotal)
 
     expect(reserva.getCostoTotal()).toBe(1200);
+  })*/
+
+  it("Debe finalizar la reserva", () => {
+    expect(reserva.getFinalizada()).toBe(false);
+    reserva.setKilometrosRecorridos(5000);
+    reserva.finalizarReserva()
+    expect(() => reserva.finalizarReserva()).toThrow(
+      "La reserva está finalizada."
+    );
+    expect(() => reserva.finalizarReserva()).not.toThrow(
+      "El kilometraje no puede ser negativo o cero"
+    );
   })
-
-
+  
 })

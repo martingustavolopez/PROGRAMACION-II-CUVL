@@ -1,0 +1,222 @@
+@startuml
+
+title DriveHub - Diagrama de clases
+
+' PATRÓN DE DISEÑO - STATE
+interface IEstadoVehiculo {
+    getNombre(): string
+    reservar(vehiculo: Vehiculo): void
+    devolver(vehiculo: Vehiculo): void
+    puedeReservar(): boolean
+    enviarAMantenimineto(vehiculo: Vehiculo): void
+    completarMantenimiento(vehiculo: Vehiculo): void
+}
+
+class EstadoDisponible {
+    + getNombre(): string
+    + reservar(vehiculo: Vehiculo): void
+    + devolver(vehiculo: Vehiculo): void
+    + puedeReservar(): boolean
+    + enviarAMantenimineto(vehiculo: Vehiculo): void
+    + completarMantenimiento(vehiculo: Vehiculo): void
+}
+
+class EstadoEnMantenimiento {
+    + getNombre(): string
+    + reservar(vehiculo: Vehiculo): void
+    + devolver(vehiculo: Vehiculo): void
+    + puedeReservar(): boolean
+    + enviarAMantenimineto(vehiculo: Vehiculo): void
+    + completarMantenimiento(vehiculo: Vehiculo): void
+}
+
+class EstadoEnAlquiler {
+    + getNombre(): string
+    + reservar(vehiculo: Vehiculo): void
+    + devolver(vehiculo: Vehiculo): void
+    + puedeReservar(): boolean
+    + enviarAMantenimineto(vehiculo: Vehiculo): void
+    + completarMantenimiento(vehiculo: Vehiculo): void
+}
+
+' Tarifa Variable por Temporada (STRATEGY)
+interface ITemporada {
+    ajustar(tarifaBase: number): number
+    getNombre(): string
+}
+
+class TemporadaBaja {
+    + ajustar(tarifaBase: number): number
+    + getNombre(): string
+}
+
+class TemporadaMedia {
+    + ajustar(tarifaBase: number): number
+    + getNombre(): string
+}
+
+class TemporadaAlta {
+    + ajustar(tarifaBase: number): number
+    + getNombre(): string
+}
+
+abstract class Vehiculo {
+    - matricula: string
+    - estado: EstadoVehiculo
+    - kilometraje: number
+    - mantenimientos: Array<Mantenimiento>
+
+    'Disparadores de Mantenimiento
+    - kmDesdeUltimoMantenimiento: number
+    - fechaUltimoMantenimiento: Date
+    - alquileresDesdeUltimoMantenimiento: number
+    
+    constructor(matricula: string, kilometraje: number)
+    + getMantenimientos(): Mantenimiento[]
+
+    + agregarMantenimiento(mantenimiento: Mantenimiento): void
+    + necesitaMantenimiento(): boolean
+    + resetearContadoresMantenimiento(): void
+    + setEstado(nuevoEstado: EstadoVehiculo): void
+    + reservar(): void
+    + devolver(kilometros: number): void
+    + estaDisponible(): boolean
+    
+    + {abstract} getTarifaBase(): number
+    # {abstract} calcularCargosPorKm(dias: number, kmRecorridos: number): number
+
+    + calcularTarifaConTemporada(dias: number, kmRecorridos: number, temporada: ITemporada): number
+}
+
+class Compacto {
+    - {static} TARIFA_BASE_DIA: number = 30
+    - {static} CARGO_KM: number = 0.15
+    - {static} KM_LIMITE_DIARIO: number = 100 
+
+    + getTarifaBase(): number
+    + calcularCargosPorKm(dias: number, kmRecorridos: number): number     
+}
+
+class Sedan {
+    - {static} TARIFA_BASE_DIA: number = 50
+    - {static} CARGO_KM: number = 0.20
+
+    + getTarifaBase(): number
+    + calcularCargosPorKm(dias: number, kmRecorridos: number): number
+}
+
+class SUV {
+    - {static} TARIFA_BASE_DIA: number = 80
+    - {static} CARGO_SEGURO_DIA: number = 15
+    - {static} CARGO_KM: number = 0.25
+    - {static} KM_LIMITE_TOTAL: number = 500
+
+    + getTarifaBase(): number
+    + calcularCargosPorKm(dias: number, kmRecorridos: number): number
+}
+
+class Cliente {
+    - idCliente: number
+    - nombre: string
+    - reservas: Reserva []
+
+    -- getters y setters --
+    + getReservas(): Array<Reserva>
+}
+'   ' Eliminar?? No lo debería tener la Plataforma? alguna opc.
+    '+ agregarReserva(reserva: Reserva): void //opc.1
+    '+ crearReserva(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): Reserva //opc.2
+
+class Reserva {
+    - idReserva: number
+    - cliente: Cliente
+    - vehiculo: Vehiculo
+    - fechaDeInicio: Date
+    - fechaDeFin: Date
+    - kilometrosRecoridos: number
+    - finalizada: boolean
+    - temporada: ITemporada
+
+    -- getters y setters --
+    + calcularDias(): number
+    + setKilometrosRecorridos(km: number): void
+    + setEstrategiaTarifa(temporada: ITemporada): void
+    + calcularCostoTotal(): number
+    + finalizarReserva(): void
+    + estaFinalizada(): boolean
+    + estaActiva(): boolean
+}
+
+' VER QUE PASA CON ESTA CLASE
+class Mantenimiento {
+    - idMantenimiento: number;
+    - fecha: Date;
+    - costo: number;
+    - descripcion: string;
+    - vehiculo: Vehiculo
+
+    constructor(fecha: Date, costo: number, descripcion: string)
+    -- getters y setters --
+    + getCosto(): number
+    + getFecha(): Date
+    + obtenerDetalles(): void
+}
+
+' FACADE ???
+class Plataforma {
+    - vehiculos: Vehiculo[]
+    - reservas: Reserva[]
+    - clientes: Cliente[]
+
+    - estadisticas: ServicioEstadistica
+
+    -- getters y setters --
+    + agregarVehiculo(vehiculo: Vehiculo): void
+    + buscarVehiculo(matricula: string): Vehiculo
+    + agregarCliente(cliente: Cliente): void
+    + getVehiculosDisponibles(): Vehiculo[]
+    + validarDisponibilidad(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean
+    + crearReserva(idCliente: number, matricula: string, fechaInicio: Date, fechaFin: Date): Reserva
+    + registrarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
+}
+
+class ServicioEstadistica {
+    - vehiculos: <Array>Vehiculo
+    - reservas: <Array>Reserva
+
+    + vehiculoMasAlquilado(fechaInicio: Date, fechaFin: Date): Vehiculo
+    + vehiculoMenosAlquilado(fechaInicio: Date, fechaFin: Date): Vehiculo
+    + vehiculoMasRentable(): Vehiculo
+    + vehiculoMenosRentable(): Vehiculo
+    + porcentajeDeOcupacionFlota(): number
+    + calcularRentabilidad(vehiculo: Vehiculo): number
+}
+
+' El método calcularRentabilidad(vehiculo: Vehiculo):number ver si es necesario. Para obtener la rentabildiad del vehiculo (ingresos por alquiler - costos de mantenimiento).
+
+' Relaciones de herencia
+Vehiculo <|-- Compacto
+Vehiculo <|-- Sedan
+Vehiculo <|-- SUV
+
+' Relaciones de composición
+Vehiculo *-- Mantenimiento
+Cliente *-- Reserva
+Plataforma *-- Vehiculo
+Plataforma *-- Cliente
+Plataforma *-- Reserva
+
+
+Vehiculo o--> IEstadoVehiculo
+IEstadoVehiculo <|.. EstadoEnMantenimiento
+IEstadoVehiculo <|.. EstadoEnAlquiler
+IEstadoVehiculo <|.. EstadoDisponible
+
+ITemporada <|.. TemporadaBaja
+ITemporada <|.. TemporadaMedia
+ITemporada <|.. TemporadaAlta
+
+Reserva *-- ITemporada
+Plataforma *-- ServicioEstadistica
+
+@enduml

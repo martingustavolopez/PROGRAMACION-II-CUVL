@@ -1,9 +1,9 @@
 
 import Plataforma from "../src/plataforma";
-import Vehiculo from "../src/vehiculo";
-import Compacto from "../src/compacto";
-import Sedan from "../src/sedan";
-import Suv from "../src/suv";
+import Vehiculo from "../src/Vehiculo/vehiculo";
+import Compacto from "../src/Vehiculo/compacto";
+import Sedan from "../src/Vehiculo/sedan";
+import Suv from "../src/Vehiculo/suv";
 import Cliente from "../src/cliente";
 import { EstadoVehiculo } from "../src/estado_vehiculo";
 
