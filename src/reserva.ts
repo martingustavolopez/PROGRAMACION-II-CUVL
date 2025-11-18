@@ -14,103 +14,86 @@ export default class Reserva {
     private fechaDeFin: Date
     private kilometrosRecorridos: number;
     private temporada: ITemporada;
-    
-    private finalizada: boolean; // Ver bien esto
+    private finalizada: boolean;
 
-    constructor(cliente: Cliente, vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date) {
+    constructor(cliente: Cliente, vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date, estrategiaTemporada: ITemporada) {
         this.idReserva = "";
         this.cliente = cliente;
         this.vehiculo = vehiculo;
         this.fechaDeInicio = fechaInicio;
         this.fechaDeFin = fechaFin;
         this.kilometrosRecorridos = 0;
-        this.temporada = undefined as unknown as ITemporada;
-
+        this.temporada = estrategiaTemporada;
         this.finalizada = false;
     }
 
-    public setIdReserva(value: string): void {
-        this.idReserva = value;
-    }
-
+    // GETTERS
     public getIdReserva(): string {
         return this.idReserva;        
-    }
-
-    public setCliente(value: Cliente): void {
-        this.cliente = value;
     }
 
     public getCliente(): Cliente {
         return this.cliente;
     }
 
-    public setVehiculo(value: Vehiculo): void {
-        this.vehiculo = value;
-    }
-
     public getVehiculo(): Vehiculo {
         return this.vehiculo;
-    }
-
-    public setFechaDeInicio(value: Date){
-        this.fechaDeInicio = value;
     }
 
     public getFechaDeInicio(): Date{
         return this.fechaDeInicio;
     }
 
-    public setFechaDeFin(value: Date): void {
-        this.fechaDeFin = value;
-    }
-
     public getFechaDeFin(): Date {
         return this.fechaDeFin;
     }
-
-    public setKilometrosRecorridos(value: number): void {
-        this.kilometrosRecorridos = value;
-    }
-
+    
     public getKilometrosRecorridos(): number {
         return this.kilometrosRecorridos;
     }
 
-    
-    public calcularDias(): number{
-        const diferencia = this.getFechaDeFin().getTime() - this.getFechaDeInicio().getTime();
-        return diferencia / (1000 * 60 * 60 * 24)
+    public getEstrategiaTemporada(): ITemporada {
+        return this.temporada;
     }
     
-    public calcularDiasAlternativa(): number {
-        const milisegundosPorDia = 1000 * 60 * 60 * 24;
-        const diferenciaMiliSegundos = this.fechaDeFin.getTime()- this.fechaDeInicio.getTime();
-        return Math.ceil(diferenciaMiliSegundos / milisegundosPorDia);
+    public estaFinalizada(): boolean {
+        return this.finalizada;
     }
-    
-    
-    
-    
-    // Lógica
-    /*public obtenerTemporada(fechaInicio: Date): ITemporada {
-        const mes = fechaInicio.getMonth() + 1; // por que empieza desde el 0.
 
-        if (mes === 1 || mes === 2 || mes === 12) {
-            return new TemporadaAlta();
+    // SETTER
+    /**
+     * Setea el id de la reserva.
+     * @param value => id
+     */
+    public setIdReserva(id: string): void {
+        this.idReserva = id;
+    }
+    
+    /**
+     * Calcula la cantidad de días de la reserva.
+     * @returns devuelve cantidad de días.
+    */
+    public calcularDias(): number {
+       const milisegundosPorDia = 1000 * 60 * 60 * 24;
+       const diferenciaMiliSegundos = this.fechaDeFin.getTime()- this.fechaDeInicio.getTime();
+       return Math.ceil(diferenciaMiliSegundos / milisegundosPorDia);
+    }
+    
+    /**
+     * Registra los kilometros recorridos al finalizar el alquiler.
+     * @param km => kilometros recorridos
+     */
+    public setKilometrosRecorridos(km: number): void {
+        if (this.finalizada) {
+            throw new Error("No se puede modificar el kilometraje de una reserva finalizada");
         }
-
-        if (mes >= 6 && mes <= 8) {
-            return new TemporadaMedia();
-        }
-
-        return new TemporadaBaja();
-    }*/
-
-    public setEstrategiaTarifa(estrategia: ITemporada): void {
-        this.temporada = estrategia;
+        this.kilometrosRecorridos = km;
     }
     
+    /**
+     * Calcula el costo total de la reserva.
+     * @returns devuelve el costo total de la reserva
+     */
     public calcularCostoTotal(): number {
         if (this.kilometrosRecorridos === 0) {
             throw new Error("Debe registrar el kilometraje antes de calcular el costo");
@@ -120,23 +103,20 @@ export default class Reserva {
 
         return this.vehiculo.calcularTarifaConTemporada(dias, kmRecorridos, this.temporada);
     }
-
-    public getFinalizada(): boolean {
-        return this.finalizada;
-    }
-
+    
+    /**
+     * Finaliza la reserva y el vehiculo recibe los kilometros recorridos en el método devolver y cambia el estado.
+    */
     public finalizarReserva(): void {
         if (this.finalizada) {
             throw new Error("La reserva está finalizada.");
         }
-        if (this.kilometrosRecorridos <= 0) {
-            throw new Error("El kilometraje no puede ser negativo o cero");
+        if (this.kilometrosRecorridos === 0) {
+            throw new Error("Debe registrar el kilometraje antes de finalizar la reserva");
         }
         
         this.vehiculo.devolver(this.kilometrosRecorridos);
         this.finalizada = true;
     }
-
-
-
+    
 }
