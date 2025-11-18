@@ -1,3 +1,4 @@
+import EstadoDisponible from "../EstadoVehiculo/estadoDisponible";
 import { IEstadoVehiculo } from "../EstadoVehiculo/iestadoVehiculo";
 import Mantenimiento from "../mantenimiento";
 import { ITemporada } from "../Temporada/iTemporada";
@@ -17,12 +18,12 @@ export default abstract class Vehiculo {
     constructor(matricula: string, kilometraje: number)
     constructor(matricula?: string, kilometraje?: number) {
         this.matricula = matricula ?? "";
-        this.estado = undefined as unknown as IEstadoVehiculo;
+        this.estado = new EstadoDisponible();
         this.kilometraje = kilometraje ?? 0;
         this.mantenimientos = [];
 
         this.kmDesdeUltimoMantenimiento = 0
-        this.fechaUltimoMantenimiento = undefined as unknown as Date;
+        this.fechaUltimoMantenimiento = new Date();
         this.alquileresDesdeUltimoMantenimiento = 0;
     }
 
@@ -83,7 +84,7 @@ export default abstract class Vehiculo {
 
         // 2º Criterio - Han pasado 12 meses desde su último mantenimiento. (12 meses = 1 año) => (1 año = 365 dias)
         const milisegundosPorDia = 1000 * 60 * 60 * 24;
-        const diasDesdeMantenimiento = (Date.now() - this.fechaUltimoMantenimiento.getTime() / milisegundosPorDia);
+        const diasDesdeMantenimiento = (Date.now() - this.fechaUltimoMantenimiento.getTime()) / milisegundosPorDia;
         if (diasDesdeMantenimiento > 365) {
             return true;
         }
@@ -108,6 +109,9 @@ export default abstract class Vehiculo {
     }
 
     public devolver(kilometros: number): void {
+        if (kilometros < 0) {
+            throw new Error("El kilometraje no puede ser negativo");
+        }
         this.kilometraje += kilometros; // Sumar kilómetros al kilometraje total del vehiculo
         this.kmDesdeUltimoMantenimiento += kilometros;
         this.alquileresDesdeUltimoMantenimiento++;
