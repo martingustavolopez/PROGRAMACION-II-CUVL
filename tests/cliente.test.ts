@@ -3,6 +3,27 @@ import Reserva from "../src/reserva";
 
 describe("Test de la clase Cliente", () => {
 
+  let reservaMock1: jest.Mocked<Reserva>;
+  let reservaMock2: jest.Mocked<Reserva>;
+  let cliente: Cliente;
+
+  beforeEach(() => {
+    cliente = new Cliente("Juan", 44);
+
+    reservaMock1 = { } as unknown as jest.Mocked<Reserva>
+    reservaMock2 = { } as unknown as jest.Mocked<Reserva>
+  })
+
+  it("Debe ser una instancia de cliente", () => {
+    expect(cliente).toBeInstanceOf(Cliente);
+  })
+
+  it("Debe crear un cliente con los valores iniciales", () => {
+    expect(cliente.getNombre()).toBe("Juan");
+    expect(cliente.getId()).toBe(44);
+    expect(cliente.getReservas()).toEqual([]);
+  })
+
   it("Debe crear un cliente vacío, sin pasar parámetros", () => {
     const cliente = new Cliente();
 
@@ -11,27 +32,14 @@ describe("Test de la clase Cliente", () => {
     expect(cliente.getReservas()).toEqual([]);
   })
 
-  it("Debe crear un cliente pasando el nombre y el id por parámetros", () => {
-    const cliente = new Cliente("Juan", 1);
-    
-    expect(cliente.getNombre()).toBe("Juan");
-    expect(cliente.getId()).toBe(1);
-    expect(cliente.getReservas()).toEqual([]);
-  })
-
   it("Debe obtener una copia del array de reservas", () => {
-    const cliente = new Cliente("Alan", 2);
-    const reservaMock = { } as unknown as Reserva;
-    cliente.agregarReserva(reservaMock);
-
+    const cliente = new Cliente("Alan", 22);
+    cliente.agregarReserva(reservaMock1);
     expect(cliente.getReservas().length).toBe(1);
   })
 
   it("Debe retornar todas las reservas agregadas", () => {
-    const cliente = new Cliente("Lucas", 3);
-    const reservaMock1 = { } as unknown as Reserva;
-    const reservaMock2 = { } as unknown as Reserva;
-    
+    const cliente = new Cliente("Lucas", 33);
     cliente.agregarReserva(reservaMock1);
     cliente.agregarReserva(reservaMock2);
 
@@ -39,10 +47,16 @@ describe("Test de la clase Cliente", () => {
     expect(cliente.getReservas().length).toBe(2);
   })
 
-  it("Debe actualizar el nombre del cliente", () => {
+  it("Debe setear el nombre del cliente", () => {
     const cliente = new Cliente();
-    cliente.setNombre("Carlos Garcia");
-    expect(cliente.getNombre()).toBe("Carlos Garcia");
+    cliente.setNombre("Carlos");
+    expect(cliente.getNombre()).toBe("Carlos");
+  })
+
+  it("Debe setear el id del cliente", () => {
+    const cliente = new Cliente();
+    cliente.setId(88);
+    expect(cliente.getId()).toBe(88);
   })
 
 })

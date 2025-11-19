@@ -29,7 +29,7 @@ describe("Test clase Plataforma", () => {
 
     it("Debe agregar un Cliente de forma correcta", () => {
         const plataforma = new Plataforma();
-        const cliente = new Cliente("Martin", 25, "martingustavolopez@gmail.com");
+        const cliente = new Cliente("Martin", 25);
 
         plataforma.agregarCliente(cliente)
 
