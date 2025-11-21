@@ -7,7 +7,7 @@ import Vehiculo from "../src/Vehiculo/vehiculo";
 
 export default class Reserva {
 
-    private idReserva: string;
+    private idReserva: number;
     private cliente: Cliente;
     private vehiculo: Vehiculo;
     private fechaDeInicio: Date
@@ -16,19 +16,19 @@ export default class Reserva {
     private temporada: ITemporada;
     private finalizada: boolean;
 
-    constructor(cliente: Cliente, vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date, estrategiaTemporada: ITemporada) {
-        this.idReserva = "";
+    constructor(idReserva: number, cliente: Cliente, vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date, temporada: ITemporada) {
+        this.idReserva = 0;
         this.cliente = cliente;
         this.vehiculo = vehiculo;
         this.fechaDeInicio = fechaInicio;
         this.fechaDeFin = fechaFin;
         this.kilometrosRecorridos = 0;
-        this.temporada = estrategiaTemporada;
+        this.temporada = temporada;
         this.finalizada = false;
     }
 
     // GETTERS
-    public getIdReserva(): string {
+    public getIdReserva(): number {
         return this.idReserva;        
     }
 
@@ -65,7 +65,7 @@ export default class Reserva {
      * Setea el id de la reserva.
      * @param value => id
      */
-    public setIdReserva(id: string): void {
+    public setIdReserva(id: number): void {
         this.idReserva = id;
     }
     

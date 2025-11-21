@@ -11,6 +11,7 @@ describe("Test de la clase Reserva", () => {
   let fechaFin: Date;
   let temporadaMock: jest.Mocked<ITemporada>;
   let reserva: Reserva;
+  let idReserva: number = 0;
 
   beforeEach(() => {
     clienteMock = jest.mocked(new Cliente());
@@ -27,7 +28,7 @@ describe("Test de la clase Reserva", () => {
       getNombre: jest.fn()
     } as jest.Mocked<ITemporada>
 
-    reserva = new Reserva(clienteMock, vehiculoMock, fechaInicio, fechaFin, temporadaMock);
+    reserva = new Reserva(idReserva, clienteMock, vehiculoMock, fechaInicio, fechaFin, temporadaMock);
   })
   afterEach(() => {})
 
@@ -36,7 +37,7 @@ describe("Test de la clase Reserva", () => {
   })
 
   it("Debe crear una Reserva con los valores iniciales", () => {
-    expect(reserva.getIdReserva()).toBe("");
+    expect(reserva.getIdReserva()).toBe(0);
     expect(reserva.getCliente()).toBe(clienteMock);
     expect(reserva.getVehiculo()).toBe(vehiculoMock);
     expect(reserva.getFechaDeInicio()).toBe(fechaInicio);
@@ -47,8 +48,8 @@ describe("Test de la clase Reserva", () => {
   })
 
   it("Debe setear el id de la Reserva", () => {
-    reserva.setIdReserva("R-1");
-    expect(reserva.getIdReserva()).toBe("R-1");
+    reserva.setIdReserva(1);
+    expect(reserva.getIdReserva()).toBe(1);
   })
 
   // CALCULAR DIAS
