@@ -12,12 +12,14 @@ export default class Plataforma {
     private reservas: Reserva[];
     private clientes: Cliente[];
     private estadisticas: ServicioEstadisticas;
+    private contadorIdReserva: number;
 
     constructor(){
         this.vehiculos = [];
         this.reservas = [];
         this.clientes = [];
         this.estadisticas = new ServicioEstadisticas(this.vehiculos, this.reservas);
+        this.contadorIdReserva = 0;
     }
 
     // Getters
@@ -97,8 +99,12 @@ export default class Plataforma {
     }
 
     private generarIdReserva(): number {
-        return this.reservas.length > 0 ? Math.max(...this.reservas.map(r => r.getIdReserva())) + 1 : 1; 
+        this.contadorIdReserva++;
+        return this.contadorIdReserva;
     }
+    /*private generarIdReserva(): number {
+        return this.reservas.length > 0 ? Math.max(...this.reservas.map(r => r.getIdReserva())) + 1 : 1; 
+    }*/
 
     // Gestión de Mantenimiento
     public registrarMantenimiento(matricula: string, mantenimiento: Mantenimiento): boolean {

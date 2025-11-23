@@ -4,6 +4,13 @@ import ServicioEstadisticas from "../src/Estadistica/servicioEstadisticas";
 import Reserva from "../src/reserva";
 import { ITemporada } from "../src/Temporada/iTemporada";
 import Cliente from "../src/cliente";
+import Mantenimiento from "../src/mantenimiento";
+
+jest.mock("../src/Vehiculo/vehiculo");
+jest.mock("../src/cliente");
+jest.mock("../src/reserva");
+jest.mock("../src/Estadistica/servicioEstadisticas");
+jest.mock("../src/mantenimiento");
 
 describe("Test clase Plataforma", () => {
 
@@ -14,6 +21,8 @@ describe("Test clase Plataforma", () => {
     let reservaMock: jest.Mocked<Reserva>;
     let temporadaMock: jest.Mocked<ITemporada>;
     let estadisticasMock: jest.Mocked<ServicioEstadisticas>;
+
+    let mantenimientoMock: jest.Mocked<Mantenimiento>;
 
     beforeEach(() => {
         jest.clearAllMocks();
@@ -34,7 +43,7 @@ describe("Test clase Plataforma", () => {
         } as unknown as jest.Mocked<Cliente>;
 
         reservaMock = {
-            getIdReserva: jest.fn().mockReturnValue(1),
+            getIdReserva: jest.fn(),
             getCliente: jest.fn().mockReturnValue(clienteMock),
             getVehiculo: jest.fn().mockReturnValue(vehiculoMock),
             getFechaDeInicio: jest.fn(),
@@ -52,6 +61,10 @@ describe("Test clase Plataforma", () => {
             vehiculoMenosRentable: jest.fn().mockReturnValue(vehiculoMock),
             porcentajeDeOcupacionFlota: jest.fn().mockReturnValue(75)
         } as unknown as jest.Mocked<ServicioEstadisticas>;
+
+        mantenimientoMock = { } as unknown as jest.Mocked<Mantenimiento>;
+
+        (Reserva as jest.MockedClass<typeof Reserva>).mockImplementation(() => reservaMock);
     })
 
     it("Debe ser una instancia de plataforma", () => {
@@ -189,12 +202,68 @@ describe("Test clase Plataforma", () => {
     })
 
     // FALTAN ALGUNOS DE ACA EN EL MEDIO
+    it("Deben generarse id de reservas de forma incremental", () => {
+        reservaMock.getIdReserva.mockReturnValue(1);
+
+        plataforma.agregarCliente(clienteMock);
+        plataforma.agregarVehiculo(vehiculoMock);
+
+        let vehiculoMockNuevo: jest.Mocked<Vehiculo>;
+        vehiculoMockNuevo = {
+            getMatricula: jest.fn().mockReturnValue("NMD810"),
+            estaDisponible: jest.fn().mockReturnValue(true),
+            reservar: jest.fn(),
+            agregarMantenimiento: jest.fn(),
+            setEstado: jest.fn()
+        } as unknown as jest.Mocked<Vehiculo>;
+
+        let reservaMockNueva: jest.Mocked<Reserva>;
+        reservaMockNueva = {
+            getIdReserva: jest.fn().mockReturnValue(2),
+            getCliente: jest.fn().mockReturnValue(clienteMock),
+            getVehiculo: jest.fn().mockReturnValue(vehiculoMockNuevo),
+            getFechaDeInicio: jest.fn(),
+            getFechaDeFin: jest.fn(),
+        } as unknown as jest.Mocked<Reserva>;
+
+        (Reserva as jest.MockedClass<typeof Reserva>)
+        .mockImplementationOnce(() => reservaMock)
+        .mockImplementationOnce(() => reservaMockNueva);
+
+        const fechaInicio = new Date(2025, 11, 3);
+        const fechaFin = new Date(2025, 11, 10);
+
+        plataforma.crearReserva(1, "MND231", fechaInicio, fechaFin, temporadaMock);
+        expect(Reserva).toHaveBeenNthCalledWith(
+            1, // Primera llamada
+            1, clienteMock, vehiculoMock, fechaInicio, fechaFin, temporadaMock
+        );
+
+        plataforma.agregarVehiculo(vehiculoMockNuevo);
+        expect(plataforma.getVehiculos()).toHaveLength(2);
+        
+        const fechaInicioNueva = new Date(2025, 11, 13);
+        const fechaFinNueva = new Date(2025, 11, 18);
+        plataforma.crearReserva(1, "NMD810", fechaInicioNueva, fechaFinNueva, temporadaMock);
+        expect(Reserva).toHaveBeenNthCalledWith(
+            2, // Segunda llamada
+            2, clienteMock, vehiculoMockNuevo, fechaInicioNueva, fechaFinNueva, temporadaMock
+        );
+
+    })
 
 
+    // Gestión de Mantenimiento
+    it("Debe registrar el mantenimiento de forma correcta", () => {
+        plataforma.agregarVehiculo(vehiculoMock);
+        expect(plataforma.registrarMantenimiento("MND231", mantenimientoMock)).toBe(true);
+        expect(vehiculoMock.setEstado).toHaveBeenCalled();
+    })
 
-
-
-
+    it("Debe devoler false si el vehículo no existe", () => {
+        expect(plataforma.registrarMantenimiento("ABC123", mantenimientoMock)).toBe(false);
+        expect(vehiculoMock.agregarMantenimiento).not.toHaveBeenCalled();
+    })
 
     // Estadisticas
     it("Debe obtener el vehículo más alquilado", () => {

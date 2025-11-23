@@ -1,8 +1,5 @@
 import Cliente from "./cliente";
 import { ITemporada } from "./Temporada/iTemporada";
-import TemporadaAlta from "./Temporada/temporadaAlta";
-import TemporadaBaja from "./Temporada/temporadaBaja";
-import TemporadaMedia from "./Temporada/temporadaMedia";
 import Vehiculo from "../src/Vehiculo/vehiculo";
 
 export default class Reserva {
@@ -59,15 +56,6 @@ export default class Reserva {
     public estaFinalizada(): boolean {
         return this.finalizada;
     }
-
-    // SETTER
-    /**
-     * Setea el id de la reserva.
-     * @param value => id
-     */
-    public setIdReserva(id: number): void {
-        this.idReserva = id;
-    }
     
     /**
      * Calcula la cantidad de días de la reserva.
@@ -84,6 +72,9 @@ export default class Reserva {
      * @param km => kilometros recorridos
      */
     public setKilometrosRecorridos(km: number): void {
+        if (km <= 0) {
+            throw new Error("Los kilometros recorridos deben ser mayores a cero");
+        }
         if (this.finalizada) {
             throw new Error("No se puede modificar el kilometraje de una reserva finalizada");
         }
