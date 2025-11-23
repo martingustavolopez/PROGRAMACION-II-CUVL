@@ -1,0 +1,26 @@
+@startuml
+
+title Crear Reserva - Plataforma
+
+Plataforma -> Reserva: crearReserva(idCliente, matricula, fechaInicio, fechaFin, temporada)
+
+Plataforma -> Cliente: buscarCliente(idCliente)
+Plataforma <-- Cliente: cliente
+
+Plataforma -> Vehiculo: buscarVehiculo(matricula)
+Plataforma <-- Vehiculo: vehiculo
+
+Plataforma -> Plataforma: validarDisponibilidad(vehiculo, fechaInicio, fechaFin)
+
+Plataforma -> Plataforma: generarIdReserva()
+
+Plataforma -> Reserva: new Reserva(idReserva, cliente, vehiculo, fechaInicio, fechaFin, temporada)
+Plataforma <- Reserva: reserva
+
+Plataforma -> Cliente: agregarReserva(reserva)
+
+Plataforma -> Vehiculo: reservar()
+
+Plataforma <-- Reserva: reserva creada
+
+@enduml

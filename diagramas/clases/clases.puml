@@ -140,7 +140,6 @@ class Reserva {
     -- getters y setters --
     + calcularDias(): number
     + setKilometrosRecorridos(km: number): void
-    + setEstrategiaTarifa(temporada: ITemporada): void
     + calcularCostoTotal(): number
     + finalizarReserva(): void
     + estaFinalizada(): boolean
@@ -167,17 +166,24 @@ class Plataforma {
     - vehiculos: Vehiculo[]
     - reservas: Reserva[]
     - clientes: Cliente[]
-
     - estadisticas: ServicioEstadistica
 
     -- getters y setters --
     + agregarVehiculo(vehiculo: Vehiculo): void
     + buscarVehiculo(matricula: string): Vehiculo
-    + agregarCliente(cliente: Cliente): void
     + getVehiculosDisponibles(): Vehiculo[]
-    + validarDisponibilidad(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean
+    + agregarCliente(cliente: Cliente): void
+    + buscarCliente(idCliente: number): Cliente
     + crearReserva(idCliente: number, matricula: string, fechaInicio: Date, fechaFin: Date): Reserva
+    - generarIdReserva(): number
     + registrarMantenimiento(vehiculo: Vehiculo, mantenimiento: Mantenimiento): void
+    + validarDisponibilidad(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean
+
+    + getVehiculoMasAlquilado(fechaInicio: Date, fechaFin: Date): Vehiculo
+    + getVehiculoMenosAlquilado(fechaInicio: Date, fechaFin: Date): Vehiculo
+    + getVehiculoMasRentable(): Vehiculo
+    + getVehiculoMenosRentable(): Vehiculo
+    + getPorcentajeOcupacionFlota(): number
 }
 
 class ServicioEstadistica {
