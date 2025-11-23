@@ -37,7 +37,7 @@ describe("Test de la clase Reserva", () => {
   })
 
   it("Debe crear una Reserva con los valores iniciales", () => {
-    expect(reserva.getIdReserva()).toBe(0);
+    expect(reserva.getIdReserva()).toBe(idReserva);
     expect(reserva.getCliente()).toBe(clienteMock);
     expect(reserva.getVehiculo()).toBe(vehiculoMock);
     expect(reserva.getFechaDeInicio()).toBe(fechaInicio);

@@ -1,88 +1,234 @@
-
 import Plataforma from "../src/plataforma";
 import Vehiculo from "../src/Vehiculo/vehiculo";
-import Compacto from "../src/Vehiculo/compacto";
-import Sedan from "../src/Vehiculo/sedan";
-import Suv from "../src/Vehiculo/suv";
+import ServicioEstadisticas from "../src/Estadistica/servicioEstadisticas";
+import Reserva from "../src/reserva";
+import { ITemporada } from "../src/Temporada/iTemporada";
 import Cliente from "../src/cliente";
-import { EstadoVehiculo } from "../src/estado_vehiculo";
 
 describe("Test clase Plataforma", () => {
 
-    it("Debe inicializar arrays vacios al crear el sistema", () => {
-        const plataforma = new Plataforma();
+    let plataforma: Plataforma;
 
-        expect(plataforma.getVehiculos().length).toEqual(0);
-        expect(plataforma.getClientes().length).toEqual(0);
-        expect(plataforma.getReservas().length).toEqual(0);
-    });
+    let vehiculoMock: jest.Mocked<Vehiculo>;
+    let clienteMock: jest.Mocked<Cliente>
+    let reservaMock: jest.Mocked<Reserva>;
+    let temporadaMock: jest.Mocked<ITemporada>;
+    let estadisticasMock: jest.Mocked<ServicioEstadisticas>;
 
-    it("Debe agregar Vehiculo de forma correcta", () => {
-        const plataforma = new Plataforma();
-        const vehiculo = new Compacto("AD123BC", 10000);
+    beforeEach(() => {
+        jest.clearAllMocks();
 
-        plataforma.agregarVehiculo(vehiculo);
+        plataforma = new Plataforma();
 
-        expect(plataforma.getVehiculos().length).toEqual(1);
+        vehiculoMock = {
+            getMatricula: jest.fn().mockReturnValue("MND231"),
+            estaDisponible: jest.fn().mockReturnValue(true),
+            reservar: jest.fn(),
+            agregarMantenimiento: jest.fn(),
+            setEstado: jest.fn()
+        } as unknown as jest.Mocked<Vehiculo>;
 
-    });
+        clienteMock = {
+            getId: jest.fn().mockReturnValue(1),
+            agregarReserva: jest.fn()
+        } as unknown as jest.Mocked<Cliente>;
 
-    it("Debe agregar un Cliente de forma correcta", () => {
-        const plataforma = new Plataforma();
-        const cliente = new Cliente("Martin", 25);
+        reservaMock = {
+            getIdReserva: jest.fn().mockReturnValue(1),
+            getCliente: jest.fn().mockReturnValue(clienteMock),
+            getVehiculo: jest.fn().mockReturnValue(vehiculoMock),
+            getFechaDeInicio: jest.fn(),
+            getFechaDeFin: jest.fn(),
+        } as unknown as jest.Mocked<Reserva>;
 
-        plataforma.agregarCliente(cliente)
+        temporadaMock = {
+            calcularPrecio: jest.fn().mockReturnValue(100),
+        } as unknown as jest.Mocked<ITemporada>;
 
-        expect(plataforma.getClientes().length).toEqual(1);
-    });
+        estadisticasMock = {
+            vehiculoMasAlquilado: jest.fn().mockReturnValue(vehiculoMock),
+            vehiculoMenosAlquilado: jest.fn().mockReturnValue(vehiculoMock),
+            vehiculoMasRentable: jest.fn().mockReturnValue(vehiculoMock),
+            vehiculoMenosRentable: jest.fn().mockReturnValue(vehiculoMock),
+            porcentajeDeOcupacionFlota: jest.fn().mockReturnValue(75)
+        } as unknown as jest.Mocked<ServicioEstadisticas>;
+    })
 
-    it("Debe buscar un Vehiculo de forma correcta", () => {
-        const plataforma = new Plataforma();
-        const vehiculo = new Compacto("AD123BC", 10000);
+    it("Debe ser una instancia de plataforma", () => {
+        expect(plataforma).toBeInstanceOf(Plataforma);
+    })
 
-        plataforma.agregarVehiculo(vehiculo);
+    it("Debe crear una Reserva con los valores iniciales", () => {
+        expect(plataforma.getVehiculos()).toEqual([]);
+        expect(plataforma.getReservas()).toEqual([]);
+        expect(plataforma.getClientes()).toEqual([]);
+    })
 
-        const vehiculoEncontrado = plataforma.buscarVehiculo("AD123BC");
+    // Ver bien cómo manejar el tema de estadisticas.
+    it("Debe crear instancia de ServicioEstadisticas", () => {
+        expect(plataforma.getEstadisticas()).toBeDefined();
+    })
 
-        expect(vehiculoEncontrado).not.toBeNull();
-        expect(vehiculoEncontrado?.getMatricula()).toEqual("AD123BC");
-    });
+    // Gestión de Vehículos
+    it("Debe agregar un vehículo de forma correcta", () => {
+        plataforma.agregarVehiculo(vehiculoMock);
+        expect(plataforma.getVehiculos()).toHaveLength(1);
+        expect(plataforma.getVehiculos()[0]).toBe(vehiculoMock);
+    })
 
-    it("Debe mostrar los Vehiculos Disponibles", () => {
-        const plataforma = new Plataforma();
-        const vehiculoCompacto = new Compacto("AA123BC", 10000)
-        const vehiculoSedan = new Sedan("AB456BC", 20000)
-        const vehiculoSuv = new Suv("AC789BC", 30000)
+    it("Debe lanzar un error si el vehículo con esa matrícula ya existe", () => {
+        plataforma.agregarVehiculo(vehiculoMock);
+        expect(() => {
+            plataforma.agregarVehiculo(vehiculoMock);
+        }).toThrow(`Ya existe un vehículo con la matrícula ${vehiculoMock.getMatricula()}`)
+    })
 
-        plataforma.agregarVehiculo(vehiculoCompacto);
-        plataforma.agregarVehiculo(vehiculoSedan);
-        plataforma.agregarVehiculo(vehiculoSuv);
+    it("Debe buscar el vehículo por su matrícula de forma correcta", () => {
+        plataforma.agregarVehiculo(vehiculoMock);
+        expect(plataforma.buscarVehiculo("MND231")).toBe(vehiculoMock);
+    })
 
-        vehiculoCompacto.setEstado(EstadoVehiculo.EN_MANTENIMIENTO);
+    it("Debe devolver null si no existe el vehículo con esa matrícula", () => {
+        expect(plataforma.buscarVehiculo("ABC123")).toBeNull();
+    })
 
-        const vehiculosDisponibles = plataforma.getVehiculosDisponibles();
+    it("Debe devolver solo vehículos disponibles", () => {
+        let vehiculoMock2: jest.Mocked<Vehiculo>;
+        vehiculoMock2 = {
+            getMatricula: jest.fn().mockReturnValue("NMI937"),
+            estaDisponible: jest.fn().mockReturnValue(false),
+        } as unknown as jest.Mocked<Vehiculo>;
 
-        expect(vehiculosDisponibles).not.toBeNull();
-        expect(vehiculosDisponibles.length).toEqual(2);
+        plataforma.agregarVehiculo(vehiculoMock);
+        plataforma.agregarVehiculo(vehiculoMock2);
+        expect(plataforma.getVehiculosDisponibles()).toHaveLength(1);
+        expect(plataforma.getVehiculosDisponibles()[0]).toBe(vehiculoMock);
+    })
 
-    });
+    it("Debe devoler un array vacío si no hay vehículos disponibles", () => {
+        vehiculoMock.estaDisponible.mockReturnValue(false);
+        plataforma.agregarVehiculo(vehiculoMock);
+        expect(plataforma.getVehiculosDisponibles()).toEqual([]);
+    })
 
-    it("Debe registrar mantenimiento correctamente", () => {
-        const sistema = new Plataforma();
-        const vehiculo = new Compacto("ABC123", 1000);
-        sistema.agregarVehiculo(vehiculo);
-        
-        // terminar test de mantenimiento
-        
-    });
+    // Gestión de Clientes
+    it("Debe agregar un cliente de forma correcta", () => {
+        plataforma.agregarCliente(clienteMock);
+        expect(plataforma.getClientes()).toHaveLength(1);
+        expect(plataforma.getClientes()[0]).toBe(clienteMock);
+    })
+
+    it("Debe lanzar un error si el cliente con ese id ya existe", () => {
+        plataforma.agregarCliente(clienteMock);
+        expect(() => {
+            plataforma.agregarCliente(clienteMock);
+        }).toThrow(`Ya existe un cliente con el id ${clienteMock.getId()}`)
+    })
+    
+    it("Debe buscar el cliente por el id de forma correcta", () => {
+        plataforma.agregarCliente(clienteMock);
+        expect(plataforma.buscarCliente(1)).toBe(clienteMock);
+    })
+
+    it("Debe devolver null si no existe el cliente con ese id", () => {
+        expect(plataforma.buscarCliente(11)).toBeNull();
+    })
+
+    // Gestión de Reservas
+    it("Debe crear una reserva de forma correcta", () => {
+        plataforma.agregarCliente(clienteMock);
+        plataforma.agregarVehiculo(vehiculoMock);
+        const fechaInicio = new Date(2025, 11, 3);
+        const fechaFin = new Date(2025, 11, 10);
+
+        plataforma.crearReserva(1, "MND231", fechaInicio, fechaFin, temporadaMock);
+        expect(plataforma.getReservas()).toHaveLength(1);
+        expect(clienteMock.agregarReserva).toHaveBeenCalled();
+        expect(vehiculoMock.reservar).toHaveBeenCalled();
+    })
+
+    it("NO debe poder crear la reserva si el cliente no exise, lanza error", () => {
+        plataforma.agregarCliente(clienteMock);
+        plataforma.agregarVehiculo(vehiculoMock);
+        const fechaInicio = new Date(2025, 11, 3);
+        const fechaFin = new Date(2025, 11, 10);
+        expect(() => {
+            plataforma.crearReserva(11, "MND231", fechaInicio, fechaFin, temporadaMock);
+        }).toThrow(`Cliente con ID 11 no encontrado`);
+    })
+
+    it("NO debe poder crear la reserva si el vehiculo no exise, lanza error", () => {
+        plataforma.agregarCliente(clienteMock);
+        plataforma.agregarVehiculo(vehiculoMock);
+        const fechaInicio = new Date(2025, 11, 3);
+        const fechaFin = new Date(2025, 11, 10);
+        expect(() => {
+            plataforma.crearReserva(1, "XVT123", fechaInicio, fechaFin, temporadaMock);
+        }).toThrow(`Vehículo con matrícula XVT123 no encontrado`);
+    })
+
+    it("NO debe poder crear la reserva si el vehiculo no esta disponible, lanza error", () => {
+        plataforma.agregarCliente(clienteMock);
+        plataforma.agregarVehiculo(vehiculoMock);
+        vehiculoMock.estaDisponible.mockReturnValue(false);
+        const fechaInicio = new Date(2025, 11, 3);
+        const fechaFin = new Date(2025, 11, 10);
+        expect(() => {
+            plataforma.crearReserva(1, "MND231", fechaInicio, fechaFin, temporadaMock);
+        }).toThrow(`Vehículo ${vehiculoMock.getMatricula()} no disponible para las fechas solicitadas`);
+    })
+
+    it("NO debe poder crear la reserva si la fecha inicio es mayor o igual que la de fin, lanza error", () => {
+        plataforma.agregarCliente(clienteMock);
+        plataforma.agregarVehiculo(vehiculoMock);
+        const fechaInicio = new Date(2025, 11, 13);
+        const fechaFin = new Date(2025, 11, 10);
+        expect(() => {
+            plataforma.crearReserva(1, "MND231", fechaInicio, fechaFin, temporadaMock);
+        }).toThrow("La fecha de inicio debe ser anterior a la fecha de fin");
+    })
+
+    // FALTAN ALGUNOS DE ACA EN EL MEDIO
 
 
 
-    it("Debe validar disponibilidad de forma correcta")
 
 
 
 
+    // Estadisticas
+    it("Debe obtener el vehículo más alquilado", () => {
+        plataforma.setEstadisticas(estadisticasMock);
+        const fechaInicio = new Date(2025, 1, 1);
+        const fechaFin = new Date(2025, 12, 31);
+        expect(plataforma.getVehiculoMasAlquilado(fechaInicio, fechaFin)).toBe(vehiculoMock);
+        expect(estadisticasMock.vehiculoMasAlquilado).toHaveBeenCalledWith(fechaInicio, fechaFin);
+    })
 
+    it("Debe obtener el vehículo menos alquilado", () => {
+        plataforma.setEstadisticas(estadisticasMock);
+        const fechaInicio = new Date(2025, 1, 1);
+        const fechaFin = new Date(2025, 12, 31);
+        expect(plataforma.getVehiculoMenosAlquilado(fechaInicio, fechaFin)).toBe(vehiculoMock);
+        expect(estadisticasMock.vehiculoMenosAlquilado).toHaveBeenCalledWith(fechaInicio, fechaFin);
+    })
 
-})
+    it("Debe obtener el vehículo más rentable", () => {
+        plataforma.setEstadisticas(estadisticasMock);
+        expect(plataforma.getVehiculoMasRentable()).toBe(vehiculoMock)
+        expect(estadisticasMock.vehiculoMasRentable).toHaveBeenCalled();
+    })
+
+    it("Debe obtener el vehículo menos rentable", () => {
+        plataforma.setEstadisticas(estadisticasMock);
+        expect(plataforma.getVehiculoMenosRentable()).toBe(vehiculoMock)
+        expect(estadisticasMock.vehiculoMenosRentable).toHaveBeenCalled();
+    })
+
+    it("Debe obtener el porcentaje de ocupación de flota", () => {
+        plataforma.setEstadisticas(estadisticasMock);
+        expect(plataforma.getPorcentajeOcupacionFlota()).toBe(75);
+        expect(estadisticasMock.porcentajeDeOcupacionFlota).toHaveBeenCalled();
+    })
+
+});

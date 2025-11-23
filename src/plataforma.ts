@@ -3,7 +3,7 @@ import Mantenimiento from "./mantenimiento";
 import Reserva from "./reserva";
 import Vehiculo from "./Vehiculo/vehiculo";
 import EstadoEnMantenimiento from "./EstadoVehiculo/estadoEnMantenimiento";
-import ServicioEstadisticas from "./servicioEstadisticas";
+import ServicioEstadisticas from "../src/Estadistica/servicioEstadisticas";
 import { ITemporada } from "./Temporada/iTemporada";
 
 export default class Plataforma {
@@ -56,7 +56,7 @@ export default class Plataforma {
     // Gestión de Clientes
     public agregarCliente(cliente: Cliente): void {
         if(this.buscarCliente(cliente.getId())) {
-            throw new Error(`Ya existe un vehículo con la matrícula ${cliente.getId()}`);
+            throw new Error(`Ya existe un cliente con el id ${cliente.getId()}`);
         }
         this.clientes.push(cliente);
     }
@@ -155,6 +155,11 @@ export default class Plataforma {
 
     public getPorcentajeOcupacionFlota(): number {
         return this.estadisticas.porcentajeDeOcupacionFlota();
+    }
+
+    // Testear esto...
+    public setEstadisticas(estadisticas: ServicioEstadisticas): void {
+        this.estadisticas = estadisticas;
     }
 
 }

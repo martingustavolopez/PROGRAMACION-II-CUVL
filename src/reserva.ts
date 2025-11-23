@@ -17,7 +17,7 @@ export default class Reserva {
     private finalizada: boolean;
 
     constructor(idReserva: number, cliente: Cliente, vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date, temporada: ITemporada) {
-        this.idReserva = 0;
+        this.idReserva = idReserva;
         this.cliente = cliente;
         this.vehiculo = vehiculo;
         this.fechaDeInicio = fechaInicio;

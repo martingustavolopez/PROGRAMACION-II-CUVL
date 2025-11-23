@@ -1,6 +1,6 @@
-import Reserva from "../src/reserva";
-import ServicioEstadisticas from "../src/servicioEstadisticas";
-import Vehiculo from "../src/Vehiculo/vehiculo";
+import Reserva from "../../src/reserva";
+import ServicioEstadisticas from "../../src/Estadistica/servicioEstadisticas";
+import Vehiculo from "../../src/Vehiculo/vehiculo";
 
 describe("Test de la clase ServicioEstadisticas", () => {
   let estadisticas: ServicioEstadisticas;
@@ -13,6 +13,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
   let reservaMock4: jest.Mocked<Reserva>;
 
   beforeEach(() => {
+    jest.clearAllMocks();
     vehiculoMock1 = {
       getMatricula: jest.fn().mockReturnValue("MUC973"),
       getEstado: jest.fn().mockReturnValue({ getNombre: jest.fn().mockReturnValue("En Alquiler") }),
@@ -35,7 +36,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
       getEstado: jest.fn().mockReturnValue({ getNombre: jest.fn().mockReturnValue("En Alquiler") }),
       getMantenimientos: jest.fn().mockReturnValue([])
     } as unknown as jest.Mocked<Vehiculo>
-    
+
     reservaMock1 = {
       getVehiculo: jest.fn().mockReturnValue(vehiculoMock1),
       getFechaDeInicio: jest.fn().mockReturnValue(new Date(2025, 10, 3)),
@@ -49,7 +50,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
       getFechaDeInicio: jest.fn().mockReturnValue(new Date(2025, 10, 1)),
       getFechaDeFin: jest.fn().mockReturnValue(new Date(2025, 10, 5)),
       getKilometrosRecorridos: jest.fn().mockReturnValue(500),
-      calcularCostoTotal: jest.fn().mockReturnValue(5000)     
+      calcularCostoTotal: jest.fn().mockReturnValue(5000)
     } as unknown as jest.Mocked<Reserva>
 
     reservaMock3 = {
@@ -57,7 +58,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
       getFechaDeInicio: jest.fn().mockReturnValue(new Date(2025, 10, 3)),
       getFechaDeFin: jest.fn().mockReturnValue(new Date(2025, 10, 7)),
       getKilometrosRecorridos: jest.fn().mockReturnValue(200),
-      calcularCostoTotal: jest.fn().mockReturnValue(2000)     
+      calcularCostoTotal: jest.fn().mockReturnValue(2000)
     } as unknown as jest.Mocked<Reserva>
 
     reservaMock4 = {
@@ -65,7 +66,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
       getFechaDeInicio: jest.fn().mockReturnValue(new Date(2025, 10, 3)),
       getFechaDeFin: jest.fn().mockReturnValue(new Date(2025, 10, 5)),
       getKilometrosRecorridos: jest.fn().mockReturnValue(100),
-      calcularCostoTotal: jest.fn().mockReturnValue(1000)     
+      calcularCostoTotal: jest.fn().mockReturnValue(1000)
     } as unknown as jest.Mocked<Reserva>
 
   })
@@ -90,7 +91,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
     let fechaInicio = new Date(2025, 9, 1);
     let fechaFin = new Date(2025, 9, 30);
     expect(() => estadisticas.vehiculoMasAlquilado(fechaInicio, fechaFin)).toThrow(
-      "No hay vehículos alquilados en las fechas especificadas." 
+      "No hay vehículos alquilados en las fechas especificadas."
     );
   })
 
@@ -114,7 +115,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
     let fechaInicio = new Date(2025, 9, 1);
     let fechaFin = new Date(2025, 9, 31);
     expect(() => estadisticas.vehiculoMenosAlquilado(fechaInicio, fechaFin)).toThrow(
-      "No hay vehículos alquilados en las fechas especificadas." 
+      "No hay vehículos alquilados en las fechas especificadas."
     );
   })
 
@@ -235,7 +236,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
       getFechaDeInicio: jest.fn().mockReturnValue(new Date(2025, 10, 4)),
       getFechaDeFin: jest.fn().mockReturnValue(new Date(2025, 10, 8)),
       getKilometrosRecorridos: jest.fn().mockReturnValue(0),
-      calcularCostoTotal: jest.fn().mockReturnValue(1000)     
+      calcularCostoTotal: jest.fn().mockReturnValue(1000)
     } as unknown as jest.Mocked<Reserva>
     const vehiculos: Vehiculo[] = [vehiculoMock1];
     const reservas: Reserva[] = [reservaMock1, reservaMock5];

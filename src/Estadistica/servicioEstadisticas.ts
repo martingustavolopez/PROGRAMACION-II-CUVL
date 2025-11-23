@@ -1,5 +1,5 @@
-import Reserva from "./reserva"
-import Vehiculo from "./Vehiculo/vehiculo"
+import Reserva from "../reserva"
+import Vehiculo from "../Vehiculo/vehiculo"
 
 export default class ServicioEstadisticas {
 
