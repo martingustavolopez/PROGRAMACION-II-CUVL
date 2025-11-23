@@ -201,7 +201,6 @@ describe("Test clase Plataforma", () => {
         }).toThrow("La fecha de inicio debe ser anterior a la fecha de fin");
     })
 
-    // FALTAN ALGUNOS DE ACA EN EL MEDIO
     it("Deben generarse id de reservas de forma incremental", () => {
         reservaMock.getIdReserva.mockReturnValue(1);
 

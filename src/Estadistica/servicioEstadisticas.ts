@@ -38,7 +38,7 @@ export default class ServicioEstadisticas {
       throw new Error("No hay vehículos alquilados en las fechas especificadas.");
     }
     let vehiculoMenosAlquilado: Vehiculo | undefined;
-    let minAlquileres = 1000000;
+    let minAlquileres = Infinity;
 
     cantidad.forEach((cant, vehiculo) => {
       if (cant < minAlquileres) {
@@ -58,7 +58,7 @@ export default class ServicioEstadisticas {
       throw new Error("No hay vehiculos en la flota");
     }
     let vehiculoMayorRentabilidad: Vehiculo | undefined = undefined;
-    let maxRentabilidad: number = -1000000;
+    let maxRentabilidad: number = -Infinity;
 
     for (const vehic of this.vehiculos) {
       const rentabilidad = this.calcularRentabilidad(vehic);
@@ -70,7 +70,7 @@ export default class ServicioEstadisticas {
     }
 
     if (!vehiculoMayorRentabilidad) {
-      throw new Error("Error al determinar el vehiculo más rentable");
+      throw new Error("Error al determinar el vehiculo más rentable.");
     }
     return vehiculoMayorRentabilidad;
   }
@@ -80,7 +80,7 @@ export default class ServicioEstadisticas {
       throw new Error("No hay vehiculos en la flota");
     }
     let vehiculoMenorRentabilidad: Vehiculo | undefined = undefined;
-    let menosRentabilidad: number = 1000000;
+    let menosRentabilidad: number = Infinity;
 
     for (const vehic of this.vehiculos) {
       const rentabilidad = this.calcularRentabilidad(vehic);
@@ -92,7 +92,7 @@ export default class ServicioEstadisticas {
     }
 
     if (!vehiculoMenorRentabilidad) {
-      throw new Error("Error al determinar el vehiculo menos rentable");
+      throw new Error("Error al determinar el vehiculo menos rentable.");
     }
     return vehiculoMenorRentabilidad;
   }

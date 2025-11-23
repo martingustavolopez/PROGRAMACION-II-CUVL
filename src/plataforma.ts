@@ -68,6 +68,15 @@ export default class Plataforma {
     }
     
     // Gestión de Reservas
+    /**
+     * Método que crea la reserva, y valida posibles errores.
+     * @param idCliente 
+     * @param matriculaVehiculo 
+     * @param fechaInicio 
+     * @param fechaFin 
+     * @param temporada 
+     * @returns Reserva
+     */
     public crearReserva(idCliente: number, matriculaVehiculo: string, fechaInicio: Date, fechaFin: Date, temporada: ITemporada): Reserva {
         const cliente = this.buscarCliente(idCliente);
         if (!cliente) {
@@ -98,13 +107,14 @@ export default class Plataforma {
         return reserva;
     }
 
+    /**
+     * Método privado que incrementa la id de la reserva para cada crearReserva
+     * @returns number => id
+     */
     private generarIdReserva(): number {
         this.contadorIdReserva++;
         return this.contadorIdReserva;
     }
-    /*private generarIdReserva(): number {
-        return this.reservas.length > 0 ? Math.max(...this.reservas.map(r => r.getIdReserva())) + 1 : 1; 
-    }*/
 
     // Gestión de Mantenimiento
     public registrarMantenimiento(matricula: string, mantenimiento: Mantenimiento): boolean {

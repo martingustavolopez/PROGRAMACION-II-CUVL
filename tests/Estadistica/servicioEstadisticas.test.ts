@@ -71,7 +71,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
 
   })
 
-  // VEHICULO MÁS ALQUILADO
+  // Vehículo más alquilado
   it("Debe devolver el vehículo más alquilado en el rango de fechas", () => {
     const vehiculos = [vehiculoMock1, vehiculoMock2, vehiculoMock3];
     const reservas = [reservaMock1, reservaMock2, reservaMock3, reservaMock4];
@@ -95,7 +95,29 @@ describe("Test de la clase ServicioEstadisticas", () => {
     );
   })
 
-  // VEHICULO MENOS ALQUILADO
+  it("Vehiculo Más Alquilado lanza error si queda undefined", () => {
+    const vehiculos = [vehiculoMock1, vehiculoMock2, vehiculoMock3];
+    const reservas = [reservaMock1, reservaMock2, reservaMock3, reservaMock4];
+    estadisticas = new ServicioEstadisticas(vehiculos, reservas);
+    let fechaInicio = new Date(2025, 9, 1);
+    let fechaFin = new Date(2025, 9, 31);
+
+    // MOCK: Map falso
+    const fakeMap = {
+      size: 1,
+      forEach: jest.fn(),
+    }
+
+    // Mock del método cantAlquileresPorVehiculo
+    jest.spyOn(estadisticas as any, "cantAlquileresPorVehiculo")
+      .mockReturnValue(fakeMap);
+
+    expect(() =>
+      estadisticas.vehiculoMasAlquilado(fechaInicio, fechaFin)
+    ).toThrow("Error al determinar el vehiculo más alquilado.");
+  });
+
+  // Vehículo menos alquilado
   it("Debe devolver el vehículo menos alquilado en el rango de fechas", () => {
     const vehiculos = [vehiculoMock1, vehiculoMock2, vehiculoMock3];
     const reservas = [reservaMock1, reservaMock2, reservaMock3, reservaMock4];
@@ -108,7 +130,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
     expect(resultado.getMatricula()).toBe("MUC973");
   })
 
-  it("Debe devolver el vehículo menos alquilado en el rango de fechas", () => {
+  it("Debe lanzar error si no hay vehiculos alquilados para esas fechas", () => {
     const vehiculos = [vehiculoMock1, vehiculoMock2, vehiculoMock3];
     const reservas = [reservaMock1, reservaMock2, reservaMock3, reservaMock4];
     estadisticas = new ServicioEstadisticas(vehiculos, reservas);
@@ -119,7 +141,29 @@ describe("Test de la clase ServicioEstadisticas", () => {
     );
   })
 
-  // VEHICULO MAYOR RENTABILIDAD
+  it("Vehiculo Menos Alquilado lanza error si queda undefined", () => {
+    const vehiculos = [vehiculoMock1, vehiculoMock2, vehiculoMock3];
+    const reservas = [reservaMock1, reservaMock2, reservaMock3, reservaMock4];
+    estadisticas = new ServicioEstadisticas(vehiculos, reservas);
+    let fechaInicio = new Date(2025, 9, 1);
+    let fechaFin = new Date(2025, 9, 31);
+
+    // MOCK: Map falso
+    const fakeMap = {
+      size: 1,
+      forEach: jest.fn(),
+    }
+
+    // Mock del método cantAlquileresPorVehiculo
+    jest.spyOn(estadisticas as any, "cantAlquileresPorVehiculo")
+      .mockReturnValue(fakeMap);
+
+    expect(() =>
+      estadisticas.vehiculoMenosAlquilado(fechaInicio, fechaFin)
+    ).toThrow("Error al determinar el vehiculo menos alquilado.");
+  });
+
+  // Vehículo con mayor rentabilidad
   it("Debe retornar el vehículo con más rentabilidad", () => {
     const vehiculos = [vehiculoMock1, vehiculoMock2, vehiculoMock3];
     const reservas = [reservaMock1, reservaMock2, reservaMock3, reservaMock4];
@@ -141,7 +185,21 @@ describe("Test de la clase ServicioEstadisticas", () => {
     );
   })
 
-  // VEHICULO CON MENOR RENTABILIDAD
+  it("Vehiculo Más Rentable lanza error si queda undefined", () => {
+    const vehiculos = [vehiculoMock1, vehiculoMock2, vehiculoMock3];
+    const reservas = [reservaMock1, reservaMock2, reservaMock3, reservaMock4];
+    estadisticas = new ServicioEstadisticas(vehiculos, reservas);
+
+    // Mock del método cantAlquileresPorVehiculo
+    jest.spyOn(estadisticas as any, "calcularRentabilidad")
+      .mockReturnValue(-Infinity);
+
+    expect(() =>
+      estadisticas.vehiculoMasRentable()
+    ).toThrow("Error al determinar el vehiculo más rentable.");
+  });
+
+  // Vehículo con menor rentabilidad
   it("Debe retornar el vehículo con menor rentabilidad", () => {
     const vehiculos = [vehiculoMock1, vehiculoMock2, vehiculoMock3];
     const reservas = [reservaMock1, reservaMock2, reservaMock3, reservaMock4];
@@ -163,7 +221,21 @@ describe("Test de la clase ServicioEstadisticas", () => {
     );
   })
 
-  // PORCENTAJE DE OCUPACIÓN DE LA FLOTA
+  it("Vehiculo Menos Rentable lanza error si queda undefined", () => {
+    const vehiculos = [vehiculoMock1, vehiculoMock2, vehiculoMock3];
+    const reservas = [reservaMock1, reservaMock2, reservaMock3, reservaMock4];
+    estadisticas = new ServicioEstadisticas(vehiculos, reservas);
+
+    // Mock del método cantAlquileresPorVehiculo
+    jest.spyOn(estadisticas as any, "calcularRentabilidad")
+      .mockReturnValue(Infinity);
+
+    expect(() =>
+      estadisticas.vehiculoMenosRentable()
+    ).toThrow("Error al determinar el vehiculo menos rentable.");
+  });
+
+  // Porcentaje de ocupación de la flota
   it("Debe calcular el porcentaje de ocupación de la flota de forma correcta", () => {
     const vehiculos: Vehiculo[] = [vehiculoMock1, vehiculoMock2, vehiculoMock3];
     const reservas: Reserva[] = [];
@@ -205,7 +277,7 @@ describe("Test de la clase ServicioEstadisticas", () => {
     expect(estadisticas.porcentajeDeOcupacionFlota()).toBe(100);
   })
 
-  // CALCULAR RENTABILIDAD
+  // Calcular Rentabilidad
   it("Debe calcular la rentabilidad de un vehículo de forma correcta", () => {
     const vehiculos: Vehiculo[] = [vehiculoMock2];
     const reservas: Reserva[] = [reservaMock2, reservaMock4];
