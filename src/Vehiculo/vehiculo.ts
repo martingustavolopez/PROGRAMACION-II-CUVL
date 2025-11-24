@@ -109,8 +109,8 @@ export default abstract class Vehiculo {
     }
 
     public devolver(kilometros: number): void {
-        if (kilometros < 0) {
-            throw new Error("El kilometraje no puede ser negativo");
+        if (kilometros <= 0) {
+            throw new Error("El kilometraje no puede ser negativo ni cero");
         }
         this.kilometraje += kilometros; // Sumar kilómetros al kilometraje total del vehiculo
         this.kmDesdeUltimoMantenimiento += kilometros;
