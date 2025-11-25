@@ -24,7 +24,7 @@ export default class ServicioEstadisticas {
    * Determina el vehículo con mayor cantidad de alquileres en un rango de fechas.
    * @param fechaInicio - Fecha de inicio del rango a analizar.
    * @param fechaFin - Fecha de fin del rango a analizar.
-   * @returns El vehículo más alquilado en el rango de fechas especificadas.
+   * @returns {Vehiculo} El vehículo más alquilado en el rango de fechas especificadas.
    * @throws {Error} Si no hay vehículos alquilados en las fechas especificadas.
    * @throws {Error} Si ocurre un error al determinar el vehículo más alquilado.
    */
@@ -53,7 +53,7 @@ export default class ServicioEstadisticas {
    * Determina el vehículo con menor cantidad de alquileres en un rango de fechas.
    * @param fechaInicio - Fecha de inicio del rango a analizar. 
    * @param fechaFin - Fecha de fin del rango a analizar.
-   * @returns El vehículo menos alquilado en el rango de fechas especificadas.
+   * @returns {Vehiculo} El vehículo menos alquilado en el rango de fechas especificadas.
    * @throws {Error} Si no hay vehículos alquilados en las fechas especificadas.
    * @throws {Error} Si ocurre un error al determinar el vehículo menos alquilado.
    */
@@ -81,7 +81,7 @@ export default class ServicioEstadisticas {
   /**
    * Determina el vehículo con mayor rentabilidad de toda la flota.
    * La rentabilidad se calcula como: ingresos totales - costos de mantenimiento.
-   * @returns El vehículo más rentable de la flota.
+   * @returns {Vehiculo} El vehículo más rentable de la flota.
    * @throws {Error} Si no hay vehículos en la flota.
    * @throws {Error} Si ocurre un error al determinar el vehículo más rentable.
    */
@@ -110,7 +110,7 @@ export default class ServicioEstadisticas {
   /**
    * Determina el vehículo con menor rentabilidad de toda la flota.
    * La rentabilidad se calcula como: ingresos totales - costos de mantenimiento.
-   * @returns El vehículo menos rentable de la flota.
+   * @returns {Vehiculo} El vehículo menos rentable de la flota.
    * @throws {Error} Si no hay vehículos en la flota.
    * @throws {Error} Si ocurre un error al determinar el vehículo menos rentable.
    */
@@ -139,7 +139,7 @@ export default class ServicioEstadisticas {
   /**
    * Calcula el porcentaje de ocupación actual de la flota.
    * Se determina qué porcentaje de vehículos están en estado "En Alquiler".
-   * @returns Porcentaje de ocupación. Retorna 0 si no hay vehículos en la flota.
+   * @returns {number} Porcentaje de ocupación. Retorna 0 si no hay vehículos en la flota.
    * 
    * @example
    *  Si hay 10 vehículos y 3 están en alquiler:
@@ -160,7 +160,7 @@ export default class ServicioEstadisticas {
    * La rentabilidad es la diferencia entre los ingresos y los costos de mantenimiento.
    * 
    * @param vehiculo - Vehículo del cual se quiera calcular la rentabilidad
-   * @returns Rentabilidad del vehículo, puede ser negativa si los costos superan a los ingresos.
+   * @returns {number} Rentabilidad del vehículo, puede ser negativa si los costos superan a los ingresos.
    * 
    * @example 
    *  Vehículo con ingresos de 5000 y costos de 1500:
@@ -186,7 +186,7 @@ export default class ServicioEstadisticas {
    * - Envuelve completamente el rango (inicia antes y termina después).
    * @param fechaInicio - Fecha de inicio del rango a analizar.
    * @param fechaFin - Fecha de fin del rango a analizar.
-   * @returns Map con vehículos como clave y cantidad de alquileres como valor.
+   * @returns {Map<Vehiculo,number>} Map con vehículos como clave y cantidad de alquileres como valor.
    */
   private cantAlquileresPorVehiculo(fechaInicio: Date, fechaFin: Date): Map<Vehiculo, number> {
     const cant = new Map<Vehiculo, number>();
@@ -217,7 +217,7 @@ export default class ServicioEstadisticas {
    * Suma el costo de todas las reservas finalizadas (kilómetros registrados) del vehículo.
    * Ignora las reservas sin kilómetros registrados y maneja errores en el cálculo de costos.
    * @param vehiculo - Vehículo del cual calcular los ingresos.
-   * @returns Suma total de ingresos del vehículo.
+   * @returns {number} Suma total de ingresos del vehículo.
    */
   private calcularIngresosVehiculo(vehiculo: Vehiculo): number {
     const reservasVehiculo = this.reservas.filter(
@@ -241,7 +241,7 @@ export default class ServicioEstadisticas {
    * Método privado que calcula los costos totales de mantenimiento de un vehículo.
    * Suma el costo de todos los mantenimientos registrados para el vehículo.
    * @param vehiculo - Vehículo del cual se va a calcular los costos de mantenimiento.
-   * @returns La suma total de costos de mantenimiento.
+   * @returns {number} La suma total de costos de mantenimiento.
    */
   private calcularCostosMantenimiento(vehiculo: Vehiculo): number {
     const mantenimientos = vehiculo.getMantenimientos();

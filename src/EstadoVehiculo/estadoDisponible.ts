@@ -15,7 +15,7 @@ export default class EstadoDisponible implements IEstadoVehiculo {
 
   /**
    * Se obtiene el nombre del estado actual.
-   * @returns El nombre del estado: "Disponible".
+   * @returns {string} El nombre del estado: "Disponible".
    */
   public getNombre(): string {
     return "Disponible";
@@ -42,7 +42,7 @@ export default class EstadoDisponible implements IEstadoVehiculo {
   /**
    * Verifica que el vehículo pueda ser reservado.
    * Un vehículo "Disponible" siempre puede ser reservado.
-   * @returns true - El vehículo está disponible para reservarlo.
+   * @returns {true} - El vehículo está disponible para reservarlo.
    */
   public puedeReservar(): boolean {
     return true;

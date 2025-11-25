@@ -13,7 +13,7 @@ export default class EstadoEnMantenimiento implements IEstadoVehiculo {
 
   /**
    * Se obtiene el nombre del estado actual.
-   * @returns El nombre del estado: "En Mantenimiento".
+   * @returns {string} El nombre del estado: "En Mantenimiento".
    */
   public getNombre(): string {
     return "En Mantenimiento";
@@ -42,7 +42,7 @@ export default class EstadoEnMantenimiento implements IEstadoVehiculo {
   /**
    * Verifica que el vehículo pueda ser reservado.
    * Un vehículo "En Mantenimiento" no puede ser reservado.
-   * @returns false - El vehículo no está disponible para reservarlo.
+   * @returns {false} - El vehículo no está disponible para reservarlo.
    */
   public puedeReservar(): boolean {
     return false;

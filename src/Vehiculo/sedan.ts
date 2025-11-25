@@ -26,7 +26,7 @@ export default class Sedan extends Vehiculo {
 
     /**
      * Se obtiene la tarifa base diaria del vehículo Sedán.
-     * @returns Tarifa base diaria (50 por día) 
+     * @returns {number} Tarifa base diaria (50 por día) 
      */
     public getTarifaBase(): number {
         return Sedan.TARIFA_BASE;
@@ -37,7 +37,7 @@ export default class Sedan extends Vehiculo {
      * No tiene límite por kilómetros incluidos y cobra por cada kilómetro recorrido desde el inicio.
      * @param dias - Cantidad de días del alquiler (no se usa en este cálculo).
      * @param kmRecorridos - Kilómetros recorridos durante el alquiler.
-     * @returns Costo adicional por kilómetros (kmRecorridos * 0.20).
+     * @returns {number} Costo adicional por kilómetros (kmRecorridos * 0.20).
      * 
      * @example
      *  Para 500 km:

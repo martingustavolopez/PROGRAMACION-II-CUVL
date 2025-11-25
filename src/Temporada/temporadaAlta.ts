@@ -8,7 +8,7 @@ export default class TemporadaAlta implements ITemporada {
   /**
    * Ajusta la tarifaBase recibida aplicandole un +20% a la misma.
    * @param tarifaBase - Tarifa base diaria del vehículo.
-   * @returns La tarifa base diaria +20%
+   * @returns {number} La tarifa base diaria +20%
    */
   public ajustar(tarifaBase: number): number {
     return tarifaBase * 1.20;
@@ -16,7 +16,7 @@ export default class TemporadaAlta implements ITemporada {
 
   /**
    * Se obtiene el nombre de la estategia de temporada.
-   * @returns El nombre de la temporada: "Temporada Alta".
+   * @returns {string} El nombre de la temporada: "Temporada Alta".
    */
   public getNombre(): string {
     return "Temporada Alta";

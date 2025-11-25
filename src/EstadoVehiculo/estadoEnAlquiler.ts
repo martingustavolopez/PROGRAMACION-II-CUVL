@@ -15,7 +15,7 @@ export default class EstadoEnAlquiler implements IEstadoVehiculo {
  
   /**
    * Se obtiene el nombre del estado actual.
-   * @returns El nombre del estado: "En Alquiler".
+   * @returns {string} El nombre del estado: "En Alquiler".
    */
   public getNombre(): string {
     return "En Alquiler";
@@ -48,7 +48,7 @@ export default class EstadoEnAlquiler implements IEstadoVehiculo {
   /**
    * Verifica que el vehículo pueda ser reservado.
    * Un vehículo "En Alquiler" no puede ser reservado.
-   * @returns false - El vehículo no está disponible para reservarlo.
+   * @returns {false} - El vehículo no está disponible para reservarlo.
    */
   public puedeReservar(): boolean {
     return false

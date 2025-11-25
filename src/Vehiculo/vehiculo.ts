@@ -40,7 +40,7 @@ export default abstract class Vehiculo {
     // Getters
     /**
      * Se obtiene la matrícula del vehículo.
-     * @returns La matrícula del vehículo.
+     * @returns {string} La matrícula del vehículo.
      */
     public getMatricula(): string {
         return this.matricula;
@@ -48,7 +48,7 @@ export default abstract class Vehiculo {
 
     /**
      * Se obtiene el estado actual del vehículo.
-     * @returns El estado actual del vehículo, ya sea Disponible, En Alquiler o En Mantenimiento.
+     * @returns {IEstadoVehiculo} El estado actual del vehículo, ya sea Disponible, En Alquiler o En Mantenimiento.
      */
     public getEstado(): IEstadoVehiculo {
         return this.estado;
@@ -56,7 +56,7 @@ export default abstract class Vehiculo {
 
     /**
      * Se obtiene el kilometraje total (actual) del vehículo.
-     * @returns El kilometraje acumulado del vehículo
+     * @returns {number} El kilometraje acumulado del vehículo
      */
     public getKilometraje(): number {
         return this.kilometraje;
@@ -64,7 +64,7 @@ export default abstract class Vehiculo {
 
     /**
      * Se obtiene una copia del historial de mantenimientos del vehículo.
-     * @returns Array con todos los mantenimientos realizados al vehículo.
+     * @returns {Mantenimiento[]} Array con todos los mantenimientos realizados al vehículo.
      */
     public getMantenimientos(): Mantenimiento[] {
         return [...this.mantenimientos];
@@ -72,7 +72,7 @@ export default abstract class Vehiculo {
 
     /**
      * Se obtiene los kilómetros recorridos desde el último mantenimiento.
-     * @returns Cantidad de kilómetros desde el último mantenimiento. 
+     * @returns {number} Cantidad de kilómetros desde el último mantenimiento. 
      */
     public getKmDesdeUltimoMantenimiento(): number {
         return this.kmDesdeUltimoMantenimiento;
@@ -80,7 +80,7 @@ export default abstract class Vehiculo {
 
     /**
      * Se obtiene la fecha del último mantenimiento realizado.
-     * @returns Fecha del último mantenimiento.
+     * @returns {Date} Fecha del último mantenimiento.
      */
     public getFechaUltimoMantenimiento(): Date {
         return this.fechaUltimoMantenimiento;
@@ -88,7 +88,7 @@ export default abstract class Vehiculo {
 
     /**
      * Se obtiene la cantidad de alquileres completados desde el último mantenimiento.
-     * @returns Número de alquileres desde el último mantenimiento.
+     * @returns {number} Número de alquileres desde el último mantenimiento.
      */
     public getAlquileresDesdeUltimoMantenimiento(): number {
         return this.alquileresDesdeUltimoMantenimiento;
@@ -131,7 +131,8 @@ export default abstract class Vehiculo {
      * - Si supera los 10.000 km desde el último mantenimiento.
      * - Si pasan más de 365 días desde el últumo mantenimiento.
      * - Se ha completado 5 o más alquileres desde el último mantenimiento.
-     * @returns true si se cumple alguno de los criterios o false en caso contrario.
+     * @returns {true} - Si se cumple alguno de los criterios
+     * @returns {false} - En caso contrario.
      */
     public necesitaMantenimiento(): boolean {
         // Un vehicuo debe pasar a estado "En Mantenimiento" y ser inhabilitado para nuevas reservas automáticamente bajo cualquiera de las siguientes condiciones
@@ -201,7 +202,8 @@ export default abstract class Vehiculo {
 
     /**
      * Se verifica si el vehículo está disponible para ser reservado.
-     * @returns true si el vehículo puede ser reservado o false en caso contrario.
+     * @returns {true} - Si el vehículo puede ser reservado 
+     * @returns {false} - En caso contrario.
      */
     public estaDisponible(): boolean { 
         return this.estado.puedeReservar();
@@ -210,7 +212,7 @@ export default abstract class Vehiculo {
     /**
      * Se obtiene la tarifa base diaria del vehículo.
      * Este método debe ser implementado por las clases hijas (Compacto, Sedan y SUV).
-     * @returns Tarifa base diaria del vehículo.
+     * @returns {number} Tarifa base diaria del vehículo.
      */
     public abstract getTarifaBase(): number;
 
@@ -219,7 +221,7 @@ export default abstract class Vehiculo {
      * Este método debe ser implementado por las clases hijas (Compacto, Sedan y SUV).
      * @param dias - Cantidad de días del alquiler.
      * @param kmRecorridos - Kilómetros recorridos durante el alquiler.
-     * @returns Costo adicional por kilómetros.
+     * @returns {number} Costo adicional por kilómetros.
      */
     protected abstract calcularCargosPorKm(dias: number, kmRecorridos: number): number;
 
@@ -229,7 +231,7 @@ export default abstract class Vehiculo {
      * @param dias - Cantidad de días del alquiler.
      * @param kmRecorridos - Kilómetros recorridos durante el alquiler.
      * @param temporada - Estrategia de temporada que ajusta la tarifa base.
-     * @returns Costo total del alquiler.
+     * @returns {number} Costo total del alquiler.
      */
     public calcularTarifaConTemporada(dias: number, kmRecorridos: number, temporada: ITemporada): number {
         const tarifaBase = this.getTarifaBase();

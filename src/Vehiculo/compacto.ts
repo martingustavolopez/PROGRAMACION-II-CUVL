@@ -29,7 +29,7 @@ export default class Compacto extends Vehiculo {
 
     /**
      * Se obtiene la tarifa base diaria del vehículo Compacto.
-     * @returns Tarifa base diaria (30 por día) 
+     * @returns {number} Tarifa base diaria (30 por día) 
      */
     public getTarifaBase(): number {
         return Compacto.TARIFA_BASE;
@@ -41,7 +41,7 @@ export default class Compacto extends Vehiculo {
      * Solo se cobra por los kilómetros que excedan el límite total permitido.
      * @param dias - Cantidad de días del alquiler.
      * @param kmRecorridos - Kilómetros recorridos durante el alquiler.
-     * @returns Costo adicional por kilómetros excedentes.
+     * @returns {number} Costo adicional por kilómetros excedentes.
      * 
      * @example
      *  Caso 1: Dentro del límite

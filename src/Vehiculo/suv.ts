@@ -32,7 +32,7 @@ export default class Suv extends Vehiculo {
 
     /**
      * Se obtiene la tarifa base diaria del vehículo SUV.
-     * @returns Tarifa base diaria (80 por día) 
+     * @returns {number} Tarifa base diaria (80 por día) 
      */
     public getTarifaBase(): number {
         return Suv.TARIFA_BASE;
@@ -45,7 +45,7 @@ export default class Suv extends Vehiculo {
      * - Cargo por kilómetros que exceden el límite total de 500 km.
      * @param dias - Cantidad de días del alquiler.
      * @param kmRecorridos - Kilómetros recorridos durante el alquiler.
-     * @returns Costo adicional por seguro y kilómetros excedentes.
+     * @returns {number} Costo adicional por seguro y kilómetros excedentes.
      * 
      * @example
      *  Para 3 días y 600 km

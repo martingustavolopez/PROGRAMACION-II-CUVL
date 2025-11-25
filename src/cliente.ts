@@ -1,11 +1,21 @@
 import Reserva from "./reserva";
 
+/**
+ * Clase que representa un cliente en el sistema de alquiler.
+ * Se implementa en él las caracterísiticas básicas del cliente, y el historial de reservas propio del cliente.
+ */
 export default class Cliente {
 
     private idCliente: number;
     private nombre: string;
     private reservas: Reserva[];
-
+    
+    /**
+     * Constructor de la clase cliente.
+     * Puede ser llamado sin o con parámetros, cómo nombre y id.
+     * @param nombre - Nombre del cliente (opcional).
+     * @param kilometraje - Id del cliente (opcional).
+     */
     constructor()
     constructor(nombre: string, id: number)
     constructor(nombre?: string, id?: number) {
@@ -15,24 +25,24 @@ export default class Cliente {
     }
 
     /**
-     * Obtener el nombre del cliente
-     * @returns nombre
+     * Se obtiene el nombre del cliente
+     * @returns {string} El nombre del cliente
      */
     public getNombre(): string {
         return this.nombre;
     }
 
     /**
-     * Obtener el id del cliente
-     * @returns id
+     * Se obtiene el id del cliente
+     * @returns {number} El id del cliente.
      */
     public getId(): number {
         return this.idCliente;
     }
 
     /**
-     * Obtener las reservas del cliente (historial)
-     * @returns 
+     * Se obtiene las reservas del cliente (historial)
+     * @returns {Reserva[]} - Copia
      */
     public getReservas(): Reserva[] {
         return [...this.reservas];

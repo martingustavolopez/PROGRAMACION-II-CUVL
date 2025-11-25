@@ -33,7 +33,7 @@ export default class Plataforma {
     // Getters
     /**
      * Se obtiene la lista de vehículos registrados en la plataforma.
-     * @returns Copia del array de vehículos para evitar modificaciones.
+     * @returns {Vehiculo[]} Copia del array de vehículos para evitar modificaciones.
      */
     public getVehiculos(): Vehiculo[] {
         return [...this.vehiculos];
@@ -41,7 +41,7 @@ export default class Plataforma {
 
     /**
      * Se obtiene la lista de reservas registradas en la plataforma.
-     * @returns Copia del array de reservas para evitar modificaciones.
+     * @returns {Reserva[]} Copia del array de reservas para evitar modificaciones.
      */
     public getReservas(): Reserva[] {
         return [...this.reservas];
@@ -49,7 +49,7 @@ export default class Plataforma {
 
     /**
      * Se obtiene la lista de clientes registrados en la plataforma.
-     * @returns Copia del array de clientes para evitar modificaciones.
+     * @returns {Cliente[]} Copia del array de clientes para evitar modificaciones.
      */
     public getClientes(): Cliente[] {
         return [...this.clientes];
@@ -57,7 +57,7 @@ export default class Plataforma {
 
     /**
      * Se obtiene el servicio de estadísticas asociado a la plataforma.
-     * @returns Servicio de estadísticas.
+     * @returns {ServicioEstadisticas} Servicio de estadísticas.
      */
     public getEstadisticas(): ServicioEstadisticas {
         return this.estadisticas;
@@ -80,7 +80,8 @@ export default class Plataforma {
     /**
      * Se busca un vehículo mediante su matrícula.
      * @param matricula - Matrícula del vehículo a buscar.
-     * @returns El vehículo encontrado o null si no existe.
+     * @returns {Vehiculo} El vehículo encontrado o null si no existe.
+     * @returns {null} Null si no existe.
      */
     public buscarVehiculo(matricula: string): Vehiculo | null {
         return this.vehiculos.find((v => v.getMatricula() === matricula)) || null;
@@ -88,7 +89,7 @@ export default class Plataforma {
 
     /**
      * Se obtiene todos los vehículos que se encuentran disponibles.
-     * @returns Lista de vehículos disponibles.
+     * @returns {Vehiculo[]} Lista de vehículos disponibles.
      */
     public getVehiculosDisponibles(): Vehiculo[] {
         return this.vehiculos.filter((vehiculo => vehiculo.estaDisponible()))
@@ -111,7 +112,8 @@ export default class Plataforma {
     /**
      * Se busca un cliente mediante su id.
      * @param idCliente - Id del cliente a buscar.
-     * @returns El cliente encontrado o null si no existe.
+     * @returns {Cliente} El cliente encontrado.
+     * @returns {null} Null si no existe.
      */
     public buscarCliente(idCliente: number): Cliente | null {
         return this.clientes.find(c => c.getId() === idCliente) || null;
@@ -127,7 +129,7 @@ export default class Plataforma {
      * @param fechaInicio - Fecha de inicio de la reserva.
      * @param fechaFin - Fecha de fin de la reserva.
      * @param temporada - Información sobre la temporada que va a afectar al costo.
-     * @returns La reserva creada.
+     * @returns {Reserva} La reserva creada.
      * @throws {Error} Si el cliente no existe.
      * @throws {Error} Si el vehículo no existe.
      * @throws {Error} Si el vehículo no está disponible para las fechas solicitadas.
@@ -167,7 +169,7 @@ export default class Plataforma {
      * @private
      * Método privado que genera un nuevo id para una reserva.
      * Incrementa el contador de reserva (interno) y devuleve el valor actualizado.
-     * @returns Id de la reserva.
+     * @returns {number} Id de la reserva.
      */
     private generarIdReserva(): number {
         this.contadorIdReserva++;
@@ -180,8 +182,8 @@ export default class Plataforma {
      * Si el vehículo existe, se agrega el mantenimiento a su historial y se actualiza el estado a "En Mantenimiento"
      * @param matricula - Matrícula del vehículo al que se le registrará el mantenimiento.
      * @param mantenimiento - Datos del mantenimiento realizado.
-     * @returns true - Si el mantenimiento fue registrado correctamente.
-     *          false - Si no se encontró un vehículo con la matrícula indicada.
+     * @returns {true} - Si el mantenimiento fue registrado correctamente.
+     * @returns {false} - Si no se encontró un vehículo con la matrícula indicada.
      */
     public registrarMantenimiento(matricula: string, mantenimiento: Mantenimiento): boolean {
         const vehiculo = this.buscarVehiculo(matricula);
@@ -209,8 +211,8 @@ export default class Plataforma {
      * @param vehiculo - Vehículo a evaluar  
      * @param fechaInicio - Fecha de inicio solicitada.
      * @param fechaFin - Fecha de fin solicitada.
-     * @returns true - Si el vehículo está disponible en esas fechas.
-     *          false - Si el vehículo no está disponible en esas fechas.
+     * @returns {true} - Si el vehículo está disponible en esas fechas.
+     * @returns {false} - Si el vehículo no está disponible en esas fechas.
      */
     private validarDisponibilidad(vehiculo: Vehiculo, fechaInicio: Date, fechaFin: Date): boolean {
         if(!vehiculo.estaDisponible()) {
@@ -236,27 +238,55 @@ export default class Plataforma {
     }
 
     // Estadísticas
+    /**
+     * Se obtiene el vehículo que tuvo más alquileres dentro del rango de fechas especificado.
+     * @param fechaInicio - Fecha de inicio de la cual comienza el análisis.
+     * @param fechaFin - Fecha de fin de la cual se realiza el análisis.
+     * @returns {Vehiculo} El vehículo más alquilado en ese período.
+     */
     public getVehiculoMasAlquilado(fechaInicio: Date, fechaFin: Date): Vehiculo {
         return this.estadisticas.vehiculoMasAlquilado(fechaInicio, fechaFin);
     }
 
+    /**
+     * Se obtiene el vehículo que tuvo menos alquileres dentro del rango de fechas especificado.
+     * @param fechaInicio - Fecha de inicio de la cual comienza el análisis.
+     * @param fechaFin - Fecha de fin de la cual se realiza el análisis.
+     * @returns {Vehiculo} El vehículo menos alquilado en ese período.
+     */
     public getVehiculoMenosAlquilado(fechaInicio: Date, fechaFin: Date): Vehiculo {
         return this.estadisticas.vehiculoMenosAlquilado(fechaInicio, fechaFin);
     }
 
+    /**
+     * Se obtiene el vehículo que generó mayores ingresos totales.
+     * @returns {Vehiculo} El vehículo más rentable.
+     */
     public getVehiculoMasRentable(): Vehiculo {
         return this.estadisticas.vehiculoMasRentable();
     }
 
+    /**
+     * Se obtiene el vehículo que generó menores ingresos totales.
+     * @returns {Vehiculo} El vehículo menos rentable.
+     */
     public getVehiculoMenosRentable(): Vehiculo {
         return this.estadisticas.vehiculoMenosRentable();
     }
 
+    /**
+     * Se obtiene el porcentaje de ocupación total de la flota.
+     * @returns {number} Porcentaje de la flota (0-100%).
+     */
     public getPorcentajeOcupacionFlota(): number {
         return this.estadisticas.porcentajeDeOcupacionFlota();
     }
 
-    // Testear esto...
+    /**
+     * Se permite reemplazar el servicio de estadísticas utilizado por la plataforma.
+     * Principalmente útil para pruebas unitarias (mocking) y para cambiar la estrategia de cálculo sin modificar el resto de la plataforma.
+     * @param estadisticas - La nueva instancia del servicio de estadísticas.
+     */
     public setEstadisticas(estadisticas: ServicioEstadisticas): void {
         this.estadisticas = estadisticas;
     }
