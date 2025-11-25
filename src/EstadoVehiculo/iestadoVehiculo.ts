@@ -1,7 +1,13 @@
 import Vehiculo from "../Vehiculo/vehiculo"
 
 /**
- * Interfaz que declara las firmas a implementar las clases que implementen la interfaz del estado del vehículo.
+ * Interfaz que declara las firmas a implementar por las clases que implementen la interfaz del estado del vehículo.
+ * - getNombre.
+ * - reservar.
+ * - devolver.
+ * - puedeReservar.
+ * - enviarAMantenimiento.
+ * - completarMantenimiento.
  */
 export interface IEstadoVehiculo {
   getNombre(): string
