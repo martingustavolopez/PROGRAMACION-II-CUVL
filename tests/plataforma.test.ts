@@ -251,7 +251,6 @@ describe("Test clase Plataforma", () => {
 
     })
 
-
     // Gestión de Mantenimiento
     it("Debe registrar el mantenimiento de forma correcta", () => {
         plataforma.agregarVehiculo(vehiculoMock);
@@ -262,6 +261,28 @@ describe("Test clase Plataforma", () => {
     it("Debe devoler false si el vehículo no existe", () => {
         expect(plataforma.registrarMantenimiento("ABC123", mantenimientoMock)).toBe(false);
         expect(vehiculoMock.agregarMantenimiento).not.toHaveBeenCalled();
+    })
+
+    // Validación de disponibilidad
+    it("Devuelve false si el vehículo no está disponible", () => {
+        vehiculoMock.estaDisponible.mockReturnValue(false);
+        const fechaInicio = new Date(2025, 11, 3);
+        const fechaFin = new Date(2025, 11, 10);
+        expect((plataforma as any).validarDisponibilidad(vehiculoMock, fechaInicio, fechaFin)).toBe(false);
+    })
+
+    it("Devuelve true si el vehículo no tiene reservas", () => {
+        let vehiculoMockNuevo: jest.Mocked<Vehiculo>;
+        vehiculoMockNuevo = {
+            getMatricula: jest.fn().mockReturnValue("MND231"),
+            estaDisponible: jest.fn().mockReturnValue(true),
+            reservar: jest.fn(),
+            agregarMantenimiento: jest.fn(),
+            setEstado: jest.fn()
+        } as unknown as jest.Mocked<Vehiculo>;
+        const fechaInicio = new Date(2025, 11, 3);
+        const fechaFin = new Date(2025, 11, 10);
+        expect((plataforma as any).validarDisponibilidad(vehiculoMockNuevo, fechaInicio, fechaFin)).toBe(true);
     })
 
     // Estadisticas

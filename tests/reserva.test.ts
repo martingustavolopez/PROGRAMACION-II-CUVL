@@ -65,7 +65,7 @@ describe("Test de la clase Reserva", () => {
     expect(reserva.getFechaDeInicio()).toBe(fechaInicio);
   })
 
-  it("Debe devolver la fechad de fin de forma correcta", () => {
+  it("Debe devolver la fecha de fin de forma correcta", () => {
     expect(reserva.getFechaDeFin()).toBe(fechaFin);
   })
 
